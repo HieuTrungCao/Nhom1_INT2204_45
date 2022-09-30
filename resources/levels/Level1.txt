@@ -30,10 +30,14 @@ Character:
 p - Bomber
 1 - Balloon
 2 - Oneal
+3 - Doll
+4 - Minvo
+5 - Kondoria
 
 Items:
 b - Bomb Item
 f - Flame Item
 s - Speed Item
+
 
 Kí tự khác các kí tự trên - Grass
