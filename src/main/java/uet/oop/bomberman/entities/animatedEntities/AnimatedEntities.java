@@ -16,10 +16,10 @@ public abstract class AnimatedEntities extends Entity {
      * @param xUnit cột thứ xUnit
      * @param yUnit hàng thứ yUnit
      */
-    public AnimatedEntities(int xUnit, int yUnit) {
-        super(xUnit, yUnit);
-        animate = 0;
-    }
+//    public AnimatedEntities(int xUnit, int yUnit) {
+//        super(xUnit, yUnit);
+//        animate = 0;
+//    }
 
     /**
      * full constructor.

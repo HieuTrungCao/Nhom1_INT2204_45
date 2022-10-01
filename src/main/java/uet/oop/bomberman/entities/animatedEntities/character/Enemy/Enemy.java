@@ -1,8 +1,7 @@
 package uet.oop.bomberman.entities.animatedEntities.character.Enemy;
 
-import javafx.scene.image.Image;
-import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
 
 public class Enemy extends AnimatedEntities {
 
@@ -13,9 +12,9 @@ public class Enemy extends AnimatedEntities {
      * @param xUnit cột thứ xUnit
      * @param yUnit hàng thứ yUnit
      */
-    public Enemy(int xUnit, int yUnit) {
-        super(xUnit, yUnit);
-    }
+//    public Enemy(int xUnit, int yUnit) {
+//        super(xUnit, yUnit);
+//    }
 
     /**
      * full constructor.

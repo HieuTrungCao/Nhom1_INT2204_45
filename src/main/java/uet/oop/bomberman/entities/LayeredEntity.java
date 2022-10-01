@@ -22,7 +22,7 @@ public class LayeredEntity extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(getTopEntity().img ,getTopEntity().x, getTopEntity().y);
+        gc.drawImage(getTopEntity().getSprite().getFxImage() ,getTopEntity().x, getTopEntity().y);
     }
 
     @Override

@@ -10,7 +10,7 @@ public abstract class Entity {
     //Tọa độ Y tính từ góc trái trên trong Canvas
     protected int y;
     //Current Sprite
-    Sprite sprite;
+    protected Sprite sprite;
 
     /**
      * khởi tạo chuyển tọa độ hàng cột(Unit) sang tọa độ gốc trong canvas
@@ -19,8 +19,8 @@ public abstract class Entity {
      * @param yUnit hàng thứ yUnit
      */
     public Entity(int xUnit, int yUnit) {
-        this.x = xUnit / Sprite.SCALED_SIZE;
-        this.y = yUnit / Sprite.SCALED_SIZE;
+        this.x = xUnit * Sprite.SCALED_SIZE;
+        this.y = yUnit * Sprite.SCALED_SIZE;
     }
 
     /**
@@ -31,8 +31,8 @@ public abstract class Entity {
      * @param sprite sprite để hiển thị hiện tại
      */
     public Entity(int x, int y, Sprite sprite) {
-        this.x = x;
-        this.y = y;
+        this.x = x * Sprite.SCALED_SIZE;
+        this.y = y * Sprite.SCALED_SIZE;
         this.sprite = sprite;
     }
 
