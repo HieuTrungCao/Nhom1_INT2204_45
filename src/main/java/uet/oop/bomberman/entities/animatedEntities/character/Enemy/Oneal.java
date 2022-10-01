@@ -1,4 +1,4 @@
-package uet.oop.bomberman.entities.animatedEntities.character;
+package uet.oop.bomberman.entities.animatedEntities.character.Enemy;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
