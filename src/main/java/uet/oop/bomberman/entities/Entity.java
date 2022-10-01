@@ -1,7 +1,6 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
@@ -10,23 +9,43 @@ public abstract class Entity {
 
     //Tọa độ Y tính từ góc trái trên trong Canvas
     protected int y;
+    //Current Sprite
+    Sprite sprite;
 
-    protected Image img;
-
-    //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị(hàng cột) sang tọa độ trong canvas
-    public Entity(int xUnit, int yUnit, Image img) {
-        this.x = xUnit * Sprite.SCALED_SIZE;
-        this.y = yUnit * Sprite.SCALED_SIZE;
-        this.img = img;
+    /**
+     * khởi tạo chuyển tọa độ hàng cột(Unit) sang tọa độ gốc trong canvas
+     *
+     * @param xUnit cột thứ xUnit
+     * @param yUnit hàng thứ yUnit
+     */
+    public Entity(int xUnit, int yUnit) {
+        this.x = xUnit / Sprite.SCALED_SIZE;
+        this.y = yUnit / Sprite.SCALED_SIZE;
     }
 
-    public Entity(int x, int y) {
+    /**
+     * full constructor.
+     *
+     * @param x      tọa độ gốc trong canvas
+     * @param y      tọa độ gốc trong canvas
+     * @param sprite sprite để hiển thị hiện tại
+     */
+    public Entity(int x, int y, Sprite sprite) {
         this.x = x;
         this.y = y;
+        this.sprite = sprite;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
     }
 
     public void render(GraphicsContext gc) {
-        gc.drawImage(img, x, y);
+        gc.drawImage(sprite.getFxImage(), x, y);
     }
 
     public abstract void update();
@@ -47,11 +66,4 @@ public abstract class Entity {
         this.y = y;
     }
 
-    public Image getImg() {
-        return img;
-    }
-
-    public void setImg(Image img) {
-        this.img = img;
-    }
 }
