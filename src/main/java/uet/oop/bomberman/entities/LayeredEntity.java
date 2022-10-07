@@ -3,9 +3,10 @@ package uet.oop.bomberman.entities;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class LayeredEntity extends Entity {
-    LinkedList<Entity> layeredList;
+    List<Entity> layeredList;
 
     public LayeredEntity(int x, int y) {
         super(x, y);
@@ -17,16 +18,29 @@ public class LayeredEntity extends Entity {
     }
 
     public Entity getTopEntity(){
-        return layeredList.getFirst();
+        return layeredList.get(0);
     }
 
+    public void removeTop() {
+        layeredList.remove(0);
+    }
     @Override
     public void render(GraphicsContext gc) {
-        gc.drawImage(getTopEntity().getSprite().getFxImage() ,getTopEntity().x, getTopEntity().y);
+        for (int i = layeredList.size() - 1; i >= 0; i--)
+            layeredList.get(i).render(gc);
     }
 
     @Override
     public void update() {
+        layeredList.get(0).update();
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof LayeredEntity) {
+            return x == ((LayeredEntity) obj).x && y == ((LayeredEntity) obj).y;
+        }
+
+        return false;
     }
 }

@@ -1,13 +1,14 @@
 package uet.oop.bomberman.entities.animatedEntities.character;
 
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
+import uet.oop.bomberman.entities.destroyable.BombItem;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomber extends AnimatedEntities {
 
-    private int speed = 1;
-    private final int time_move = 6;
-    private final int time_die = 100;
+    private int speed = 2;
+    private final int time_move = 20;
+    private final int time_die = BombItem.time;
     private int animate_die = 0;
     private boolean isAlive = true;
 
@@ -62,11 +63,15 @@ public class Bomber extends AnimatedEntities {
         isAlive = false;
     }
 
+    public boolean isAlive() {
+        return isAlive;
+    }
+
     public void dead() {
         if(animate_die < time_die) {
             sprite = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate_die++, time_die);
         } else {
-            sprite = null;
+            sprite = Sprite.player_dead3;
             // todo some thing
         }
     }
