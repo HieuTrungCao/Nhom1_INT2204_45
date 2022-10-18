@@ -48,4 +48,11 @@ public abstract class AnimatedEntities extends Entity {
 
     }
 
+    public void setAnimate(int animate) {
+        this.animate = animate;
+    }
+
+    public int getAnimate() {
+        return animate;
+    }
 }
