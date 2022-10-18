@@ -23,6 +23,7 @@ public class Sprite {
 	protected int _realHeight;
 	private SpriteSheet _sheet;
 
+	private Image image;
 	/*
 	|--------------------------------------------------------------------------
 	| Board sprites
@@ -197,6 +198,7 @@ public class Sprite {
 		_realWidth = rw;
 		_realHeight = rh;
 		load();
+		image = this.getFxImage();
 	}
 	
 	public Sprite(int size, int color) {
@@ -289,5 +291,9 @@ public class Sprite {
 		}
 
 		return output;
+	}
+
+	public Image getImage() {
+		return image;
 	}
 }
