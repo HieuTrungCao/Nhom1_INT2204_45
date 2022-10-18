@@ -1,8 +1,7 @@
 package uet.oop.bomberman.entities.destroyable;
 
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.Player;
-import uet.oop.bomberman.entities.LayeredEntity;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class BombExplosionNormal extends BombExplosion {
@@ -25,7 +24,7 @@ public class BombExplosionNormal extends BombExplosion {
         // Top
         if (map[yUnit - 1][xUnit].compareTo('#') != 0) {
             if (map[yUnit - 1][xUnit].compareTo('*') == 0)
-                explosions.add(BombermanGame.getBrick(new LayeredEntity(xUnit, yUnit - 1)));
+                explosions.add(BombermanGame.getEntity(xUnit, yUnit - 1));
             else
                 explosions.add(new FlameTop(xUnit, yUnit - 1, Sprite.explosion_vertical_top_last));
         }
@@ -33,7 +32,7 @@ public class BombExplosionNormal extends BombExplosion {
         // Right
         if (map[yUnit][xUnit + 1].compareTo('#') != 0) {
             if (map[yUnit][xUnit + 1].compareTo('*') == 0)
-                explosions.add(BombermanGame.getBrick(new LayeredEntity(xUnit + 1, yUnit)));
+                explosions.add(BombermanGame.getEntity(xUnit + 1, yUnit));
             else
                 explosions.add(new FlameRight(xUnit + 1, yUnit, Sprite.explosion_horizontal_right_last));
         }
@@ -41,7 +40,7 @@ public class BombExplosionNormal extends BombExplosion {
         // Down
         if (map[yUnit + 1][xUnit].compareTo('#') != 0) {
             if (map[yUnit + 1][xUnit].compareTo('*') == 0)
-                explosions.add(BombermanGame.getBrick(new LayeredEntity(xUnit, yUnit + 1)));
+                explosions.add(BombermanGame.getEntity(xUnit, yUnit + 1));
             else
                 explosions.add(new FlameDown(xUnit, yUnit + 1, Sprite.explosion_vertical_down_last));
         }
@@ -49,7 +48,7 @@ public class BombExplosionNormal extends BombExplosion {
         // Left
         if (map[yUnit][xUnit - 1].compareTo('#') != 0) {
             if (map[yUnit][xUnit - 1].compareTo('*') == 0)
-                explosions.add(BombermanGame.getBrick(new LayeredEntity(xUnit - 1, yUnit)));
+                explosions.add(BombermanGame.getEntity(xUnit - 1, yUnit));
             else
                 explosions.add(new FlameLeft(xUnit - 1, yUnit, Sprite.explosion_horizontal_left_last));
         }
@@ -61,16 +60,18 @@ public class BombExplosionNormal extends BombExplosion {
      * set status of bomberman is die.
      */
     @Override
-    public void checkDeadBomber() {
-        int x = Player.bomberman.getX();
-        int y = Player.bomberman.getY();
+    public boolean checkDeadEntity(Entity entity) {
+        int x = entity.getX();
+        int y = entity.getY();
 
         if (y == this.y) {
             if (x > (this.x - 2 * Sprite.SCALED_SIZE) && (x < this.x + 2 * Sprite.SCALED_SIZE))
-                Player.bomberman.setIsAlive();
+                return true;
         } else if (x == this.x) {
             if (y > (this.y - 2 * Sprite.SCALED_SIZE) && (y < this.y + 2 * Sprite.SCALED_SIZE))
-                Player.bomberman.setIsAlive();
+                return true;
         }
+
+        return false;
     }
 }

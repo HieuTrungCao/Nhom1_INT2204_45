@@ -1,8 +1,9 @@
-package uet.oop.bomberman.entities.destroyable;
+package uet.oop.bomberman.entities.destroyable.bomb;
 
+import uet.oop.bomberman.entities.destroyable.bomb.Flame;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class FlameLeft extends Flame{
+public class FlameLeft extends Flame {
     public FlameLeft(int xUnit, int yUnit, Sprite sprite) {
         super(xUnit, yUnit, sprite);
         animate = 0;

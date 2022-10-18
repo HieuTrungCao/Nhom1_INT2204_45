@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities.destroyable;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Player;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
@@ -39,7 +40,7 @@ public abstract class BombExplosion extends AnimatedEntities {
         explosions.get(0).update();
         if (animate >= time) {
             updateExplosion();
-            checkDeadBomber();
+            checkDead();
         }
         animate();
 
@@ -49,12 +50,24 @@ public abstract class BombExplosion extends AnimatedEntities {
         }
     }
 
+    private void checkDead() {
+        if (checkDeadEntity(Player.bomberman)) {
+            Player.bomberman.setIsAlive(false);
+        }
+
+        for (int i = 0; i < BombermanGame.characters.size(); i++) {
+            if (checkDeadEntity(BombermanGame.characters.get(i))) {
+                BombermanGame.characters.remove(i);
+            }
+        }
+    }
+
     /**
      * Check bomberman is in flame.
      * If bomberman is in flame
      * set status of bomberman is die.
      */
-    public abstract void checkDeadBomber();
+    public abstract boolean checkDeadEntity(Entity entity);
 
     /**
      * If brick is destroyed by bomb

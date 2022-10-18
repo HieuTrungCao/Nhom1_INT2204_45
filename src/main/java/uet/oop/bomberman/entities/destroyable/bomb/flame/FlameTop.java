@@ -1,5 +1,6 @@
-package uet.oop.bomberman.entities.destroyable;
+package uet.oop.bomberman.entities.destroyable.bomb;
 
+import uet.oop.bomberman.entities.destroyable.bomb.Flame;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class FlameTop extends Flame {
