@@ -36,7 +36,7 @@ public class Bomber extends AnimatedEntities {
 
     public Bomber(int x, int y, Sprite sprite) {
         super(x, y, sprite);
-        speed = 8;
+        speed = 16;
         isAlive = true;
         animate_die = 0;
         time_die = BombItem.time;

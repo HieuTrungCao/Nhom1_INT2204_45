@@ -17,6 +17,7 @@ import uet.oop.bomberman.entities.destroyable.BombItem;
 import uet.oop.bomberman.entities.destroyable.Brick;
 import uet.oop.bomberman.entities.destroyable.FlameItem;
 import uet.oop.bomberman.entities.destroyable.SpeedItem;
+import uet.oop.bomberman.entities.destroyable.bomb.BombExplosion;
 import uet.oop.bomberman.entities.undestroyable.Grass;
 import uet.oop.bomberman.entities.undestroyable.Portal;
 import uet.oop.bomberman.entities.undestroyable.Wall;
@@ -31,11 +32,11 @@ public class BombermanGame extends Application {
     public static int WIDTH;
     public static int HEIGHT;
     private final static List<Entity> entities = new LinkedList<>();
-    private final List<Entity> characters = new ArrayList<>();
+    public static final List<Entity> characters = new ArrayList<>();
     private GraphicsContext gc;
     private Canvas canvas;
 
-    public static Queue<Entity> bombs = new ArrayDeque<>();
+    public static List<BombExplosion> bombs = new LinkedList<>();
 
     private Player player;
 
@@ -126,11 +127,6 @@ public class BombermanGame extends Application {
                         ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
                         entities.add(obj);
                     }
-                    case 'x' -> {
-                        entities.add(new Grass(j, i, Sprite.grass));
-                        obj = new Portal(j, i, Sprite.portal);
-                        entities.add(obj);
-                    }
                     case 'p' -> {
                         entities.add(new Grass(j, i, Sprite.grass));
                     }
@@ -154,6 +150,12 @@ public class BombermanGame extends Application {
                     }
                     case 's' -> {
                         obj = new SpeedItem(j, i, Sprite.powerup_speed);
+                        entities.add(obj);
+                    }
+                    case 'x' -> {
+                        obj = new LayeredEntity(j, i);
+                        ((LayeredEntity) obj).addEntity(new Portal(j, i, Sprite.portal));
+                        ((LayeredEntity) obj).addEntity(new Grass(j, i, Sprite.grass));
                         entities.add(obj);
                     }
                     default -> {
@@ -188,5 +190,14 @@ public class BombermanGame extends Application {
         characters.forEach(g -> g.render(gc));
         player.render(gc);
         bombs.forEach(b -> b.render(gc));
+    }
+
+    public static Entity getEntity(int x, int y) {
+        for (Entity e : entities) {
+            if (e.getX() == x * Sprite.SCALED_SIZE && e.getY() == y * Sprite.SCALED_SIZE) {
+                return e;
+            }
+        }
+        return null;
     }
 }
