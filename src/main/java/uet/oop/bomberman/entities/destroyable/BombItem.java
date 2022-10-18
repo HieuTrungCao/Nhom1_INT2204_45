@@ -5,7 +5,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class BombItem extends AnimatedEntities {
 
-    public static final int time = 30;
+    public static final int time = 60;
 
     public BombItem(int xUnit, int yUnit, Sprite sprite) {
         super(xUnit, yUnit, sprite);

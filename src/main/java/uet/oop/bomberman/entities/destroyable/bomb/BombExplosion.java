@@ -1,4 +1,4 @@
-package uet.oop.bomberman.entities.destroyable;
+package uet.oop.bomberman.entities.destroyable.bomb;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
@@ -6,7 +6,10 @@ import uet.oop.bomberman.Player;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
+import uet.oop.bomberman.entities.destroyable.BombItem;
+import uet.oop.bomberman.entities.destroyable.bomb.flame.Flame;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +40,12 @@ public abstract class BombExplosion extends AnimatedEntities {
 
     @Override
     public void update() {
+        ((BombItem) explosions.get(0)).setAnimate(this.getAnimate());
         explosions.get(0).update();
+        if (animate == time) {
+            Sound.bombExplode.restart();
+            Sound.bombExplode.start();
+        }
         if (animate >= time) {
             updateExplosion();
             checkDead();
@@ -46,18 +54,37 @@ public abstract class BombExplosion extends AnimatedEntities {
 
         if (animate == time * 2) {
             removeBrick();
-            BombermanGame.bombs.remove();
+            BombermanGame.bombs.remove(0);
         }
     }
 
+    /**
+     * Khi bom nổ kiểm tra xem
+     * - bomber có trong vùng đang nổ hay không
+     * nếu có thì bomber sẽ chết
+     * - quái có trong phạm vi bom nổ hay không
+     * nếu có thì quái bị tiêu diệt
+     * - có bất kì bức tường nào trong phạm vi nổ hay không
+     * nếu có thì tường sẽ bị phá hủy và hiện ra các item hoặc glass
+     * - Có quả bom bào ở trong phạm vi hay không
+     * nếu có thì bom này cũng sẽ bị nổ
+     */
     private void checkDead() {
         if (checkDeadEntity(Player.bomberman)) {
             Player.bomberman.setIsAlive(false);
+            Player.bomberman.setAnimate(animate);
         }
 
         for (int i = 0; i < BombermanGame.characters.size(); i++) {
             if (checkDeadEntity(BombermanGame.characters.get(i))) {
                 BombermanGame.characters.remove(i);
+            }
+        }
+
+        for(int i = 0; i < BombermanGame.bombs.size(); i++){
+            if (checkDeadEntity(BombermanGame.bombs.get(i))
+                && BombermanGame.bombs.get(i).getAnimate() < this.getAnimate()) {
+                BombermanGame.bombs.get(i).setAnimate(this.time);
             }
         }
     }

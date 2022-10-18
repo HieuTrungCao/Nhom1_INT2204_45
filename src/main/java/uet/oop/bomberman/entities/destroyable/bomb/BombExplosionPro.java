@@ -1,10 +1,12 @@
-package uet.oop.bomberman.entities.destroyable;
+package uet.oop.bomberman.entities.destroyable.bomb;
 
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.destroyable.*;
+import uet.oop.bomberman.entities.destroyable.bomb.flame.*;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class BombExplosionPro extends BombExplosion{
+public class BombExplosionPro extends BombExplosion {
 
     public BombExplosionPro(int xUnit, int yUnit, Sprite sprite, Character[][] map) {
         super(xUnit, yUnit, sprite, map);
@@ -94,9 +96,10 @@ public class BombExplosionPro extends BombExplosion{
     }
 
     /**
-     * Check bomberman is in flame.
-     * If bomberman is in flame
-     * set status of bomberman is die.
+     * Check entity is in flame.
+     * If entity is in flame
+     * return true
+     * else return false
      */
     @Override
     public boolean checkDeadEntity(Entity entity) {
