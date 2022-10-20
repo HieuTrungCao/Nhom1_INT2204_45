@@ -28,20 +28,30 @@ public class Player {
     private int heart;
 
     // Lưu số lần được tăng tốc
-    private int spead;
+    private int speed;
 
     // Lưu số lượng của bomb nạp VIP mà nhân vật ăn được
     private int bombPro;
 
     // Lưu trữ map để sử lý check map khi di chuyển nhanh hơn
     private Character[][] map;
+
+    // Lưu trạng thái xem có đang tăng tốc độ hay không
+    // để sử lý tình trạng tăng tốc độ dẫn đến đi xuyên tường
+    private boolean isSetSpeed;
+
+    // Lưu xem nhan vật đi theo hướng nào
+    // true là đi theo chiều ngang
+    // false là đi theo chiều dọc
+    private boolean direction;
     public Player(Character[][] map) {
         bomberman = new Bomber(1, 1, Sprite.player_right);
         this.map = map;
         this.mark = 0;
         this.heart = 10;
-        this.spead = 1;
+        this.speed = 2;
         this.bombPro = 0;
+        this.isSetSpeed = false;
     }
 
     /**
@@ -62,23 +72,31 @@ public class Player {
 
         if((keyCode == UP || keyCode == W) && checkMap(1)) {
             bomberman.moveUp();
+            direction = false;
         } else if((keyCode == DOWN || keyCode == S) && checkMap(3)) {
             bomberman.moveDown();
+            direction = false;
         } else if((keyCode == LEFT || keyCode == A) && checkMap(4)) {
             bomberman.moveLeft();
+            direction = true;
         } else if((keyCode == RIGHT || keyCode == D) && checkMap(2)) {
             bomberman.moveRight();
         } else if(keyCode == SPACE) {
             addBomb(false);
+            direction = true;
         } else if(keyCode == P && bombPro > 0) {
             addBomb(true);
             bombPro--;
-        } else if (keyCode == R && spead > 0) {
-            bomberman.setSpeed(true);
-            spead--;
+        } else if (keyCode == R && speed > 0) {
+            isSetSpeed = true;
         }
 
         eatItem();
+    }
+
+    private void setSpeed(boolean increase) {
+        bomberman.setSpeed(increase);
+        isSetSpeed = false;
     }
 
     /**
@@ -92,13 +110,13 @@ public class Player {
 
         if (entity instanceof LayeredEntity) {
             if (!(((LayeredEntity) entity).getTopEntity() instanceof Grass)
-                && !(((LayeredEntity) entity).getTopEntity() instanceof Brick)) {
+                    && !(((LayeredEntity) entity).getTopEntity() instanceof Brick)) {
                 if (((LayeredEntity) entity).getTopEntity() instanceof SpeedItem) {
                     ((LayeredEntity) entity).removeTop();
                     /**
                      * To do something
                      */
-                    spead++;
+                    speed++;
                 }
 
                 else if (((LayeredEntity) entity).getTopEntity() instanceof FlameItem) {
@@ -138,13 +156,22 @@ public class Player {
 
     public void update() {
         if(!bomberman.isAlive()
-            && bomberman.getAnimate_die() == bomberman.getTime_die()){
+                && bomberman.getAnimate_die() == bomberman.getTime_die()){
             if (heart > 1) {
-                System.out.println("heart = " + heart);
                 bomberman.setIsAlive(true);
                 heart--;
                 bomberman.setX(32);
                 bomberman.setY(32);
+                bomberman.setSpeed(false);
+            }
+        }
+
+        if (isSetSpeed) {
+            if ((direction && bomberman.getX() % (2 * bomberman.getSpeed()) == 0)
+                    || (!direction && bomberman.getY() % (2 * bomberman.getSpeed()) == 0)) {
+                setSpeed(true);
+                speed--;
+                isSetSpeed = false;
             }
         }
         bomberman.update();

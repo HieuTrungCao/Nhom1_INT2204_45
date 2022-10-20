@@ -36,10 +36,10 @@ public class Bomber extends AnimatedEntities {
 
     public Bomber(int x, int y, Sprite sprite) {
         super(x, y, sprite);
-        speed = 16;
+        speed = 8;
         isAlive = true;
         animate_die = 0;
-        time_die = BombItem.time;
+        time_die = BombItem.time / 2;
         time_move = 12;
         setDirection(false, false, false, false);
     }
@@ -126,6 +126,10 @@ public class Bomber extends AnimatedEntities {
         else if (!raise && speed > 8) speed /= 2;
     }
 
+    // Trả về tốc độ hiện tại
+    public int getSpeed() {
+        return speed;
+    }
     /**
      * Setter cho isAlive.
      * Cập nhật lại trạng thái của bomber
