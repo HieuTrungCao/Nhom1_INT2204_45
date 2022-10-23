@@ -6,9 +6,9 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.character.Bomber;
 import uet.oop.bomberman.entities.destroyable.Brick;
-import uet.oop.bomberman.entities.destroyable.FlameItem;
-import uet.oop.bomberman.entities.destroyable.HeartItem;
-import uet.oop.bomberman.entities.destroyable.SpeedItem;
+import uet.oop.bomberman.entities.destroyable.items.FlameItem;
+import uet.oop.bomberman.entities.destroyable.items.HeartItem;
+import uet.oop.bomberman.entities.destroyable.items.SpeedItem;
 import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionNormal;
 import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionPro;
 import uet.oop.bomberman.entities.undestroyable.Grass;
@@ -30,6 +30,8 @@ public class Player {
     // Lưu số lần được tăng tốc
     private int speed;
 
+    // Số lượng bomb nhân vật có
+    private int bomb;
     // Lưu số lượng của bomb nạp VIP mà nhân vật ăn được
     private int bombPro;
 
@@ -50,6 +52,7 @@ public class Player {
         this.mark = 0;
         this.heart = 10;
         this.speed = 2;
+        this.bomb = 10;
         this.bombPro = 0;
         this.isSetSpeed = false;
     }
@@ -81,12 +84,14 @@ public class Player {
             direction = true;
         } else if((keyCode == RIGHT || keyCode == D) && checkMap(2)) {
             bomberman.moveRight();
-        } else if(keyCode == SPACE) {
+        } else if(keyCode == SPACE && bomb > 0) {
             addBomb(false);
+            bomb--;
             direction = true;
         } else if(keyCode == P && bombPro > 0) {
             addBomb(true);
             bombPro--;
+            bomb--;
         } else if (keyCode == R && speed > 0) {
             isSetSpeed = true;
         }
@@ -116,6 +121,7 @@ public class Player {
                     /**
                      * To do something
                      */
+                    mark += 50;
                     speed++;
                 }
 
@@ -124,10 +130,12 @@ public class Player {
                     /**
                      * to do something
                      */
+                    mark += 50;
                     bombPro++;
                 }
 
                 else if (((LayeredEntity) entity).getTopEntity() instanceof HeartItem) {
+                    mark += 50;
                     heart++;
                 }
             }
@@ -189,6 +197,7 @@ public class Player {
     private void addBomb(boolean pro) {
         int x = bomberman.getX() / Sprite.SCALED_SIZE;
         int y = bomberman.getY() / Sprite.SCALED_SIZE;
+        map[y][x] = 'b';
         if(!pro)
             BombermanGame.bombs.add(new BombExplosionNormal(x, y, null, map));
         else
@@ -254,5 +263,13 @@ public class Player {
     // Trả về bombers
     public Bomber getBomberman() {
         return bomberman;
+    }
+
+    public int getMark() {
+        return mark;
+    }
+
+    public void setMark(int mark) {
+        this.mark = mark;
     }
 }
