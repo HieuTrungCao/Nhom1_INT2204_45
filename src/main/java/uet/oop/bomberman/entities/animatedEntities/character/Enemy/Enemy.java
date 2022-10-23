@@ -1,8 +1,10 @@
 package uet.oop.bomberman.entities.animatedEntities.character.Enemy;
 
 import uet.oop.bomberman.AI.AI;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
 import uet.oop.bomberman.graphics.Sprite;
+
 
 public abstract class Enemy extends AnimatedEntities {
     protected boolean isAlive = true;
@@ -10,6 +12,8 @@ public abstract class Enemy extends AnimatedEntities {
     protected Sprite deadSprite;
     protected AI ai;
     protected int point = 100;
+
+    protected int timeToRemove = 30;
 
     /**
      * full constructor.
@@ -28,13 +32,7 @@ public abstract class Enemy extends AnimatedEntities {
     }
 
 
-    /**
-     * khởi tạo chuyển tọa độ hàng cột(Unit) sang tọa độ gốc trong canvas
-     *
-     * @param xUnit cột thứ xUnit
-     * @param yUnit hàng thứ yUnit
-     */
-//    public Enemy(int xUnit, int yUnit) {
+    //    public Enemy(int xUnit, int yUnit) {
 //        super(xUnit, yUnit);
 //    }
 
@@ -97,5 +95,15 @@ public abstract class Enemy extends AnimatedEntities {
     }
 
     public abstract void setImg();
+
+    public void dead() {
+        setImg();
+        if (timeToRemove == 0) {
+            BombermanGame.characters.removeIf(character -> character.equals(this));
+        } else {
+            timeToRemove--;
+        }
+    }
+
 
 }

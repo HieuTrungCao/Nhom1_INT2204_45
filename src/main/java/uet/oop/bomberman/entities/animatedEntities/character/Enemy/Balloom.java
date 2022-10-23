@@ -8,13 +8,7 @@ import uet.oop.bomberman.graphics.Sprite;
 public class Balloom extends Enemy {
 
 
-    /**
-     * khởi tạo chuyển tọa độ hàng cột(Unit) sang tọa độ gốc trong canvas
-     *
-     * @param xUnit cột thứ xUnit
-     * @param yUnit hàng thứ yUnit
-     */
-//    public Balloom(int xUnit, int yUnit) {
+    //    public Balloom(int xUnit, int yUnit) {
 //        super(xUnit, yUnit);
 //    }
 
@@ -46,10 +40,12 @@ public class Balloom extends Enemy {
 
     @Override
     public void update() {
-        animate();
-        ai.update();
-        move();
-        setImg();
+        if (isAlive) {
+            animate();
+            ai.update();
+            move();
+            setImg();
+        } else dead();
     }
 
     @Override
@@ -67,11 +63,13 @@ public class Balloom extends Enemy {
     @Override
     public void setImg() {
         int direct = ai.getCurrentDirect();
-        System.out.println(animate);
-        if (direct == 2) {
+        if (!isAlive) {
+            sprite = Sprite.balloom_dead;
+        } else if (direct == 2) {
             sprite = Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 30);
         } else {
             sprite = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 30);
         }
     }
+
 }
