@@ -1,10 +1,11 @@
 package uet.oop.bomberman.entities.destroyable;
 
+import uet.oop.bomberman.entities.destroyable.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Brick extends DestroyableEntities {
 
-    private final int time = BombItem.time;
+    private final int time = Bomb.time;
     private int annimte;
     private boolean isDestroying;
     public Brick(int xUnit, int yUnit, Sprite sprite) {

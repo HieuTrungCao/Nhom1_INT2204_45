@@ -1,4 +1,4 @@
-package uet.oop.bomberman.entities.destroyable;
+package uet.oop.bomberman.entities.destroyable.items;
 
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;

@@ -2,7 +2,6 @@ package uet.oop.bomberman.entities.destroyable.bomb;
 
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.destroyable.*;
 import uet.oop.bomberman.entities.destroyable.bomb.flame.FlameDown;
 import uet.oop.bomberman.entities.destroyable.bomb.flame.FlameLeft;
 import uet.oop.bomberman.entities.destroyable.bomb.flame.FlameRight;
@@ -24,7 +23,7 @@ public class BombExplosionNormal extends BombExplosion {
 
     @Override
     public void addItems(int xUnit, int yUnit) {
-        explosions.add(new BombItem(xUnit, yUnit, Sprite.bomb));
+        explosions.add(new Bomb(xUnit, yUnit, Sprite.bomb));
 
         // Top
         if (map[yUnit - 1][xUnit].compareTo('#') != 0) {

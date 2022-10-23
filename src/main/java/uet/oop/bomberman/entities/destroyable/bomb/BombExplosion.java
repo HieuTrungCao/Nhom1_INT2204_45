@@ -6,7 +6,6 @@ import uet.oop.bomberman.Player;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
-import uet.oop.bomberman.entities.destroyable.BombItem;
 import uet.oop.bomberman.entities.destroyable.bomb.flame.Flame;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.Sound;
@@ -16,7 +15,7 @@ import java.util.List;
 
 public abstract class BombExplosion extends AnimatedEntities {
     // time is life circle of bomb item
-    protected final int time = BombItem.time;
+    protected final int time = Bomb.time;
 
     // contain bomb, flame, brick when bomb is explode
     protected final List<Entity> explosions;
@@ -40,7 +39,7 @@ public abstract class BombExplosion extends AnimatedEntities {
 
     @Override
     public void update() {
-        ((BombItem) explosions.get(0)).setAnimate(this.getAnimate());
+        ((Bomb) explosions.get(0)).setAnimate(this.getAnimate());
         explosions.get(0).update();
         if (animate == time) {
             Sound.bombExplode.restart();
@@ -78,6 +77,9 @@ public abstract class BombExplosion extends AnimatedEntities {
         for (int i = 0; i < BombermanGame.characters.size(); i++) {
             if (checkDeadEntity(BombermanGame.characters.get(i))) {
                 BombermanGame.characters.remove(i);
+                /**
+                 * gọi đến hàm cộng điểm ở đây
+                 */
             }
         }
 

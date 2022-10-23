@@ -3,7 +3,7 @@ package uet.oop.bomberman.entities.animatedEntities.character;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
-import uet.oop.bomberman.entities.destroyable.BombItem;
+import uet.oop.bomberman.entities.destroyable.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomber extends AnimatedEntities {
@@ -39,7 +39,7 @@ public class Bomber extends AnimatedEntities {
         speed = 8;
         isAlive = true;
         animate_die = 0;
-        time_die = BombItem.time / 2;
+        time_die = Bomb.time / 2;
         time_move = 12;
         setDirection(false, false, false, false);
     }
