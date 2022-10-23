@@ -12,7 +12,7 @@ public abstract class AI {
     protected boolean isMoving = false;
     protected Sprite deadSprite;
     //    protected AI ai;
-    protected int speed = 2;
+    protected int speed = 1;
     protected int point = 100;
     protected Character[][] map;
     //HashMap map những ký tự đại diện với việc entity đó có cho đi qua không
@@ -20,10 +20,14 @@ public abstract class AI {
 
     //tọa độ của entity hiện tại
     int x, y;
+    //tọa độ của player hiện tại
+    int px, py;
 
     public AI(Character[][] map) {
         this.map = map;
-        block = new Character[]{'#', '*', 'x', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        block = new Character[]{'#', '*', 'x', '1', '2', '3', '4', '5', '6', '7', '8', '9' , 'b'};
+        px = 1;
+        py = 1;
     }
 
     public void setMap(Character[][] map) {
