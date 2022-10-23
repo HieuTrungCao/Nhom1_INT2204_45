@@ -21,6 +21,8 @@ public abstract class Enemy extends AnimatedEntities {
     public Enemy(int xUnit, int yUnit, Sprite sprite, AI ai) {
         super(xUnit, yUnit, sprite);
         this.ai = ai;
+        this.x = xUnit * Sprite.SCALED_SIZE;
+        this.y = yUnit * Sprite.SCALED_SIZE;
         this.ai.setX(xUnit * Sprite.SCALED_SIZE);
         this.ai.setY(yUnit * Sprite.SCALED_SIZE);
     }
@@ -50,8 +52,8 @@ public abstract class Enemy extends AnimatedEntities {
         super(xUnit, yUnit, sprite);
         this.deadSprite = deadSprite;
         this.ai = ai;
+        this.point = point;
         ai.setSpeed(speed);
-        ai.setPoint(point);
     }
 
     public int getPoint() {
