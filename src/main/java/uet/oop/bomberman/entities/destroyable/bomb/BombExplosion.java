@@ -6,6 +6,7 @@ import uet.oop.bomberman.Player;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
+import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Enemy;
 import uet.oop.bomberman.entities.destroyable.bomb.flame.Flame;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.Sound;
@@ -53,6 +54,7 @@ public abstract class BombExplosion extends AnimatedEntities {
 
         if (animate == time * 2) {
             removeBrick();
+            map[super.getX()/Sprite.SCALED_SIZE][super.getY()/Sprite.SCALED_SIZE] = ' ';
             BombermanGame.bombs.remove(0);
         }
     }
@@ -75,11 +77,15 @@ public abstract class BombExplosion extends AnimatedEntities {
         }
 
         for (int i = 0; i < BombermanGame.characters.size(); i++) {
-            if (checkDeadEntity(BombermanGame.characters.get(i))) {
-                BombermanGame.characters.remove(i);
+            if (checkDeadEntity(BombermanGame.characters.get(i)) &&
+                    ((Enemy) BombermanGame.characters.get(i)).isAlive()) {
+                System.out.println("OK");
+                ((Enemy) BombermanGame.characters.get(i)).setAlive(false);
                 /**
                  * gọi đến hàm cộng điểm ở đây
                  */
+                BombermanGame.player.setMark(
+                        ((Enemy) BombermanGame.characters.get(i)).getPoint());
             }
         }
 
