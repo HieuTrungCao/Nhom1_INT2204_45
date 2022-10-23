@@ -54,7 +54,7 @@ public abstract class BombExplosion extends AnimatedEntities {
 
         if (animate == time * 2) {
             removeBrick();
-            map[super.getX()/Sprite.SCALED_SIZE][super.getY()/Sprite.SCALED_SIZE] = ' ';
+            map[super.getY()/Sprite.SCALED_SIZE][super.getX()/Sprite.SCALED_SIZE] = ' ';
             BombermanGame.bombs.remove(0);
         }
     }
