@@ -11,17 +11,6 @@ public abstract class Enemy extends AnimatedEntities {
     protected AI ai;
     protected int point = 100;
 
-
-    /**
-     * khởi tạo chuyển tọa độ hàng cột(Unit) sang tọa độ gốc trong canvas
-     *
-     * @param xUnit cột thứ xUnit
-     * @param yUnit hàng thứ yUnit
-     */
-//    public Enemy(int xUnit, int yUnit) {
-//        super(xUnit, yUnit);
-//    }
-
     /**
      * full constructor.
      *
@@ -35,6 +24,17 @@ public abstract class Enemy extends AnimatedEntities {
         this.ai.setX(xUnit * Sprite.SCALED_SIZE);
         this.ai.setY(yUnit * Sprite.SCALED_SIZE);
     }
+
+
+    /**
+     * khởi tạo chuyển tọa độ hàng cột(Unit) sang tọa độ gốc trong canvas
+     *
+     * @param xUnit cột thứ xUnit
+     * @param yUnit hàng thứ yUnit
+     */
+//    public Enemy(int xUnit, int yUnit) {
+//        super(xUnit, yUnit);
+//    }
 
     /**
      * full constructor.
@@ -52,6 +52,10 @@ public abstract class Enemy extends AnimatedEntities {
         this.ai = ai;
         ai.setSpeed(speed);
         ai.setPoint(point);
+    }
+
+    public int getPoint() {
+        return point;
     }
 
     public abstract void move();
