@@ -9,14 +9,16 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import uet.oop.bomberman.AI.AI;
+import uet.oop.bomberman.AI.AILow;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Balloom;
 import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Oneal;
-import uet.oop.bomberman.entities.destroyable.BombItem;
+import uet.oop.bomberman.entities.destroyable.items.BombItem;
 import uet.oop.bomberman.entities.destroyable.Brick;
-import uet.oop.bomberman.entities.destroyable.FlameItem;
-import uet.oop.bomberman.entities.destroyable.SpeedItem;
+import uet.oop.bomberman.entities.destroyable.items.FlameItem;
+import uet.oop.bomberman.entities.destroyable.items.SpeedItem;
 import uet.oop.bomberman.entities.destroyable.bomb.BombExplosion;
 import uet.oop.bomberman.entities.undestroyable.Grass;
 import uet.oop.bomberman.entities.undestroyable.Portal;
@@ -38,7 +40,7 @@ public class BombermanGame extends Application {
 
     public static List<BombExplosion> bombs = new LinkedList<>();
 
-    private Player player;
+    public static Player player;
 
     private Character[][] map;
     public static void main(String[] args) {
@@ -109,7 +111,7 @@ public class BombermanGame extends Application {
         System.out.println(HEIGHT + ", " + WIDTH);
 
         map = new Character[HEIGHT][WIDTH];
-
+        AILow enemy = new AILow(map);
         for (int i = 0; i < HEIGHT; ++i) {
             String str = scn.nextLine();
             for (int j = 0; j < WIDTH; ++j) {
@@ -132,7 +134,7 @@ public class BombermanGame extends Application {
                     }
                     case '1' -> {
                         entities.add(new Grass(j, i, Sprite.grass));
-                        obj = new Balloom(j, i, Sprite.balloom_right1);
+                        obj = new Balloom(j, i, Sprite.balloom_right1, enemy);
                         characters.add(obj);
                     }
                     case '2' -> {
@@ -141,15 +143,21 @@ public class BombermanGame extends Application {
                         characters.add(obj);
                     }
                     case 'b' -> {
-                        obj = new BombItem(j, i, Sprite.powerup_bombs);
+                        obj = new LayeredEntity(j, i);
+                        ((LayeredEntity)obj).addEntity(new BombItem(j, i, Sprite.powerup_bombs));
+                        ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
                         entities.add(obj);
                     }
                     case 'f' -> {
-                        obj = new FlameItem(j, i, Sprite.powerup_flames);
+                        obj = new LayeredEntity(j, i);
+                        ((LayeredEntity)obj).addEntity(new FlameItem(j, i, Sprite.powerup_flames));
+                        ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
                         entities.add(obj);
                     }
                     case 's' -> {
-                        obj = new SpeedItem(j, i, Sprite.powerup_speed);
+                        obj = new LayeredEntity(j, i);
+                        ((LayeredEntity)obj).addEntity(new SpeedItem(j, i, Sprite.powerup_speed));
+                        ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
                         entities.add(obj);
                     }
                     case 'x' -> {
