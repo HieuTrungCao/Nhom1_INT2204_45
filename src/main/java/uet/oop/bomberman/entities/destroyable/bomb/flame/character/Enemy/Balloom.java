@@ -1,4 +1,4 @@
-package uet.oop.bomberman.entities.animatedEntities.character.Enemy;
+package uet.oop.bomberman.entities.destroyable.bomb.flame.character.Enemy;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.AI.AI;

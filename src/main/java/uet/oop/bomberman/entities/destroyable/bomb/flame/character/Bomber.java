@@ -1,4 +1,4 @@
-package uet.oop.bomberman.entities.animatedEntities.character;
+package uet.oop.bomberman.entities.destroyable.bomb.flame.character;
 
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;

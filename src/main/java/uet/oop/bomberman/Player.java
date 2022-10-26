@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
-import uet.oop.bomberman.entities.animatedEntities.character.Bomber;
+import uet.oop.bomberman.entities.destroyable.bomb.flame.character.Bomber;
 import uet.oop.bomberman.entities.destroyable.Brick;
 import uet.oop.bomberman.entities.destroyable.items.FlameItem;
 import uet.oop.bomberman.entities.destroyable.items.HeartItem;
@@ -168,8 +168,8 @@ public class Player {
             if (heart > 1) {
                 bomberman.setIsAlive(true);
                 heart--;
-                bomberman.setX(32);
-                bomberman.setY(32);
+                bomberman.setX(48);
+                bomberman.setY(48);
                 bomberman.setSpeed(false);
             }
         }

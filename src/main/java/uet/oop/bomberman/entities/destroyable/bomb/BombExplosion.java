@@ -6,7 +6,7 @@ import uet.oop.bomberman.Player;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
-import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Enemy;
+import uet.oop.bomberman.entities.destroyable.bomb.flame.character.Enemy.Enemy;
 import uet.oop.bomberman.entities.destroyable.bomb.flame.Flame;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.Sound;
