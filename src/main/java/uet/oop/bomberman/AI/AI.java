@@ -14,10 +14,12 @@ public abstract class AI {
     //    protected AI ai;
     protected int speed = 1;
     protected int point = 100;
-    protected Character[][] map;
-    //HashMap map những ký tự đại diện với việc entity đó có cho đi qua không
-    protected Character[] block;
 
+    protected int timeToUpdateDirect = 90;
+    protected Character[][] map;
+    protected Character[] block;
+    //symbol of entity
+    protected Character symbol;
     //tọa độ của entity hiện tại
     int x, y;
     //tọa độ của player hiện tại
@@ -25,9 +27,36 @@ public abstract class AI {
 
     public AI(Character[][] map) {
         this.map = map;
-        block = new Character[]{'#', '*', 'x', '1', '2', '3', '4', '5', '6', '7', '8', '9' , 'b'};
+        block = new Character[]{'#', '*', 'x', 'b'};
         px = 1;
         py = 1;
+        symbol = '1';
+    }
+
+
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
+    }
+
+    public void move() {
+        int count = 0;
+        while (!checkDirect(currentDirect)) {
+            if (count > 2) currentDirect = (currentDirect + 1) % 4;
+            else {
+                currentDirect = calculateDirect();
+                count++;
+            }
+        }
+//        if (!checkDirect(currentDirect)){
+//
+//        };
+        updatePositionInMap();
+        switch (currentDirect) {
+            case 1 -> y -= speed;
+            case 2 -> x += speed;
+            case 3 -> y += speed;
+            case 0 -> x -= speed;
+        }
     }
 
     public void setMap(Character[][] map) {
@@ -43,8 +72,7 @@ public abstract class AI {
             int xFuture2 = (x + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
             int yFuture2 = (y - speed) / Sprite.SCALED_SIZE;
 
-            return Arrays.stream(block).noneMatch(character -> character == map[yFuture1][xFuture1])
-                    && Arrays.stream(block).noneMatch(character -> character == map[yFuture2][xFuture2]);
+            return !isBlock(map[yFuture1][xFuture1]) && !isBlock(map[yFuture2][xFuture2]);
         }
         if (direct == 2) {
             int xFuture1 = (x + speed + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
@@ -52,8 +80,7 @@ public abstract class AI {
             int xFuture2 = (x + speed + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
             int yFuture2 = (y + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
 
-            return Arrays.stream(block).noneMatch(character -> character == map[yFuture1][xFuture1])
-                    && Arrays.stream(block).noneMatch(character -> character == map[yFuture2][xFuture2]);
+            return !isBlock(map[yFuture1][xFuture1]) && !isBlock(map[yFuture2][xFuture2]);
         }
         if (direct == 3) {
             int xFuture1 = x / Sprite.SCALED_SIZE;
@@ -61,8 +88,7 @@ public abstract class AI {
             int xFuture2 = (x + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
             int yFuture2 = (y + speed + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
 
-            return Arrays.stream(block).noneMatch(character -> character == map[yFuture1][xFuture1])
-                    && Arrays.stream(block).noneMatch(character -> character == map[yFuture2][xFuture2]);
+            return !isBlock(map[yFuture1][xFuture1]) && !isBlock(map[yFuture2][xFuture2]);
         }
         if (direct == 0) {
             int xFuture1 = (x - speed) / Sprite.SCALED_SIZE;
@@ -70,19 +96,36 @@ public abstract class AI {
             int xFuture2 = (x - speed) / Sprite.SCALED_SIZE;
             int yFuture2 = (y + Sprite.SCALED_SIZE - 1) / Sprite.SCALED_SIZE;
 
-            return Arrays.stream(block).noneMatch(character -> character == map[yFuture1][xFuture1])
-                    && Arrays.stream(block).noneMatch(character -> character == map[yFuture2][xFuture2]);
+            return !isBlock(map[yFuture1][xFuture1]) && !isBlock(map[yFuture2][xFuture2]);
         }
         return true;
     }
 
-    public abstract void move();
-
     public void update() {
         currentFrame++;
-        if (currentFrame % 90 == 0) {
+        if (currentFrame % timeToUpdateDirect == 0) {
             currentDirect = calculateDirect();
         }
+    }
+
+    protected void updatePositionInMap() {
+        int xUnit = x / Sprite.SCALED_SIZE;
+        int yUnit = y / Sprite.SCALED_SIZE;
+        map[yUnit][xUnit] = ' ';
+        if (currentDirect == 0) {
+            xUnit = (x - speed) / Sprite.SCALED_SIZE;
+            yUnit = y / Sprite.SCALED_SIZE;
+        } else if (currentDirect == 1) {
+            xUnit = x / Sprite.SCALED_SIZE;
+            yUnit = (y - speed) / Sprite.SCALED_SIZE;
+        } else if (currentDirect == 2) {
+            xUnit = (x + speed) / Sprite.SCALED_SIZE;
+            yUnit = y / Sprite.SCALED_SIZE;
+        } else if (currentDirect == 3) {
+            xUnit = x / Sprite.SCALED_SIZE;
+            yUnit = (y + speed) / Sprite.SCALED_SIZE;
+        }
+        map[yUnit][xUnit] = '1';
     }
 
 
@@ -156,5 +199,9 @@ public abstract class AI {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    protected boolean isBlock(Character y) {
+        return Arrays.asList(block).contains(y);
     }
 }
