@@ -25,6 +25,7 @@ public abstract class AI {
     int x, y;
     //tọa độ của player hiện tại
     int px, py;
+    protected boolean cantFly = true;
 
     public AI(Character[][] map) {
         this.map = map;
@@ -40,34 +41,36 @@ public abstract class AI {
     }
 
     public void move() {
-        int count = 0;
-        while (!checkDirect(currentDirect)) {
-            if (count > 2) currentDirect = (currentDirect + 1) % 4;
-            else {
-                currentDirect = calculateDirect();
-                count++;
-            }
-        }
-//        if (!checkDirect(currentDirect)){
-//
-//        };
-        updatePositionInMap();
+        if (cantFly) changeDirectIfCollision();
+
+//        updatePositionInMap();
         switch (currentDirect) {
             case 1 -> {
                 if (y - speed >= Sprite.SCALED_SIZE)
                     y -= speed;
             }
             case 2 -> {
-                if (x + speed <= BombermanGame.WIDTH * Sprite.SCALED_SIZE - Sprite.SCALED_SIZE)
+                if (x + speed <= BombermanGame.WIDTH * Sprite.SCALED_SIZE -2 * Sprite.SCALED_SIZE)
                     x += speed;
             }
             case 3 -> {
-                if (y + speed <= BombermanGame.HEIGHT * Sprite.SCALED_SIZE - Sprite.SCALED_SIZE)
+                if (y + speed <= BombermanGame.HEIGHT * Sprite.SCALED_SIZE -2 * Sprite.SCALED_SIZE)
                     y += speed;
             }
             case 0 -> {
                 if (x - speed >= Sprite.SCALED_SIZE)
                     x -= speed;
+            }
+        }
+    }
+
+    protected void changeDirectIfCollision(){
+        int count = 0;
+        while (!checkDirect(currentDirect)) {
+            if (count > 2) currentDirect = (currentDirect + 1) % 4;
+            else {
+                currentDirect = calculateDirect();
+                count++;
             }
         }
     }

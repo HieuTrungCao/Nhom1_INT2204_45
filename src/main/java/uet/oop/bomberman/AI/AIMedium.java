@@ -22,7 +22,6 @@ public class AIMedium extends AI {
         if (directNode == null) {
             timeToUpdateDirect = timePassAUnit * 3;
             return (int) (Math.random() * 4);
-//            return -1;
         }
         timeToUpdateDirect = timePassAUnit;
         int xFuture = directNode.getKey() * Sprite.SCALED_SIZE;

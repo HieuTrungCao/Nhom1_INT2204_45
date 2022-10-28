@@ -25,8 +25,8 @@ public abstract class Enemy extends AnimatedEntities {
     public Enemy(int xUnit, int yUnit, Sprite sprite, AI ai) {
         super(xUnit, yUnit, sprite);
         this.ai = ai;
-        this.x = xUnit * Sprite.SCALED_SIZE;
-        this.y = yUnit * Sprite.SCALED_SIZE;
+        this.x = xUnit * Sprite.SCALED_SIZE + 1;
+        this.y = yUnit * Sprite.SCALED_SIZE + 1;
         this.ai.setX(xUnit * Sprite.SCALED_SIZE);
         this.ai.setY(yUnit * Sprite.SCALED_SIZE);
     }

@@ -8,15 +8,15 @@ public class AIFly extends AI {
     public AIFly(Character[][] map) {
         super(map);
         timeToUpdateDirect = timePassAUnit;
+        cantFly = false;
     }
-
 
     @Override
     public int calculateDirect() {
         int px = BombermanGame.player.getBomberman().getX();
         int py = BombermanGame.player.getBomberman().getY();
 
-        if (Math.abs(px - x) + Math.abs(py - y) > 15 * Sprite.SCALED_SIZE) return (int) (Math.random() * 4);
+        if (Math.abs(px - x) + Math.abs(py - y) > 10 * Sprite.SCALED_SIZE) return (int) (Math.random() * 4);
 
         int bestDirect = -1;
         int minHeuristicLen = Integer.MAX_VALUE;

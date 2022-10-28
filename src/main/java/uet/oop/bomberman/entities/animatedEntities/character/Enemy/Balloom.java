@@ -65,10 +65,16 @@ public class Balloom extends Enemy {
         int direct = ai.getCurrentDirect();
         if (!isAlive) {
             sprite = Sprite.balloom_dead;
-        } else if (direct == 2) {
-            sprite = Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 30);
+        } else if (direct == 0){
+            sprite = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 20);
+        }
+        else if (direct == 1){
+            sprite = Sprite.movingSprite(Sprite.balloom_up1, Sprite.balloom_up2, Sprite.balloom_up3, animate, 20);
+        }
+        else if (direct == 2) {
+            sprite = Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 20);
         } else {
-            sprite = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 30);
+            sprite = Sprite.movingSprite(Sprite.balloom_down1, Sprite.balloom_down2, Sprite.balloom_down3, animate, 20);
         }
     }
 

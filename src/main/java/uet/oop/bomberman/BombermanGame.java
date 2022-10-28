@@ -9,7 +9,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import uet.oop.bomberman.AI.AIFly;
 import uet.oop.bomberman.AI.AILow;
+import uet.oop.bomberman.AI.AIMedium;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Balloom;
@@ -130,12 +132,12 @@ public class BombermanGame extends Application {
                     }
                     case '1' -> {
                         entities.add(new Grass(j, i, Sprite.grass));
-                        obj = new Balloom(j, i, Sprite.balloom_right1, new AILow(map));
+                        obj = new Balloom(j, i, Sprite.balloom_right1, new AIFly(map));
                         characters.add(obj);
                     }
                     case '2' -> {
                         entities.add(new Grass(j, i, Sprite.grass));
-                        obj = new Oneal(j, i, Sprite.oneal_left1);
+                        obj = new Oneal(j, i, Sprite.oneal_left1, new AIMedium(map));
                         characters.add(obj);
                     }
                     case 'b' -> {
@@ -197,7 +199,10 @@ public class BombermanGame extends Application {
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         entities.forEach(g -> g.render(gc));
-        characters.forEach(g -> g.render(gc));
+        for (int i = 0; i < characters.size(); i++) {
+            Entity g = characters.get(i);
+            g.render(gc);
+        }
         player.render(gc);
         bombs.forEach(b -> b.render(gc));
     }
