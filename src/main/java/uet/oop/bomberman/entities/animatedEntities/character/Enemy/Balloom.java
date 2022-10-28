@@ -63,7 +63,7 @@ public class Balloom extends Enemy {
     @Override
     public void setImg() {
         int direct = ai.getCurrentDirect();
-        if (!isAlive) {
+        if (life == 0) {
             sprite = Sprite.balloom_dead;
         } else if (direct == 0){
             sprite = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 20);

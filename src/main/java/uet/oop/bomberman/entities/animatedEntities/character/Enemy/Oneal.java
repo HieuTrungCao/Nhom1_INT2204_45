@@ -63,7 +63,7 @@ public class Oneal extends Enemy {
     @Override
     public void setImg() {
         int direct = ai.getCurrentDirect();
-        if (!isAlive) {
+        if (life == 0) {
             sprite = Sprite.oneal_dead;
         } else if (direct == 0) {
             sprite = Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 20);

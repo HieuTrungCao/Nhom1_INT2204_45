@@ -8,10 +8,11 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Enemy extends AnimatedEntities {
     protected boolean isAlive = true;
-    protected boolean isMoving = false;
     protected Sprite deadSprite;
     protected AI ai;
     protected int point = 100;
+
+    protected int life = 1;
 
     protected int timeToRemove = 30;
 
@@ -68,13 +69,6 @@ public abstract class Enemy extends AnimatedEntities {
         isAlive = alive;
     }
 
-    public boolean isMoving() {
-        return isMoving;
-    }
-
-    public void setMoving(boolean moving) {
-        isMoving = moving;
-    }
 
     public Sprite getDeadSprite() {
         return deadSprite;
@@ -103,6 +97,10 @@ public abstract class Enemy extends AnimatedEntities {
         } else {
             timeToRemove--;
         }
+    }
+
+    protected void minusLife() {
+        life--;
     }
 
 
