@@ -26,22 +26,10 @@ public class AIMedium extends AI {
         timeToUpdateDirect = timePassAUnit;
         int xFuture = directNode.getKey() * Sprite.SCALED_SIZE;
         int yFuture = directNode.getValue() * Sprite.SCALED_SIZE;
-        if (yFuture < y) {
-            System.out.println(1);
-            return 1;
-        }
-        if (yFuture > y) {
-            System.out.println(3);
-            return 3;
-        }
-        if (xFuture > x) {
-            System.out.println(2);
-            return 2;
-        }
-        if (xFuture < x) {
-            System.out.println(0);
-            return 0;
-        }
+        if (yFuture < y) return 1;
+        if (yFuture > y) return 3;
+        if (xFuture > x) return 2;
+        if (xFuture < x) return 0;
         return -1;
     }
 
