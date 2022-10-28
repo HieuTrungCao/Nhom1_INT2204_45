@@ -4,6 +4,7 @@ public class AILow extends AI {
 
     public AILow(Character[][] map) {
         super(map);
+        timeToUpdateDirect = timePassAUnit * 3;
     }
 
     @Override

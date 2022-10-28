@@ -13,23 +13,36 @@ import java.util.PriorityQueue;
 public class AIMedium extends AI {
     public AIMedium(Character[][] map) {
         super(map);
-        timeToUpdateDirect = 1;
+        timeToUpdateDirect = timePassAUnit;
     }
 
     @Override
     public int calculateDirect() {
         Pair<Integer, Integer> directNode = pathFinding();
         if (directNode == null) {
-            timeToUpdateDirect = 90;
+            timeToUpdateDirect = timePassAUnit * 3;
             return (int) (Math.random() * 4);
+//            return -1;
         }
-        timeToUpdateDirect = 1;
+        timeToUpdateDirect = timePassAUnit;
         int xFuture = directNode.getKey() * Sprite.SCALED_SIZE;
         int yFuture = directNode.getValue() * Sprite.SCALED_SIZE;
-        if (yFuture < y) return 1;
-        if (yFuture > y) return 3;
-        if (xFuture > x) return 2;
-        if (xFuture < x) return 0;
+        if (yFuture < y) {
+            System.out.println(1);
+            return 1;
+        }
+        if (yFuture > y) {
+            System.out.println(3);
+            return 3;
+        }
+        if (xFuture > x) {
+            System.out.println(2);
+            return 2;
+        }
+        if (xFuture < x) {
+            System.out.println(0);
+            return 0;
+        }
         return -1;
     }
 
@@ -40,13 +53,7 @@ public class AIMedium extends AI {
         int xSource = (x) / Sprite.SCALED_SIZE;
         int ySource = (y) / Sprite.SCALED_SIZE;
 
-        if (currentDirect == 1) {
-            ySource = (y + 31) / Sprite.SCALED_SIZE;
-        }
-        if (currentDirect == 0) {
-            xSource = (x + 31) / Sprite.SCALED_SIZE;
-        }
-
+//        System.out.println("Source : " + x + " " + y + "  Unit : " + xSource + " " + ySource);
 
         Pair<Integer, Integer> startNode = new Pair<>(xSource, ySource);
         Pair<Integer, Integer> destNode = new Pair<>(px, py);
@@ -63,7 +70,7 @@ public class AIMedium extends AI {
         ArrayList<Pair<Integer, Integer>> closedList = new ArrayList<>();
 
         Pair<Integer, Integer>[][] parent = new Pair[BombermanGame.HEIGHT][BombermanGame.WIDTH];
-//        System.out.print("currNode: ");
+
         while (!openList.isEmpty()) {
             Pair<Integer, Integer> currNode = openList.remove();
             if (currNode.equals(destNode)) {
@@ -73,11 +80,9 @@ public class AIMedium extends AI {
                     itNode = parent[itNode.getValue()][itNode.getKey()];
 //                    System.out.print(itNode + "<-");
                 }
-                System.out.println();
-//                System.out.println(itNode);
+//                System.out.println();
                 return itNode;
             } else {
-//                System.out.print(currNode + " ");
                 closedList.add(currNode);
                 Pair<Integer, Integer>[] neighbors = new Pair[4];
                 neighbors[0] = new Pair<>(currNode.getKey() - 1, currNode.getValue());
@@ -92,9 +97,7 @@ public class AIMedium extends AI {
                     int newCost = distance[currNode.getValue()][currNode.getKey()] + 1;
 
                     if (!closedList.contains(neighbor) && !openList.contains(neighbor)) {
-//                        System.out.println( "neigbor: " + neighbor);
                         parent[yNeighbor][xNeighbor] = currNode;
-//                        System.out.println(parent[yNeighbor][xNeighbor]);
                         distance[yNeighbor][xNeighbor] = newCost;
                         openList.add(neighbor);
                     } else {

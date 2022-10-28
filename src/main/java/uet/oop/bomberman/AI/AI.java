@@ -1,21 +1,22 @@
 package uet.oop.bomberman.AI;
 
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.Arrays;
 
 public abstract class AI {
 
+
     protected int currentFrame = 0;
-    protected boolean isAlive = true;
-    protected int currentDirect = 0;
-    protected boolean isMoving = false;
-    protected Sprite deadSprite;
+    protected int currentDirect = -1;
     //    protected AI ai;
     protected int speed = 1;
-    protected int point = 100;
 
-    protected int timeToUpdateDirect = 90;
+    boolean canChangeSpeed = false;
+    public int timePassAUnit = Sprite.SCALED_SIZE / speed;
+
+    protected int timeToUpdateDirect = timePassAUnit * 4;
     protected Character[][] map;
     protected Character[] block;
     //symbol of entity
@@ -52,10 +53,22 @@ public abstract class AI {
 //        };
         updatePositionInMap();
         switch (currentDirect) {
-            case 1 -> y -= speed;
-            case 2 -> x += speed;
-            case 3 -> y += speed;
-            case 0 -> x -= speed;
+            case 1 -> {
+                if (y - speed >= Sprite.SCALED_SIZE)
+                    y -= speed;
+            }
+            case 2 -> {
+                if (x + speed <= BombermanGame.WIDTH * Sprite.SCALED_SIZE - Sprite.SCALED_SIZE)
+                    x += speed;
+            }
+            case 3 -> {
+                if (y + speed <= BombermanGame.HEIGHT * Sprite.SCALED_SIZE - Sprite.SCALED_SIZE)
+                    y += speed;
+            }
+            case 0 -> {
+                if (x - speed >= Sprite.SCALED_SIZE)
+                    x -= speed;
+            }
         }
     }
 
@@ -137,14 +150,6 @@ public abstract class AI {
         this.currentFrame = currentFrame;
     }
 
-    public boolean isAlive() {
-        return isAlive;
-    }
-
-    public void setAlive(boolean alive) {
-        isAlive = alive;
-    }
-
     public int getCurrentDirect() {
         return currentDirect;
     }
@@ -153,36 +158,12 @@ public abstract class AI {
         this.currentDirect = currentDirect;
     }
 
-    public boolean isMoving() {
-        return isMoving;
-    }
-
-    public void setMoving(boolean moving) {
-        isMoving = moving;
-    }
-
-    public Sprite getDeadSprite() {
-        return deadSprite;
-    }
-
-    public void setDeadSprite(Sprite deadSprite) {
-        this.deadSprite = deadSprite;
-    }
-
     public int getSpeed() {
         return speed;
     }
 
     public void setSpeed(int speed) {
         this.speed = speed;
-    }
-
-    public int getPoint() {
-        return point;
-    }
-
-    public void setPoint(int point) {
-        this.point = point;
     }
 
     public int getX() {
