@@ -40,7 +40,7 @@ public class Balloom extends Enemy {
 
     @Override
     public void update() {
-        if (isAlive) {
+        if (life > 0) {
             animate();
             ai.update();
             move();
