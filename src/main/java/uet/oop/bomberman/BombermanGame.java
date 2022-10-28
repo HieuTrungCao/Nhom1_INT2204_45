@@ -9,7 +9,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import uet.oop.bomberman.AI.AI;
 import uet.oop.bomberman.AI.AILow;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
@@ -107,11 +106,8 @@ public class BombermanGame extends Application {
         HEIGHT = scn.nextInt();
         WIDTH = scn.nextInt();
         String tmp = scn.nextLine();
-
         System.out.println(HEIGHT + ", " + WIDTH);
-
         map = new Character[HEIGHT][WIDTH];
-        AILow enemy = new AILow(map);
         for (int i = 0; i < HEIGHT; ++i) {
             String str = scn.nextLine();
             for (int j = 0; j < WIDTH; ++j) {
@@ -134,7 +130,7 @@ public class BombermanGame extends Application {
                     }
                     case '1' -> {
                         entities.add(new Grass(j, i, Sprite.grass));
-                        obj = new Balloom(j, i, Sprite.balloom_right1, enemy);
+                        obj = new Balloom(j, i, Sprite.balloom_right1, new AILow(map));
                         characters.add(obj);
                     }
                     case '2' -> {
@@ -178,8 +174,14 @@ public class BombermanGame extends Application {
 
     public void update() {
         //entities.forEach(Entity::update);
-        characters.forEach(Entity::update);
-        bombs.forEach(Entity::update);
+        for (int i = 0; i < characters.size(); i++) {
+            characters.get(i).update();
+        }
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).update();
+        }
+        //characters.forEach(Entity::update);
+        //bombs.forEach(Entity::update);
         player.update();
     }
 

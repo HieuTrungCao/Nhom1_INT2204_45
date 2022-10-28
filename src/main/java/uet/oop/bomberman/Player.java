@@ -27,9 +27,6 @@ public class Player {
     // Lưu số mạng của nhân vật
     private int heart;
 
-    // Lưu số lần được tăng tốc
-    private int speed;
-
     // Số lượng bomb nhân vật có
     private int bomb;
     // Lưu số lượng của bomb nạp VIP mà nhân vật ăn được
@@ -51,7 +48,6 @@ public class Player {
         this.map = map;
         this.mark = 0;
         this.heart = 10;
-        this.speed = 2;
         this.bomb = 10;
         this.bombPro = 0;
         this.isSetSpeed = false;
@@ -92,7 +88,7 @@ public class Player {
             addBomb(true);
             bombPro--;
             bomb--;
-        } else if (keyCode == R && speed > 0) {
+        } else if (keyCode == R) {
             isSetSpeed = true;
         }
 
@@ -122,7 +118,7 @@ public class Player {
                      * To do something
                      */
                     mark += 50;
-                    speed++;
+                    isSetSpeed = true;
                 }
 
                 else if (((LayeredEntity) entity).getTopEntity() instanceof FlameItem) {
@@ -168,8 +164,8 @@ public class Player {
             if (heart > 1) {
                 bomberman.setIsAlive(true);
                 heart--;
-                bomberman.setX(32);
-                bomberman.setY(32);
+                bomberman.setX(48);
+                bomberman.setY(48);
                 bomberman.setSpeed(false);
             }
         }
@@ -178,7 +174,6 @@ public class Player {
             if ((direction && bomberman.getX() % (2 * bomberman.getSpeed()) == 0)
                     || (!direction && bomberman.getY() % (2 * bomberman.getSpeed()) == 0)) {
                 setSpeed(true);
-                speed--;
                 isSetSpeed = false;
             }
         }
@@ -271,5 +266,21 @@ public class Player {
 
     public void setMark(int mark) {
         this.mark = mark;
+    }
+
+    public int getHeart() {
+        return heart;
+    }
+
+    public int getSpeed() {
+        return bomberman.getSpeed();
+    }
+
+    public int getBomb() {
+        return bomb;
+    }
+
+    public int getFlame() {
+        return bombPro;
     }
 }
