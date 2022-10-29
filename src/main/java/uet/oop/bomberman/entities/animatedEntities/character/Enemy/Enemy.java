@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities.animatedEntities.character.Enemy;
 
+import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.AI.AI;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
@@ -59,8 +60,6 @@ public abstract class Enemy extends AnimatedEntities {
         return point;
     }
 
-    public abstract void move();
-
     public boolean isAlive() {
         return isAlive;
     }
@@ -103,5 +102,29 @@ public abstract class Enemy extends AnimatedEntities {
         life--;
     }
 
+    @Override
+    public void update() {
+        if (life > 0) {
+            animate();
+            ai.update();
+            move();
+            setImg();
+        } else {
+            isAlive = false;
+            dead();
+        }
+    }
+
+
+    public void move() {
+        ai.move();
+        x = ai.getX();
+        y = ai.getY();
+    }
+
+    @Override
+    public void render(GraphicsContext gc) {
+        super.render(gc);
+    }
 
 }

@@ -38,27 +38,6 @@ public class Oneal extends Enemy {
         super(xUnit, yUnit, sprite, ai, deadSprite, speed, point);
     }
 
-    @Override
-    public void update() {
-        if (life > 0) {
-            animate();
-            ai.update();
-            move();
-            setImg();
-        } else dead();
-    }
-
-    @Override
-    public void render(GraphicsContext gc) {
-        super.render(gc);
-    }
-
-    @Override
-    public void move() {
-        ai.move();
-        x = ai.getX();
-        y = ai.getY();
-    }
 
     @Override
     public void setImg() {
