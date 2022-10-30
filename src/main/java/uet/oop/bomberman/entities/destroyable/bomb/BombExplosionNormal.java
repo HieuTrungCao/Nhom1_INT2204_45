@@ -9,8 +9,8 @@ import uet.oop.bomberman.entities.destroyable.bomb.flame.FlameTop;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class BombExplosionNormal extends BombExplosion {
-    public BombExplosionNormal(int xUnit, int yUnit, Sprite sprite, Character[][] map) {
-        super(xUnit, yUnit, sprite, map);
+    public BombExplosionNormal(int xUnit, int yUnit, Sprite sprite, short putBy, Character[][] map) {
+        super(xUnit, yUnit, sprite, putBy, map);
         addItems(xUnit, yUnit);
     }
 

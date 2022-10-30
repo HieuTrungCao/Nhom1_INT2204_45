@@ -34,7 +34,29 @@ public class Bomber extends AnimatedEntities {
     // Lưu trạng thái của bomber
     private boolean isAlive;
 
-    public Bomber(int x, int y, Sprite sprite) {
+    private short num;
+
+    private static final Sprite[] player_up = {Sprite.player1_up, Sprite.player2_up};
+    private static final Sprite[] player_up_1 = {Sprite.player1_up_1, Sprite.player2_up_1};
+    private static final Sprite[] player_up_2 = {Sprite.player1_up_2, Sprite.player2_up_2};
+
+    private static final Sprite[] player_down = {Sprite.player1_down, Sprite.player2_down};
+    private static final Sprite[] player_down_1 = {Sprite.player1_down_1, Sprite.player2_down_1};
+    private static final Sprite[] player_down_2 = {Sprite.player1_down_2, Sprite.player2_down_2};
+
+    public static final Sprite[] player_right = {Sprite.player1_right, Sprite.player2_right};
+    private static final Sprite[] player_right_1 = {Sprite.player1_right_1, Sprite.player2_right_1};
+    private static final Sprite[] player_right_2 = {Sprite.player1_right_2, Sprite.player2_right_2};
+
+    private static final Sprite[] player_left = {Sprite.player1_left, Sprite.player2_left};
+    private static final Sprite[] player_left_1 = {Sprite.player1_left_1, Sprite.player2_left_1};
+    private static final Sprite[] player_left_2 = {Sprite.player1_left_2, Sprite.player2_left_2};
+
+    private static final Sprite[] player_dead_1 = {Sprite.player1_dead1, Sprite.player2_dead1};
+    private static final Sprite[] player_dead_2 = {Sprite.player1_dead2, Sprite.player2_dead2};
+    private static final Sprite[] player_dead_3 = {Sprite.player1_dead3, Sprite.player2_dead3};
+
+    public Bomber(int x, int y, Sprite sprite, short num) {
         super(x, y, sprite);
         speed = 12;
         isAlive = true;
@@ -42,6 +64,7 @@ public class Bomber extends AnimatedEntities {
         time_die = Bomb.time / 2;
         time_move = 12;
         setDirection(false, false, false, false);
+        this.num = (num);
     }
 
     @Override
@@ -58,8 +81,8 @@ public class Bomber extends AnimatedEntities {
 
     public void moveUp() {
         y -= speed;
-        sprite = Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1
-                , Sprite.player_up_2, animate, time_move);
+        sprite = Sprite.movingSprite(player_up[num], player_up_1[num]
+                , player_up_2[num], animate, time_move);
 
         super.animate();
 
@@ -70,8 +93,8 @@ public class Bomber extends AnimatedEntities {
 
     public void moveDown() {
         y += speed;
-        sprite = Sprite.movingSprite(Sprite.player_down, Sprite.player_down_1
-                , Sprite.player_down_2, animate, time_move);
+        sprite = Sprite.movingSprite(player_down[num], player_down_1[num]
+                , player_down_2[num], animate, time_move);
         super.animate();
 
         if (!movingDown) {
@@ -81,8 +104,8 @@ public class Bomber extends AnimatedEntities {
 
     public void moveLeft() {
         x -= speed;
-        sprite = Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1
-                , Sprite.player_left_2, animate, time_move);
+        sprite = Sprite.movingSprite(player_left[num], player_left_1[num]
+                , player_left_2[num], animate, time_move);
         super.animate();
 
         if (!movingLeft) {
@@ -92,8 +115,8 @@ public class Bomber extends AnimatedEntities {
 
     public void moveRight() {
         x += speed;
-        sprite = Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1
-                , Sprite.player_right_2, animate, time_move);
+        sprite = Sprite.movingSprite(player_right[num], player_right_1[num]
+                , player_right_2[num], animate, time_move);
         super.animate();
 
         if (!movingRight) {
@@ -141,7 +164,7 @@ public class Bomber extends AnimatedEntities {
     public void setIsAlive(boolean alive) {
         if (alive) {
             animate_die = 0;
-            sprite = Sprite.player_right;
+            sprite = player_right[num];
         }
         isAlive = alive;
     }
@@ -177,9 +200,9 @@ public class Bomber extends AnimatedEntities {
     // Update khi bomber bi chet
     public void dead() {
         if(animate_die < time_die) {
-            sprite = Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate_die++, time_die);
+            sprite = Sprite.movingSprite(player_dead_1[num], player_dead_2[num], player_dead_3[num], animate_die++, time_die);
         } else if(!isAlive){
-            sprite = Sprite.player_dead3;
+            sprite = player_dead_3[num];
             // todo some thing
         }
     }

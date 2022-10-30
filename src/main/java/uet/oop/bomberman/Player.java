@@ -16,11 +16,13 @@ import uet.oop.bomberman.entities.undestroyable.Portal;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.Sound;
 
+import java.util.Set;
+
 import static javafx.scene.input.KeyCode.*;
 
 public class Player {
     // Nhân vật Bomber
-    public static Bomber bomberman;
+    private Bomber bomberman;
 
     // Lưu điểm
     private int mark;
@@ -43,21 +45,29 @@ public class Player {
     // true là đi theo chiều ngang
     // false là đi theo chiều dọc
     private boolean direction;
+
+    // Lưu thứ tự của player
+    private short num;
+
+    // Đếm số player
+    private static short count = 0;
     public Player(Character[][] map) {
-        bomberman = new Bomber(1, 1, Sprite.player_right);
+        bomberman = new Bomber(1, 1, Bomber.player_right[count], count);
         this.map = map;
         this.mark = 0;
         this.heart = 10;
         this.bomb = 10;
         this.bombPro = 0;
         this.isSetSpeed = false;
+        this.num = (++ this.count);
+        System.out.println(count);
     }
 
     /**
      * Sử lý sự kiện từ bàn phím để điều khiển bomber
-     * @param keyCode mã code của phím
+     * @param codes mã code của phím
      */
-    public void play(KeyCode keyCode) {
+    public void play(Set<KeyCode> codes) {
         if(!bomberman.isAlive()){
             return;
         }
@@ -69,29 +79,51 @@ public class Player {
             return;
         }
 
-        if((keyCode == UP || keyCode == W) && checkMap(1)) {
-            bomberman.moveUp();
-            direction = false;
-        } else if((keyCode == DOWN || keyCode == S) && checkMap(3)) {
-            bomberman.moveDown();
-            direction = false;
-        } else if((keyCode == LEFT || keyCode == A) && checkMap(4)) {
-            bomberman.moveLeft();
-            direction = true;
-        } else if((keyCode == RIGHT || keyCode == D) && checkMap(2)) {
-            bomberman.moveRight();
-        } else if(keyCode == SPACE && bomb > 0) {
-            addBomb(false);
-            bomb--;
-            direction = true;
-        } else if(keyCode == P && bombPro > 0) {
-            addBomb(true);
-            bombPro--;
-            bomb--;
-        } else if (keyCode == R) {
-            isSetSpeed = true;
+        if (num == 1) {
+            if (codes.contains(W) && checkMap(1)) {
+                bomberman.moveUp();
+                direction = false;
+            } else if (codes.contains(S) && checkMap(3)) {
+                bomberman.moveDown();
+                direction = false;
+            } else if (codes.contains(A) && checkMap(4)) {
+                bomberman.moveLeft();
+                direction = true;
+            } else if (codes.contains(D) && checkMap(2)) {
+                bomberman.moveRight();
+            } else if (codes.contains(SPACE) && bomb > 0) {
+                addBomb(false);
+                bomb--;
+                direction = true;
+            } else if (codes.contains(F) && bombPro > 0) {
+                addBomb(true);
+                bombPro--;
+                bomb--;
+            }
         }
 
+        if (num == 2) {
+            if (codes.contains(UP) && checkMap(1)) {
+                bomberman.moveUp();
+                direction = false;
+            } else if (codes.contains(DOWN) && checkMap(3)) {
+                bomberman.moveDown();
+                direction = false;
+            } else if (codes.contains(LEFT) && checkMap(4)) {
+                bomberman.moveLeft();
+                direction = true;
+            } else if (codes.contains(RIGHT) && checkMap(2)) {
+                bomberman.moveRight();
+            } else if (codes.contains(J) && bomb > 0) {
+                addBomb(false);
+                bomb--;
+                direction = true;
+            } else if (codes.contains(K) && bombPro > 0) {
+                addBomb(true);
+                bombPro--;
+                bomb--;
+            }
+        }
         eatItem();
     }
 
@@ -194,9 +226,9 @@ public class Player {
         int y = bomberman.getY() / Sprite.SCALED_SIZE;
         map[y][x] = 'b';
         if(!pro)
-            BombermanGame.bombs.add(new BombExplosionNormal(x, y, null, map));
+            BombermanGame.bombs.add(new BombExplosionNormal(x, y, null, num ,map));
         else
-            BombermanGame.bombs.add(new BombExplosionPro(x, y, null, map));
+            BombermanGame.bombs.add(new BombExplosionPro(x, y, null, num, map));
     }
 
     // kiem tra xem co bi vuong gi khong

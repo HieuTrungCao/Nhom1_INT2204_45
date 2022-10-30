@@ -34,8 +34,16 @@ public class AIMedium extends AI {
     }
 
     private Pair<Integer, Integer> pathFinding() {
-        px = BombermanGame.player.getBomberman().getX() / Sprite.SCALED_SIZE;
-        py = BombermanGame.player.getBomberman().getY() / Sprite.SCALED_SIZE;
+//        px = BombermanGame.player.getBomberman().getX() / Sprite.SCALED_SIZE;
+//        py = BombermanGame.player.getBomberman().getY() / Sprite.SCALED_SIZE;
+
+        /**
+         * Huy ơi sửa chỗ này hộ tôi
+         * tôi mới chỉ cho px = 1, py = 1 để demo code thôi
+         */
+
+        px = 1;
+        py = 1;
 
         int xSource = (x) / Sprite.SCALED_SIZE;
         int ySource = (y) / Sprite.SCALED_SIZE;

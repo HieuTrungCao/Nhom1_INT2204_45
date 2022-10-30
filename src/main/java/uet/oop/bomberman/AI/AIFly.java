@@ -13,8 +13,16 @@ public class AIFly extends AI {
 
     @Override
     public int calculateDirect() {
-        int px = BombermanGame.player.getBomberman().getX();
-        int py = BombermanGame.player.getBomberman().getY();
+//        int px = BombermanGame.player.getBomberman().getX();
+//        int py = BombermanGame.player.getBomberman().getY();
+
+        /**
+         * Huy ơi sửa chỗ này hộ tôi
+         * tôi mới chỉ cho px = 1, py = 1 để demo code thôi
+         */
+
+        int px = 1;
+        int py = 1;
 
         if (Math.abs(px - x) + Math.abs(py - y) > 10 * Sprite.SCALED_SIZE) return (int) (Math.random() * 4);
 

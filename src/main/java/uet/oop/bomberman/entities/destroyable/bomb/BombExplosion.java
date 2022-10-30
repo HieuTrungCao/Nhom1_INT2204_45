@@ -24,10 +24,14 @@ public abstract class BombExplosion extends AnimatedEntities {
     // store map
     protected final Character[][] map;
 
-    public BombExplosion(int xUnit, int yUnit, Sprite sprite, Character[][] map) {
+    // Lưu xem bomb được đặc từ player 1 hoặc 2
+    protected short putBy;
+
+    public BombExplosion(int xUnit, int yUnit, Sprite sprite, short putBy, Character[][] map) {
         super(xUnit, yUnit, sprite);
         explosions = new LinkedList<>();
         this.map = map;
+        this.putBy = putBy;
     }
 
     /**
@@ -71,20 +75,22 @@ public abstract class BombExplosion extends AnimatedEntities {
      * nếu có thì bom này cũng sẽ bị nổ
      */
     private void checkDead() {
-        if (checkDeadEntity(Player.bomberman)) {
-            Player.bomberman.setIsAlive(false);
-            Player.bomberman.setAnimate(animate);
+        for (Player player : BombermanGame.players) {
+            if (checkDeadEntity(player.getBomberman())) {
+                player.getBomberman().setIsAlive(false);
+                player.getBomberman().setAnimate(animate);
+            }
         }
 
         for (int i = 0; i < BombermanGame.characters.size(); i++) {
             if (checkDeadEntity(BombermanGame.characters.get(i)) &&
                     ((Enemy) BombermanGame.characters.get(i)).isAlive()) {
                 System.out.println("OK");
-                ((Enemy) BombermanGame.characters.get(i)).setAlive(false);
+                ((Enemy) BombermanGame.characters.get(i)).minusLife();
                 /**
                  * gọi đến hàm cộng điểm ở đây
                  */
-                BombermanGame.player.setMark(
+                BombermanGame.players.get(putBy - 1).setMark(
                         ((Enemy) BombermanGame.characters.get(i)).getPoint());
             }
         }

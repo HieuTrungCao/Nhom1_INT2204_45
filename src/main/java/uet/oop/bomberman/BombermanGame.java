@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import uet.oop.bomberman.AI.AIFly;
@@ -41,9 +42,11 @@ public class BombermanGame extends Application {
 
     public static List<BombExplosion> bombs = new LinkedList<>();
 
-    public static Player player;
+    public static List<Player> players;
 
     private Character[][] map;
+
+    private short numOfPlayer = 2;
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -82,17 +85,27 @@ public class BombermanGame extends Application {
         //xử lý sự kiện
         handleEvent(scene);
 
-        player = new Player(map);
+        players = new ArrayList<>();
+        players.add(new Player(map));
+
+        if (numOfPlayer == 2) {
+            players.add(new Player(map));
+        }
     }
 
     private void handleEvent(Scene scene) {
+        Set<KeyCode> codes = new HashSet<>();
         EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                player.play(keyEvent.getCode());
+                codes.add(keyEvent.getCode());
+                for (Player player : players) {
+                    player.play(codes);
+                }
             }
         };
         scene.setOnKeyPressed(eventHandler);
+        scene.setOnKeyReleased(e -> codes.clear());
 
     }
 
@@ -184,7 +197,9 @@ public class BombermanGame extends Application {
         }
         //characters.forEach(Entity::update);
         //bombs.forEach(Entity::update);
-        player.update();
+        for (Player player : players) {
+            player.update();
+        }
     }
 
     public static LayeredEntity getBrick(LayeredEntity brick) {
@@ -203,7 +218,9 @@ public class BombermanGame extends Application {
             Entity g = characters.get(i);
             g.render(gc);
         }
-        player.render(gc);
+        for (Player player : players) {
+            player.render(gc);
+        }
         bombs.forEach(b -> b.render(gc));
     }
 

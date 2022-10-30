@@ -7,8 +7,8 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class BombExplosionPro extends BombExplosion {
 
-    public BombExplosionPro(int xUnit, int yUnit, Sprite sprite, Character[][] map) {
-        super(xUnit, yUnit, sprite, map);
+    public BombExplosionPro(int xUnit, int yUnit, Sprite sprite, short putBy, Character[][] map) {
+        super(xUnit, yUnit, sprite, putBy, map);
         addItems(xUnit, yUnit);
     }
     /**

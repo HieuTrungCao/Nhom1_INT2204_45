@@ -98,7 +98,7 @@ public abstract class Enemy extends AnimatedEntities {
         }
     }
 
-    protected void minusLife() {
+    public void minusLife() {
         life--;
     }
 
