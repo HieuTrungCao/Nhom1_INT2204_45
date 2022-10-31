@@ -1,9 +1,12 @@
 package uet.oop.bomberman.AI;
 
+import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AI {
 
@@ -14,6 +17,7 @@ public abstract class AI {
     protected int speed = 1;
 
     boolean canChangeSpeed = false;
+    boolean canSlowPlayer = false;
     public int timePassAUnit = Sprite.SCALED_SIZE / speed;
 
     protected int timeToUpdateDirect = timePassAUnit * 4;
@@ -42,6 +46,7 @@ public abstract class AI {
 
     public void move() {
         if (cantFly) changeDirectIfCollision();
+        if (canSlowPlayer) slowPlayer();
 
 //        updatePositionInMap();
         switch (currentDirect) {
@@ -62,6 +67,9 @@ public abstract class AI {
                     x -= speed;
             }
         }
+    }
+
+    private void slowPlayer() {
     }
 
     protected void changeDirectIfCollision(){
@@ -187,5 +195,23 @@ public abstract class AI {
 
     protected boolean isBlock(Character y) {
         return Arrays.asList(block).contains(y);
+    }
+
+    protected void updateNearestPlayer(){
+        List<Pair<Integer, Integer>> playerCoordinate = new ArrayList<>();
+        for (int i = 0; i < BombermanGame.players.size(); ++i) {
+            playerCoordinate.add(new Pair<>(
+                    BombermanGame.players.get(i).getBomberman().getX(), BombermanGame.players.get(i).getBomberman().getY()));
+        }
+
+        int minDistance = Integer.MAX_VALUE;
+        for (Pair<Integer, Integer> coordinate : playerCoordinate) {
+            int distance = Math.abs(coordinate.getKey() - x) + Math.abs(coordinate.getValue() - y);
+            if (distance < minDistance) {
+                minDistance = distance;
+                px = coordinate.getKey();
+                py = coordinate.getValue();
+            }
+        }
     }
 }

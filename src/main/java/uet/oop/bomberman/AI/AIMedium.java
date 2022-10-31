@@ -5,10 +5,7 @@ import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class AIMedium extends AI {
     public AIMedium(Character[][] map) {
@@ -34,16 +31,7 @@ public class AIMedium extends AI {
     }
 
     private Pair<Integer, Integer> pathFinding() {
-//        px = BombermanGame.player.getBomberman().getX() / Sprite.SCALED_SIZE;
-//        py = BombermanGame.player.getBomberman().getY() / Sprite.SCALED_SIZE;
-
-        /**
-         * Huy ơi sửa chỗ này hộ tôi
-         * tôi mới chỉ cho px = 1, py = 1 để demo code thôi
-         */
-
-        px = 1;
-        py = 1;
+        updateNearestPlayer();
 
         int xSource = (x) / Sprite.SCALED_SIZE;
         int ySource = (y) / Sprite.SCALED_SIZE;
