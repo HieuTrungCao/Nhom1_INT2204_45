@@ -30,18 +30,20 @@ public class Sound {
     }
 
     public void start() {
-        System.out.println("Start");
         clip.start();
     }
 
     public void restart() {
-        System.out.println("restart");
         clip.setMicrosecondPosition(0);
     }
 
+    public void loop() {
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
     public void close() {
         clip.close();
     }
     public static Sound bombExplode = new Sound("resources/sounds/Bomb_Explode.wav");
 
+    public static Sound soundTheme = new Sound("resources/sounds/Sound_Theme.wav");
 }

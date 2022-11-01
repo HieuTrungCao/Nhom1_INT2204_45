@@ -75,7 +75,6 @@ public class Player {
         if (checkVictory()) {
             // todo something
             System.out.println("Won");
-            Sound.bombExplode.close();
             return;
         }
 
@@ -183,7 +182,9 @@ public class Player {
 
         if (entity instanceof LayeredEntity) {
             if (((LayeredEntity) entity).getTopEntity() instanceof Portal) {
-                return true;
+                if (entity.getX() == bomberman.getX() &&
+                    entity.getY() == bomberman.getY())
+                    return true;
             }
         }
 
