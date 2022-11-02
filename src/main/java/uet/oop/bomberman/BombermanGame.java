@@ -85,11 +85,17 @@ public class BombermanGame extends Application {
         //xử lý sự kiện
         handleEvent(scene);
 
+        /**
+         * Muốn chọn sprite thì thay giá trị của x1 và x2
+         * nhớ chỉ đc thay giá trị 0 hoặc 1
+         */
         players = new ArrayList<>();
-        players.add(new Player(map));
+        Short x1 = 0;
+        Short x2 = 1;
+        players.add(new Player(map, x2));
 
         if (numOfPlayer == 2) {
-            players.add(new Player(map));
+            players.add(new Player(map, x1));
         }
     }
 

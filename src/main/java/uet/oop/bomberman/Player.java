@@ -51,9 +51,14 @@ public class Player {
 
     // Đếm số player
     private static short count = 0;
-    public Player(Character[][] map) {
-        bomberman = new Bomber(1, 1, Bomber.player_right[count], count);
+
+    // Lưu thứ tự lấy sprite
+    private short numBomberman;
+
+    public Player(Character[][] map, short numBomberman) {
+        bomberman = new Bomber(1, 1, Bomber.player_right[numBomberman], numBomberman);
         this.map = map;
+        this.numBomberman = numBomberman;
         this.mark = 0;
         this.heart = 10;
         this.bomb = 10;
