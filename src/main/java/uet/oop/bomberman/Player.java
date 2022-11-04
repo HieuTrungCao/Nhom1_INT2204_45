@@ -55,6 +55,8 @@ public class Player {
     // Lưu thứ tự lấy sprite
     private short numBomberman;
 
+    // Lưu xem tăng hay giảm speed
+    private boolean isIncreaseSpeed;
     public Player(Character[][] map, short numBomberman) {
         bomberman = new Bomber(1, 1, Bomber.player_right[numBomberman], numBomberman);
         this.map = map;
@@ -155,6 +157,7 @@ public class Player {
                      */
                     mark += 50;
                     isSetSpeed = true;
+                    isIncreaseSpeed = true;
                 }
 
                 else if (((LayeredEntity) entity).getTopEntity() instanceof FlameItem) {
@@ -211,7 +214,7 @@ public class Player {
         if (isSetSpeed) {
             if ((direction && bomberman.getX() % (2 * bomberman.getSpeed()) == 0)
                     || (!direction && bomberman.getY() % (2 * bomberman.getSpeed()) == 0)) {
-                setSpeed(true);
+                setSpeed(isIncreaseSpeed);
                 isSetSpeed = false;
             }
         }
@@ -320,5 +323,15 @@ public class Player {
 
     public int getFlame() {
         return bombPro;
+    }
+
+    public void setSpeedLevel(int speed) {
+        if (speed < bomberman.getSpeed()) {
+            isSetSpeed = true;
+            isIncreaseSpeed = false;    
+        } else if (speed > bomberman.getSpeed()) {
+            isSetSpeed = true;
+            isIncreaseSpeed = true;
+        }
     }
 }
