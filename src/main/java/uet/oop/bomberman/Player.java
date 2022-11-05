@@ -182,7 +182,7 @@ public class Player {
      * Nếu đi vào cổng thì chiến thắng
      * @return
      */
-    private boolean checkVictory() {
+    public boolean checkVictory() {
         int x = bomberman.getX() / Sprite.SCALED_SIZE;
         int y = bomberman.getY() / Sprite.SCALED_SIZE;
 
@@ -328,7 +328,7 @@ public class Player {
     public void setSpeedLevel(int speed) {
         if (speed < bomberman.getSpeed()) {
             isSetSpeed = true;
-            isIncreaseSpeed = false;    
+            isIncreaseSpeed = false;
         } else if (speed > bomberman.getSpeed()) {
             isSetSpeed = true;
             isIncreaseSpeed = true;

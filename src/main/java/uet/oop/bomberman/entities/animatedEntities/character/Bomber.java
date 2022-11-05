@@ -189,8 +189,26 @@ public class Bomber extends AnimatedEntities {
      */
     private boolean checkDead() {
         for (Entity entity : BombermanGame.characters) {
-            if (entity.getX() == x && entity.getY() == y) {
-                return true;
+            if (entity.getY() == y) {
+                if ((x + Sprite.DEFAULT_SIZE) > entity.getX() &&
+                    entity.getX() > x) {
+                    return true;
+                }
+                if ((entity.getX() + Sprite.DEFAULT_SIZE) > x &&
+                        entity.getX() < x) {
+                    return true;
+                }
+            }
+
+            if (entity.getX() == x) {
+                if ((y + Sprite.DEFAULT_SIZE) > entity.getY() &&
+                        entity.getY() > y) {
+                    return true;
+                }
+                if ((entity.getY() + Sprite.DEFAULT_SIZE) > y &&
+                        entity.getY() < y) {
+                    return true;
+                }
             }
         }
 
