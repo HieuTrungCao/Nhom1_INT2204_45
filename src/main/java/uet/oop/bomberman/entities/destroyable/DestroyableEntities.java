@@ -1,7 +1,7 @@
 package uet.oop.bomberman.entities.destroyable;
 
-import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class DestroyableEntities extends Entity {
     public DestroyableEntities(int xUnit, int yUnit, Sprite sprite) {

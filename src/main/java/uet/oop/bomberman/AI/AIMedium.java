@@ -5,7 +5,10 @@ import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.PriorityQueue;
 
 public class AIMedium extends AI {
     public AIMedium(Character[][] map) {

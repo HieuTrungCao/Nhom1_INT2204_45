@@ -1,7 +1,7 @@
 package uet.oop.bomberman.entities.undestroyable;
 
-import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.graphics.Sprite;
 
 public class Wall extends Entity {
 

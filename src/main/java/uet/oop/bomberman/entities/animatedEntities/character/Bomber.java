@@ -34,7 +34,7 @@ public class Bomber extends AnimatedEntities {
     // Lưu trạng thái của bomber
     private boolean isAlive;
 
-    private short num;
+    private int num;
 
     private static final Sprite[] player_up = {Sprite.player1_up, Sprite.player2_up};
     private static final Sprite[] player_up_1 = {Sprite.player1_up_1, Sprite.player2_up_1};
@@ -56,7 +56,7 @@ public class Bomber extends AnimatedEntities {
     private static final Sprite[] player_dead_2 = {Sprite.player1_dead2, Sprite.player2_dead2};
     private static final Sprite[] player_dead_3 = {Sprite.player1_dead3, Sprite.player2_dead3};
 
-    public Bomber(int x, int y, Sprite sprite, short num) {
+    public Bomber(int x, int y, Sprite sprite, int num) {
         super(x, y, sprite);
         speed = 12;
         isAlive = true;

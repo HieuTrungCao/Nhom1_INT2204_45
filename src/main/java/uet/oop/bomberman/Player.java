@@ -6,15 +6,14 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.character.Bomber;
 import uet.oop.bomberman.entities.destroyable.Brick;
+import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionNormal;
+import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionPro;
 import uet.oop.bomberman.entities.destroyable.items.FlameItem;
 import uet.oop.bomberman.entities.destroyable.items.HeartItem;
 import uet.oop.bomberman.entities.destroyable.items.SpeedItem;
-import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionNormal;
-import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionPro;
 import uet.oop.bomberman.entities.undestroyable.Grass;
 import uet.oop.bomberman.entities.undestroyable.Portal;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.sound.Sound;
 
 import java.util.Set;
 
@@ -53,9 +52,9 @@ public class Player {
     private static short count = 0;
 
     // Lưu thứ tự lấy sprite
-    private short numBomberman;
+    private int numBomberman;
 
-    public Player(Character[][] map, short numBomberman) {
+    public Player(Character[][] map, int numBomberman) {
         bomberman = new Bomber(1, 1, Bomber.player_right[numBomberman], numBomberman);
         this.map = map;
         this.numBomberman = numBomberman;
@@ -320,5 +319,9 @@ public class Player {
 
     public int getFlame() {
         return bombPro;
+    }
+
+    public int getNumBomberman() {
+        return numBomberman;
     }
 }

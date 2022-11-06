@@ -7,96 +7,167 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import uet.oop.bomberman.AI.AIFly;
-import uet.oop.bomberman.AI.AILow;
 import uet.oop.bomberman.AI.AIMedium;
+import uet.oop.bomberman.GUI.Game;
+import uet.oop.bomberman.GUI.UI;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Balloom;
 import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Oneal;
-import uet.oop.bomberman.entities.destroyable.items.BombItem;
 import uet.oop.bomberman.entities.destroyable.Brick;
+import uet.oop.bomberman.entities.destroyable.bomb.BombExplosion;
+import uet.oop.bomberman.entities.destroyable.items.BombItem;
 import uet.oop.bomberman.entities.destroyable.items.FlameItem;
 import uet.oop.bomberman.entities.destroyable.items.SpeedItem;
-import uet.oop.bomberman.entities.destroyable.bomb.BombExplosion;
 import uet.oop.bomberman.entities.undestroyable.Grass;
 import uet.oop.bomberman.entities.undestroyable.Portal;
 import uet.oop.bomberman.entities.undestroyable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class BombermanGame extends Application {
-
-    public static int WIDTH;
-    public static int HEIGHT;
-    private final static List<Entity> entities = new LinkedList<>();
-    public static final List<Entity> characters = new ArrayList<>();
+    public static Stage mainStage;
+    public static int WIDTH = 31;
+    public static int HEIGHT = 13;
+    public static List<Entity> entities = new LinkedList<>();
+    public static List<Entity> characters = new ArrayList<>();
     private GraphicsContext gc;
-    private Canvas canvas;
-
+    public static Canvas canvas;
     public static List<BombExplosion> bombs = new LinkedList<>();
-
     public static List<Player> players;
+    public Character[][] map;
+    private int numOfPlayer = 2;
+    public static ImageView player1Life;
+    public static int player1Bomb;
+    public static ImageView player2Life;
+    public static int player2Bomb;
+    public static ImageView player1Avatar;
+    public static ImageView player2Avatar;
 
-    private Character[][] map;
+    public static boolean pause = false;
+    public static Group root;
 
-    private short numOfPlayer = 2;
+    public static AnimationTimer timer;
+
+    public void setNumOfPlayer(int n) {
+        numOfPlayer = n;
+    }
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
 
-    @Override
-    public void start(Stage stage) {
-
-        //load map từ file txt
-        createMap();
-
-        // Tao Canvas
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
-        gc = canvas.getGraphicsContext2D();
-
-        // Tao root container
-        Group root = new Group();
-        root.getChildren().add(canvas);
-
-        // Tao scene
-        Scene scene = new Scene(root);
-
-        // Them scene vao stage
-        stage.setScene(scene);
-        stage.show();
-
-        //vòng lặp của game
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-                render();
-                update();
+    public void createPlayerHud(int pos, int x, int y) throws FileNotFoundException {
+        InputStream stream = null;
+        if (pos == 0) {
+            if (players.get(pos).getNumBomberman() == 0) {
+                stream = new FileInputStream("resources/textures/BombermanAvatar1.png");
+            } else {
+                stream = new FileInputStream("resources/textures/BomberTheKidAvatar1.png");
             }
-        };
-        timer.start();
+            player1Avatar = new ImageView(new Image(stream));
+            player1Avatar.setX(x);
+            player1Avatar.setY(y);
+            stream = new FileInputStream("resources/textures/Lives.png");
+            player1Life = new ImageView(new Image(stream));
+            player1Life.setX(player1Avatar.getX() + 2 * 48);
+            player1Life.setY(player1Avatar.getY());
+        } else {
+            if (players.get(pos).getNumBomberman() == 0) {
+                stream = new FileInputStream("resources/textures/BombermanAvatar2.png");
+            } else {
+                stream = new FileInputStream("resources/textures/BomberTheKidAvatar2.png");
+            }
+            player2Avatar = new ImageView(new Image(stream));
+            player2Avatar.setX(x);
+            player2Avatar.setY(y);
+            stream = new FileInputStream("resources/textures/Lives.png");
+            player2Life = new ImageView(new Image(stream));
+            player2Life.setX(player2Avatar.getX() - 2 * 48);
+            player2Life.setY(player2Avatar.getY());
+        }
+    }
 
-        //xử lý sự kiện
-        handleEvent(scene);
-
+    @Override
+    public void start(Stage stage) throws FileNotFoundException, URISyntaxException {
+        mainStage = stage;
+        UI.init();
+        //load map từ file txt
+        //createMap();
         /**
          * Muốn chọn sprite thì thay giá trị của x1 và x2
          * nhớ chỉ đc thay giá trị 0 hoặc 1
          */
-        players = new ArrayList<>();
-        Short x1 = 0;
-        Short x2 = 1;
-        players.add(new Player(map, x2));
+//        players = new ArrayList<>();
+//        players.add(new Player(map, 1));
+//        createPlayerHud(0, 0, Sprite.SCALED_SIZE * HEIGHT);
+//        if (numOfPlayer == 2) {
+//            players.add(new Player(map, 1));
+//            createPlayerHud(1, Sprite.SCALED_SIZE * WIDTH - 48, Sprite.SCALED_SIZE * HEIGHT);
+//        }
+//        // Tao Canvas
+//        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * (HEIGHT + 1));
+//        gc = canvas.getGraphicsContext2D();
+//
+//        // Create game hud
+//        Rectangle hud = new Rectangle();
+//        hud.setY(Sprite.SCALED_SIZE * HEIGHT);
+//        hud.setWidth(Sprite.SCALED_SIZE * WIDTH);
+//        hud.setHeight(Sprite.SCALED_SIZE);
+//        var stops = new Stop[] {new Stop(0, Color.web("#81c483")), new Stop(1, Color.web("#fcc200"))};
+//        hud.setFill(new LinearGradient(0, Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE, false, CycleMethod.NO_CYCLE, stops));
 
-        if (numOfPlayer == 2) {
-            players.add(new Player(map, x1));
-        }
+        // Tao root container
+        root = new Group();
+        //root.getChildren().add(canvas);
+        root.getChildren().add(UI.main);
+//        root.getChildren().add(hud);
+//        root.getChildren().add(player1Avatar);
+//        root.getChildren().add(player1Life);
+//        if (numOfPlayer == 2)  {
+//            root.getChildren().add(player2Avatar);
+//            root.getChildren().add(player2Life);
+//        }
+        // Tao scene
+        Scene scene = new Scene(root);
+
+        // Them scene vao stage
+        mainStage.setTitle("Bomberman");
+        mainStage.setResizable(false);
+        mainStage.getIcons().add(new Image(new FileInputStream("resources/textures/GameIcon.png")));
+        mainStage.setScene(scene);
+        mainStage.show();
+
+//        //vòng lặp của game
+//        timer = new AnimationTimer() {
+//            @Override
+//            public void handle(long l) {
+//                if (!pause) {
+//                    render();
+//                    update();
+//                }
+//            }
+//        };
+//        timer.start();
+//
+//        //xử lý sự kiện
+//        handleEvent(scene);
     }
 
     private void handleEvent(Scene scene) {
@@ -105,8 +176,17 @@ public class BombermanGame extends Application {
             @Override
             public void handle(KeyEvent keyEvent) {
                 codes.add(keyEvent.getCode());
-                for (Player player : players) {
-                    player.play(codes);
+                if (codes.contains(KeyCode.ESCAPE)) {
+                    if (!pause) {
+                        Management.pauseGame();
+                    } else {
+                        Management.resumeGame();
+                    }
+                }
+                if (!pause) {
+                    for (Player player : players) {
+                        player.play(codes);
+                    }
                 }
             }
         };
@@ -188,7 +268,6 @@ public class BombermanGame extends Application {
                         entities.add(obj);
                     }
                 }
-
             }
         }
     }
