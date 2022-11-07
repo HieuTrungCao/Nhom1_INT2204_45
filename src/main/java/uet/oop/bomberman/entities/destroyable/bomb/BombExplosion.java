@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities.destroyable.bomb;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Management;
 import uet.oop.bomberman.Player;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
@@ -59,7 +60,7 @@ public abstract class BombExplosion extends AnimatedEntities {
         if (animate == time * 2) {
             removeBrick();
             map[super.getY()/Sprite.SCALED_SIZE][super.getX()/Sprite.SCALED_SIZE] = ' ';
-            BombermanGame.bombs.remove(0);
+            Management.bombs.remove(0);
         }
     }
 
@@ -75,30 +76,30 @@ public abstract class BombExplosion extends AnimatedEntities {
      * nếu có thì bom này cũng sẽ bị nổ
      */
     private void checkDead() {
-        for (Player player : BombermanGame.players) {
+        for (Player player : Management.players) {
             if (checkDeadEntity(player.getBomberman())) {
                 player.getBomberman().setIsAlive(false);
                 player.getBomberman().setAnimate(animate);
             }
         }
 
-        for (int i = 0; i < BombermanGame.characters.size(); i++) {
-            if (checkDeadEntity(BombermanGame.characters.get(i)) &&
-                    ((Enemy) BombermanGame.characters.get(i)).isAlive()) {
+        for (int i = 0; i < Management.characters.size(); i++) {
+            if (checkDeadEntity(Management.characters.get(i)) &&
+                    ((Enemy) Management.characters.get(i)).isAlive()) {
                 System.out.println("OK");
-                ((Enemy) BombermanGame.characters.get(i)).minusLife();
+                ((Enemy) Management.characters.get(i)).minusLife();
                 /**
                  * gọi đến hàm cộng điểm ở đây
                  */
-                BombermanGame.players.get(putBy - 1).setMark(
-                        ((Enemy) BombermanGame.characters.get(i)).getPoint());
+                Management.players.get(putBy - 1).setMark(
+                        ((Enemy) Management.characters.get(i)).getPoint());
             }
         }
 
-        for(int i = 0; i < BombermanGame.bombs.size(); i++){
-            if (checkDeadEntity(BombermanGame.bombs.get(i))
-                && BombermanGame.bombs.get(i).getAnimate() < this.getAnimate()) {
-                BombermanGame.bombs.get(i).setAnimate(this.time);
+        for(int i = 0; i < Management.bombs.size(); i++){
+            if (checkDeadEntity(Management.bombs.get(i))
+                && Management.bombs.get(i).getAnimate() < this.getAnimate()) {
+                Management.bombs.get(i).setAnimate(this.time);
             }
         }
     }

@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities.animatedEntities.character;
 
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Management;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
 import uet.oop.bomberman.entities.destroyable.bomb.Bomb;
@@ -34,7 +35,7 @@ public class Bomber extends AnimatedEntities {
     // Lưu trạng thái của bomber
     private boolean isAlive;
 
-    private int num;
+    private short num;
 
     private static final Sprite[] player_up = {Sprite.player1_up, Sprite.player2_up};
     private static final Sprite[] player_up_1 = {Sprite.player1_up_1, Sprite.player2_up_1};
@@ -56,7 +57,7 @@ public class Bomber extends AnimatedEntities {
     private static final Sprite[] player_dead_2 = {Sprite.player1_dead2, Sprite.player2_dead2};
     private static final Sprite[] player_dead_3 = {Sprite.player1_dead3, Sprite.player2_dead3};
 
-    public Bomber(int x, int y, Sprite sprite, int num) {
+    public Bomber(int x, int y, Sprite sprite, short num) {
         super(x, y, sprite);
         speed = 12;
         isAlive = true;
@@ -188,9 +189,27 @@ public class Bomber extends AnimatedEntities {
      * Ngược lại bomber không bị giết thì trả vể false
      */
     private boolean checkDead() {
-        for (Entity entity : BombermanGame.characters) {
-            if (entity.getX() == x && entity.getY() == y) {
-                return true;
+        for (Entity entity : Management.characters) {
+            if (entity.getY() == y) {
+                if ((x + Sprite.DEFAULT_SIZE) > entity.getX() &&
+                        entity.getX() > x) {
+                    return true;
+                }
+                if ((entity.getX() + Sprite.DEFAULT_SIZE) > x &&
+                        entity.getX() < x) {
+                    return true;
+                }
+            }
+
+            if (entity.getX() == x) {
+                if ((y + Sprite.DEFAULT_SIZE) > entity.getY() &&
+                        entity.getY() > y) {
+                    return true;
+                }
+                if ((entity.getY() + Sprite.DEFAULT_SIZE) > y &&
+                        entity.getY() < y) {
+                    return true;
+                }
             }
         }
 
@@ -229,4 +248,3 @@ public class Bomber extends AnimatedEntities {
         return animate_die;
     }
 }
-

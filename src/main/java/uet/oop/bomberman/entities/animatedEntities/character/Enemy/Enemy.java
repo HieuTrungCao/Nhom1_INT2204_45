@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.animatedEntities.character.Enemy;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.AI.AI;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Management;
 import uet.oop.bomberman.entities.animatedEntities.AnimatedEntities;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -92,7 +93,7 @@ public abstract class Enemy extends AnimatedEntities {
     public void dead() {
         setImg();
         if (timeToRemove == 0) {
-            BombermanGame.characters.removeIf(character -> character.equals(this));
+            Management.characters.removeIf(character -> character.equals(this));
         } else {
             timeToRemove--;
         }

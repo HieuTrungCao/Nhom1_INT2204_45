@@ -3,6 +3,7 @@ package uet.oop.bomberman.AI;
 
 import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Management;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class AIMedium extends AI {
         Pair<Integer, Integer> startNode = new Pair<>(xSource, ySource);
         Pair<Integer, Integer> destNode = new Pair<>(px, py);
 
-        int[][] distance = new int[BombermanGame.HEIGHT][BombermanGame.WIDTH];
+        int[][] distance = new int[Management.HEIGHT][Management.WIDTH];
         Arrays.stream(distance).forEach(row -> Arrays.fill(row, 1000000));
         distance[ySource][xSource] = 0;
 
@@ -55,7 +56,7 @@ public class AIMedium extends AI {
 
         ArrayList<Pair<Integer, Integer>> closedList = new ArrayList<>();
 
-        Pair<Integer, Integer>[][] parent = new Pair[BombermanGame.HEIGHT][BombermanGame.WIDTH];
+        Pair<Integer, Integer>[][] parent = new Pair[Management.HEIGHT][Management.WIDTH];
 
         while (!openList.isEmpty()) {
             Pair<Integer, Integer> currNode = openList.remove();

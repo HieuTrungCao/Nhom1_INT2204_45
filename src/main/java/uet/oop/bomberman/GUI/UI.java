@@ -45,19 +45,19 @@ public class UI {
 
     public static void initPauseMenu() throws URISyntaxException, FileNotFoundException {
         pause = new Pane();
-        Canvas cv = new Canvas(BombermanGame.WIDTH  * Sprite.SCALED_SIZE, BombermanGame.HEIGHT * Sprite.SCALED_SIZE);
+        Canvas cv = new Canvas(Management.WIDTH  * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
         GraphicsContext gc = cv.getGraphicsContext2D();
 
         InputStream stream = new FileInputStream("resources/ui/optionPanel.png");
         Image pauseMenu = new Image(stream);
 
-        gc.drawImage(pauseMenu, (BombermanGame.WIDTH * Sprite.SCALED_SIZE - pauseMenu.getWidth())/2, (BombermanGame.HEIGHT * Sprite.SCALED_SIZE - pauseMenu.getHeight())/2);
+        gc.drawImage(pauseMenu, (cv.getWidth() - pauseMenu.getWidth())/2, (cv.getHeight() - pauseMenu.getHeight())/2);
 
         Button resume = new Button("Resume");
         resume.setFont(buttonFont);
         resume.setPrefSize(100, 30);
-        resume.setLayoutX((BombermanGame.WIDTH * Sprite.SCALED_SIZE - pauseMenu.getWidth())/2 + (pauseMenu.getWidth() - 100)/2);
-        resume.setLayoutY((BombermanGame.HEIGHT * Sprite.SCALED_SIZE - pauseMenu.getHeight())/2 + 100);
+        resume.setLayoutX((cv.getWidth() - pauseMenu.getWidth())/2 + (pauseMenu.getWidth() - 100)/2);
+        resume.setLayoutY((cv.getHeight() - pauseMenu.getHeight())/2 + 100);
         resume.setOnAction(actionEvent -> Management.resumeGame());
 
         Button restart = new Button("Restart");
@@ -77,7 +77,7 @@ public class UI {
 
     public static void initMainMenu() throws FileNotFoundException {
         main = new Pane();
-        Canvas cv = new Canvas(BombermanGame.WIDTH * Sprite.SCALED_SIZE, BombermanGame.HEIGHT * Sprite.SCALED_SIZE);
+        Canvas cv = new Canvas(Management.WIDTH * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
         GraphicsContext gc = cv.getGraphicsContext2D();
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, cv.getWidth(), cv.getHeight());
@@ -116,7 +116,7 @@ public class UI {
 
     public static void initChooseCharacter() throws FileNotFoundException {
         characters = new Pane();
-        Canvas cv = new Canvas(BombermanGame.WIDTH * Sprite.SCALED_SIZE, BombermanGame.HEIGHT * Sprite.SCALED_SIZE);
+        Canvas cv = new Canvas(Management.WIDTH * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
         GraphicsContext gc = cv.getGraphicsContext2D();
         var stops = new Stop[] {new Stop(0, Color.web("#81c483")), new Stop(1, Color.web("#fcc200"))};
         gc.setFill(new LinearGradient(0, 0, cv.getWidth(), cv.getHeight(), false, CycleMethod.NO_CYCLE, stops));
@@ -128,6 +128,13 @@ public class UI {
         Bomberman.setLayoutY(100);
         Bomberman.setBackground(null);
         Bomberman.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/Bomber.png"))));
+        Bomberman.setOnAction(actionEvent -> {
+            try {
+                Management.startPVE(0);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         Button BomberTheKid = new Button();
         BomberTheKid.setPrefSize(400, 400);
@@ -135,6 +142,13 @@ public class UI {
         BomberTheKid.setLayoutY(100);
         BomberTheKid.setBackground(null);
         BomberTheKid.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/BomberTheKid.png"))));
+        BomberTheKid.setOnAction(actionEvent -> {
+            try {
+                Management.startPVE(1);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         characters.getChildren().addAll(cv, Bomberman, BomberTheKid);
     }

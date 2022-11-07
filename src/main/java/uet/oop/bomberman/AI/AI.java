@@ -2,6 +2,7 @@ package uet.oop.bomberman.AI;
 
 import javafx.util.Pair;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Management;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.util.ArrayList;
@@ -55,11 +56,11 @@ public abstract class AI {
                     y -= speed;
             }
             case 2 -> {
-                if (x + speed <= BombermanGame.WIDTH * Sprite.SCALED_SIZE -2 * Sprite.SCALED_SIZE)
+                if (x + speed <= Management.WIDTH * Sprite.SCALED_SIZE -2 * Sprite.SCALED_SIZE)
                     x += speed;
             }
             case 3 -> {
-                if (y + speed <= BombermanGame.HEIGHT * Sprite.SCALED_SIZE -2 * Sprite.SCALED_SIZE)
+                if (y + speed <= Management.HEIGHT * Sprite.SCALED_SIZE -2 * Sprite.SCALED_SIZE)
                     y += speed;
             }
             case 0 -> {
@@ -199,9 +200,9 @@ public abstract class AI {
 
     protected void updateNearestPlayer(){
         List<Pair<Integer, Integer>> playerCoordinate = new ArrayList<>();
-        for (int i = 0; i < BombermanGame.players.size(); ++i) {
+        for (int i = 0; i < Management.players.size(); ++i) {
             playerCoordinate.add(new Pair<>(
-                    BombermanGame.players.get(i).getBomberman().getX(), BombermanGame.players.get(i).getBomberman().getY()));
+                    Management.players.get(i).getBomberman().getX(), Management.players.get(i).getBomberman().getY()));
         }
 
         int minDistance = Integer.MAX_VALUE;

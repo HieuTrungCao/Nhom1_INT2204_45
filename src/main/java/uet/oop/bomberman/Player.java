@@ -6,14 +6,15 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.character.Bomber;
 import uet.oop.bomberman.entities.destroyable.Brick;
-import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionNormal;
-import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionPro;
 import uet.oop.bomberman.entities.destroyable.items.FlameItem;
 import uet.oop.bomberman.entities.destroyable.items.HeartItem;
 import uet.oop.bomberman.entities.destroyable.items.SpeedItem;
+import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionNormal;
+import uet.oop.bomberman.entities.destroyable.bomb.BombExplosionPro;
 import uet.oop.bomberman.entities.undestroyable.Grass;
 import uet.oop.bomberman.entities.undestroyable.Portal;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 
 import java.util.Set;
 
@@ -52,9 +53,11 @@ public class Player {
     private static short count = 0;
 
     // Lưu thứ tự lấy sprite
-    private int numBomberman;
+    private short numBomberman;
 
-    public Player(Character[][] map, int numBomberman) {
+    // Lưu xem tăng hay giảm speed
+    private boolean isIncreaseSpeed;
+    public Player(Character[][] map, short numBomberman) {
         bomberman = new Bomber(1, 1, Bomber.player_right[numBomberman], numBomberman);
         this.map = map;
         this.numBomberman = numBomberman;
@@ -65,6 +68,10 @@ public class Player {
         this.isSetSpeed = false;
         this.num = (++ this.count);
         System.out.println(count);
+    }
+
+    public short getNumBomberman() {
+        return numBomberman;
     }
 
     /**
@@ -142,7 +149,7 @@ public class Player {
         int x = bomberman.getX() / Sprite.SCALED_SIZE;
         int y = bomberman.getY() / Sprite.SCALED_SIZE;
 
-        Entity entity = BombermanGame.getEntity(x, y);
+        Entity entity = Management.getEntity(x, y);
 
         if (entity instanceof LayeredEntity) {
             if (!(((LayeredEntity) entity).getTopEntity() instanceof Grass)
@@ -154,6 +161,7 @@ public class Player {
                      */
                     mark += 50;
                     isSetSpeed = true;
+                    isIncreaseSpeed = true;
                 }
 
                 else if (((LayeredEntity) entity).getTopEntity() instanceof FlameItem) {
@@ -178,16 +186,16 @@ public class Player {
      * Nếu đi vào cổng thì chiến thắng
      * @return
      */
-    private boolean checkVictory() {
+    public boolean checkVictory() {
         int x = bomberman.getX() / Sprite.SCALED_SIZE;
         int y = bomberman.getY() / Sprite.SCALED_SIZE;
 
-        Entity entity = BombermanGame.getEntity(x, y);
+        Entity entity = Management.getEntity(x, y);
 
         if (entity instanceof LayeredEntity) {
             if (((LayeredEntity) entity).getTopEntity() instanceof Portal) {
                 if (entity.getX() == bomberman.getX() &&
-                    entity.getY() == bomberman.getY())
+                        entity.getY() == bomberman.getY())
                     return true;
             }
         }
@@ -210,7 +218,7 @@ public class Player {
         if (isSetSpeed) {
             if ((direction && bomberman.getX() % (2 * bomberman.getSpeed()) == 0)
                     || (!direction && bomberman.getY() % (2 * bomberman.getSpeed()) == 0)) {
-                setSpeed(true);
+                setSpeed(isIncreaseSpeed);
                 isSetSpeed = false;
             }
         }
@@ -231,9 +239,9 @@ public class Player {
         int y = bomberman.getY() / Sprite.SCALED_SIZE;
         map[y][x] = 'b';
         if(!pro)
-            BombermanGame.bombs.add(new BombExplosionNormal(x, y, null, num ,map));
+            Management.bombs.add(new BombExplosionNormal(x, y, null, num ,map));
         else
-            BombermanGame.bombs.add(new BombExplosionPro(x, y, null, num, map));
+            Management.bombs.add(new BombExplosionPro(x, y, null, num, map));
     }
 
     // kiem tra xem co bi vuong gi khong
@@ -321,7 +329,13 @@ public class Player {
         return bombPro;
     }
 
-    public int getNumBomberman() {
-        return numBomberman;
+    public void setSpeedLevel(int speed) {
+        if (speed < bomberman.getSpeed()) {
+            isSetSpeed = true;
+            isIncreaseSpeed = false;
+        } else if (speed > bomberman.getSpeed()) {
+            isSetSpeed = true;
+            isIncreaseSpeed = true;
+        }
     }
 }
