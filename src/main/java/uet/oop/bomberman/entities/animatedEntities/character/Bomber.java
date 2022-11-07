@@ -146,8 +146,8 @@ public class Bomber extends AnimatedEntities {
      * @param raise is true or false
      */
     public void setSpeed(boolean raise) {
-        if (raise && speed < 32) speed *= 2;
-        else if (!raise && speed > 8) speed /= 2;
+        if (raise && speed < 48) speed *= 2;
+        else if (!raise && speed > 12) speed /= 2;
     }
 
     // Trả về tốc độ hiện tại

@@ -22,7 +22,9 @@ public class LayeredEntity extends Entity {
     }
 
     public void removeTop() {
-        layeredList.remove(0);
+        if (layeredList.size() > 1) {
+            layeredList.remove(0);
+        }
     }
     @Override
     public void render(GraphicsContext gc) {
