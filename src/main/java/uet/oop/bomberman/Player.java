@@ -6,6 +6,7 @@ import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.animatedEntities.character.Bomber;
 import uet.oop.bomberman.entities.destroyable.Brick;
+import uet.oop.bomberman.entities.destroyable.items.BombItem;
 import uet.oop.bomberman.entities.destroyable.items.FlameItem;
 import uet.oop.bomberman.entities.destroyable.items.HeartItem;
 import uet.oop.bomberman.entities.destroyable.items.SpeedItem;
@@ -175,6 +176,11 @@ public class Player {
                 else if (((LayeredEntity) entity).getTopEntity() instanceof HeartItem) {
                     mark += 50;
                     heart++;
+                }
+
+                else if (((LayeredEntity) entity).getTopEntity() instanceof BombItem) {
+                    mark += 50;
+                    bomb++;
                 }
             }
         }
