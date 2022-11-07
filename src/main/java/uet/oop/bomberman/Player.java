@@ -32,8 +32,9 @@ public class Player {
 
     // Số lượng bomb nhân vật có
     private int bomb;
-    // Lưu số lượng của bomb nạp VIP mà nhân vật ăn được
-    private int bombPro;
+
+    // Xem có đang ở bomb nạp VIP ko
+    private boolean isBombPro;
 
     // Lưu trữ map để sử lý check map khi di chuyển nhanh hơn
     private Character[][] map;
@@ -65,10 +66,9 @@ public class Player {
         this.mark = 0;
         this.heart = heart;
         this.bomb = bomb;
-        this.bombPro = 0;
+        this.isBombPro = false;
         this.isSetSpeed = false;
         this.num = (++ this.count);
-        System.out.println(count);
     }
 
     public short getNumBomberman() {
@@ -103,13 +103,9 @@ public class Player {
             } else if (codes.contains(D) && checkMap(2)) {
                 bomberman.moveRight();
             } else if (codes.contains(SPACE) && bomb > 0) {
-                addBomb(false);
+                addBomb(isBombPro);
                 bomb--;
                 direction = true;
-            } else if (codes.contains(F) && bombPro > 0) {
-                addBomb(true);
-                bombPro--;
-                bomb--;
             }
         }
 
@@ -126,13 +122,9 @@ public class Player {
             } else if (codes.contains(RIGHT) && checkMap(2)) {
                 bomberman.moveRight();
             } else if (codes.contains(J) && bomb > 0) {
-                addBomb(false);
+                addBomb(isBombPro);
                 bomb--;
                 direction = true;
-            } else if (codes.contains(K) && bombPro > 0) {
-                addBomb(true);
-                bombPro--;
-                bomb--;
             }
         }
         eatItem();
@@ -170,7 +162,7 @@ public class Player {
                      * to do something
                      */
                     mark += 50;
-                    bombPro++;
+                    isBombPro = true;
                 }
 
                 else if (((LayeredEntity) entity).getTopEntity() instanceof HeartItem) {
@@ -200,8 +192,10 @@ public class Player {
         if (entity instanceof LayeredEntity) {
             if (((LayeredEntity) entity).getTopEntity() instanceof Portal) {
                 if (entity.getX() == bomberman.getX() &&
-                        entity.getY() == bomberman.getY())
+                        entity.getY() == bomberman.getY() &&
+                        Management.characters.size() == 0) {
                     return true;
+                }
             }
         }
 
@@ -217,6 +211,7 @@ public class Player {
                 bomberman.setX(48);
                 bomberman.setY(48);
                 bomberman.setSpeed(false);
+                isBombPro = false;
             }
         }
 
@@ -328,9 +323,5 @@ public class Player {
 
     public int getBomb() {
         return bomb;
-    }
-
-    public int getFlame() {
-        return bombPro;
     }
 }
