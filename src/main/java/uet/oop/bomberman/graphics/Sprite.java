@@ -168,7 +168,8 @@ public class Sprite {
 	public static Sprite explosion_vertical_down_last = new Sprite(DEFAULT_SIZE, 7, 6, SpriteSheet.tiles, 24, 24);
 	public static Sprite explosion_vertical_down_last1 = new Sprite(DEFAULT_SIZE, 8, 6, SpriteSheet.tiles, 24, 24);
 	public static Sprite explosion_vertical_down_last2 = new Sprite(DEFAULT_SIZE, 9, 6, SpriteSheet.tiles, 24, 24);
-	
+
+	public static Sprite powerup_life = new Sprite(DEFAULT_SIZE, 9, 0, SpriteSheet.tiles, 24, 24);
 	/*
 	|--------------------------------------------------------------------------
 	| Brick FlameSegment
