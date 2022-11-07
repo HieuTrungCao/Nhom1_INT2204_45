@@ -57,13 +57,13 @@ public class Player {
 
     // Lưu xem tăng hay giảm speed
     private boolean isIncreaseSpeed;
-    public Player(Character[][] map, short numBomberman) {
+    public Player(Character[][] map, short numBomberman, int heart, int bomb) {
         bomberman = new Bomber(1, 1, Bomber.player_right[numBomberman], numBomberman);
         this.map = map;
         this.numBomberman = numBomberman;
         this.mark = 0;
-        this.heart = 10;
-        this.bomb = 10;
+        this.heart = heart;
+        this.bomb = bomb;
         this.bombPro = 0;
         this.isSetSpeed = false;
         this.num = (++ this.count);

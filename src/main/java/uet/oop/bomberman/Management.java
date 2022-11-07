@@ -1,7 +1,6 @@
 package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -35,7 +34,6 @@ import uet.oop.bomberman.entities.undestroyable.Grass;
 import uet.oop.bomberman.entities.undestroyable.Portal;
 import uet.oop.bomberman.entities.undestroyable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -133,15 +131,27 @@ public class Management {
         players.clear();
     }
 
+    public static void backToMenu() {
+        root.getChildren().remove(UI.pause);
+        pause = false;
+        timer.stop();
+        entities.clear();
+        characters.clear();
+        bombs.clear();
+        players.clear();
+        root.getChildren().removeAll();
+        root.getChildren().add(UI.main);
+    }
+
     public static void chooseCharacter() {
         root.getChildren().remove(UI.main);
         root.getChildren().add(UI.characters);
     }
 
-    public static void startPVE(int id) throws FileNotFoundException {
+    public static void startPVE(int id, int heart, int bomb) throws FileNotFoundException {
         setNumOfPlayer(1);
         createMap();
-        players.add(new Player(map, (short) id));
+        players.add(new Player(map, (short) id, heart, bomb));
         createPlayerHud(0, 0, HEIGHT * Sprite.SCALED_SIZE);
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();

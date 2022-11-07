@@ -71,6 +71,7 @@ public class UI {
         menu.setPrefSize(100, 30);
         menu.setLayoutX(resume.getLayoutX());
         menu.setLayoutY(restart.getLayoutY() + 50);
+        menu.setOnAction(actionEvent -> Management.backToMenu());
 
         pause.getChildren().addAll(cv, resume, restart, menu);
     }
@@ -130,7 +131,7 @@ public class UI {
         Bomberman.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/Bomber.png"))));
         Bomberman.setOnAction(actionEvent -> {
             try {
-                Management.startPVE(0);
+                Management.startPVE(0, 5, 10);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -144,7 +145,7 @@ public class UI {
         BomberTheKid.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/BomberTheKid.png"))));
         BomberTheKid.setOnAction(actionEvent -> {
             try {
-                Management.startPVE(1);
+                Management.startPVE(1, 3, 15);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
