@@ -161,7 +161,6 @@ public class Player {
                      */
                     mark += 50;
                     isSetSpeed = true;
-                    isIncreaseSpeed = true;
                 }
 
                 else if (((LayeredEntity) entity).getTopEntity() instanceof FlameItem) {
@@ -186,7 +185,7 @@ public class Player {
      * Nếu đi vào cổng thì chiến thắng
      * @return
      */
-    public boolean checkVictory() {
+    private boolean checkVictory() {
         int x = bomberman.getX() / Sprite.SCALED_SIZE;
         int y = bomberman.getY() / Sprite.SCALED_SIZE;
 
@@ -218,7 +217,7 @@ public class Player {
         if (isSetSpeed) {
             if ((direction && bomberman.getX() % (2 * bomberman.getSpeed()) == 0)
                     || (!direction && bomberman.getY() % (2 * bomberman.getSpeed()) == 0)) {
-                setSpeed(isIncreaseSpeed);
+                setSpeed(true);
                 isSetSpeed = false;
             }
         }
@@ -327,15 +326,5 @@ public class Player {
 
     public int getFlame() {
         return bombPro;
-    }
-
-    public void setSpeedLevel(int speed) {
-        if (speed < bomberman.getSpeed()) {
-            isSetSpeed = true;
-            isIncreaseSpeed = false;
-        } else if (speed > bomberman.getSpeed()) {
-            isSetSpeed = true;
-            isIncreaseSpeed = true;
-        }
     }
 }
