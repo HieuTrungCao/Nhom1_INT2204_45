@@ -184,9 +184,10 @@ public class Sprite {
 	| Powerups
 	|--------------------------------------------------------------------------
 	 */
-	public static Sprite powerup_bombs = new Sprite(DEFAULT_SIZE, 7, 0, SpriteSheet.tiles, 26, 26);
+	public static Sprite powerup_bombs = new Sprite(DEFAULT_SIZE, 7, 0, SpriteSheet.tiles, 24, 24);
 	public static Sprite powerup_flames = new Sprite(DEFAULT_SIZE, 9, 2, SpriteSheet.tiles, 24, 24);
 	public static Sprite powerup_speed = new Sprite(DEFAULT_SIZE, 9, 1, SpriteSheet.tiles, 24, 24);
+
 
 	public Sprite(int size, int x, int y, SpriteSheet sheet, int rw, int rh) {
 		SIZE = size;
