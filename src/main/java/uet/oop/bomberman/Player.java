@@ -121,7 +121,7 @@ public class Player {
                 direction = true;
             } else if (codes.contains(RIGHT) && checkMap(2)) {
                 bomberman.moveRight();
-            } else if (codes.contains(J) && bomb > 0) {
+            } else if (codes.contains(ENTER) && bomb > 0) {
                 addBomb(isBombPro);
                 bomb--;
                 direction = true;
