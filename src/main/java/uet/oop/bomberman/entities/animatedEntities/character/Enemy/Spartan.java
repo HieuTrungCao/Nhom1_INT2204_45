@@ -4,10 +4,10 @@ import uet.oop.bomberman.AI.AI;
 import uet.oop.bomberman.AI.AILow;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Oneal extends Enemy {
+public class Spartan extends Enemy {
 
 
-    //    public Oneal(int xUnit, int yUnit) {
+    //    public Balloom(int xUnit, int yUnit) {
 //        super(xUnit, yUnit);
 //    }
 
@@ -18,9 +18,9 @@ public class Oneal extends Enemy {
      * @param yUnit  tọa độ cột y
      * @param sprite sprite để hiển thị hiện tại
      */
-    public Oneal(int xUnit, int yUnit, Sprite sprite, AI ai) {
+    public Spartan(int xUnit, int yUnit, Sprite sprite, AI ai) {
         super(xUnit, yUnit, sprite, ai);
-        deadSprite = Sprite.oneal_dead;
+        deadSprite = Sprite.spartan_dead;
     }
 
     /**
@@ -33,26 +33,26 @@ public class Oneal extends Enemy {
      * @param speed      tốc độ di chuyển
      * @param point      điểm
      */
-    public Oneal(int xUnit, int yUnit, Sprite sprite, AILow ai, Sprite deadSprite, int speed, int point) {
+    public Spartan(int xUnit, int yUnit, Sprite sprite, AILow ai, Sprite deadSprite, int speed, int point) {
         super(xUnit, yUnit, sprite, ai, deadSprite, speed, point);
     }
-
 
     @Override
     public void setImg() {
         int direct = ai.getCurrentDirect();
         if (life == 0) {
-            sprite = Sprite.oneal_dead;
-        } else if (direct == 0) {
-            sprite = Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, 20);
-        } else if (direct == 1) {
-            sprite = Sprite.movingSprite(Sprite.oneal_up1, Sprite.oneal_up2, Sprite.oneal_up3, animate, 20);
-        } else if (direct == 2) {
-            sprite = Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, 20);
+            sprite = Sprite.spartan_dead;
+        } else if (direct == 0){
+            sprite = Sprite.movingSprite(Sprite.spartan_left1, Sprite.spartan_left2, Sprite.spartan_left3, animate, 20);
+        }
+        else if (direct == 1){
+            sprite = Sprite.movingSprite(Sprite.spartan_up1, Sprite.spartan_up2, Sprite.spartan_up3, animate, 20);
+        }
+        else if (direct == 2) {
+            sprite = Sprite.movingSprite(Sprite.spartan_right1, Sprite.spartan_right2, Sprite.spartan_right3, animate, 20);
         } else {
-            sprite = Sprite.movingSprite(Sprite.oneal_down1, Sprite.oneal_down2, Sprite.oneal_down3, animate, 20);
+            sprite = Sprite.movingSprite(Sprite.spartan_down1, Sprite.spartan_down2, Sprite.spartan_down3, animate, 20);
         }
     }
+
 }
-
-

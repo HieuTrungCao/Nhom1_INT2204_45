@@ -17,15 +17,15 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import uet.oop.bomberman.AI.AIFly;
+import uet.oop.bomberman.AI.AILow;
 import uet.oop.bomberman.AI.AIMedium;
 import uet.oop.bomberman.GUI.UI;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.LayeredEntity;
-import uet.oop.bomberman.entities.animatedEntities.character.Bomber;
-import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Balloom;
-import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Oneal;
+import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Spartan;
+import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Ufo;
+import uet.oop.bomberman.entities.animatedEntities.character.Enemy.Mushroom;
 import uet.oop.bomberman.entities.destroyable.Brick;
-import uet.oop.bomberman.entities.destroyable.bomb.Bomb;
 import uet.oop.bomberman.entities.destroyable.bomb.BombExplosion;
 import uet.oop.bomberman.entities.destroyable.items.BombItem;
 import uet.oop.bomberman.entities.destroyable.items.FlameItem;
@@ -143,6 +143,16 @@ public class Management {
         root.getChildren().add(UI.main);
     }
 
+    public static void menu() {
+        root.getChildren().remove(UI.control);
+        root.getChildren().add(UI.main);
+    }
+
+    public static void control() {
+        root.getChildren().remove(UI.main);
+        root.getChildren().add(UI.control);
+    }
+
     public static void chooseCharacter() {
         root.getChildren().remove(UI.main);
         root.getChildren().add(UI.characters);
@@ -242,12 +252,17 @@ public class Management {
                     }
                     case '1' -> {
                         entities.add(new Grass(j, i, Sprite.grass));
-                        obj = new Balloom(j, i, Sprite.balloom_right1, new AIFly(map));
+                        obj = new Spartan(j, i, Sprite.spartan_right1, new AIMedium(map));
                         characters.add(obj);
                     }
                     case '2' -> {
                         entities.add(new Grass(j, i, Sprite.grass));
-                        obj = new Oneal(j, i, Sprite.oneal_left1, new AIMedium(map));
+                        obj = new Mushroom(j, i, Sprite.mushroom_left1, new AILow(map));
+                        characters.add(obj);
+                    }
+                    case '3' -> {
+                        entities.add(new Grass(j, i, Sprite.grass));
+                        obj = new Ufo(j, i, Sprite.ufo_right1, new AIFly(map));
                         characters.add(obj);
                     }
                     case 'b' -> {

@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,6 +31,7 @@ public class UI {
     public static Pane pause;
     public static Pane gameOver;
     public static Pane gameClear;
+    public static Pane control;
     public static Pane characters;
     private static Font buttonFont;
     private static Font menuFont;
@@ -41,6 +43,7 @@ public class UI {
         initPauseMenu();
         initMainMenu();
         initChooseCharacter();
+        initControl();
     }
 
     public static void initPauseMenu() throws URISyntaxException, FileNotFoundException {
@@ -105,6 +108,7 @@ public class UI {
         Control.setPrefSize(150, 50);
         Control.setLayoutX(PVE.getLayoutX());
         Control.setLayoutY(PVP.getLayoutY() + 70);
+        Control.setOnAction(actionEvent -> Management.control());
 
         Button History = new Button("History");
         History.setFont(menuFont);
@@ -152,5 +156,27 @@ public class UI {
         });
 
         characters.getChildren().addAll(cv, Bomberman, BomberTheKid);
+    }
+
+    public static void initControl() throws FileNotFoundException {
+        control = new Pane();
+        Canvas cv = new Canvas(Management.WIDTH * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
+        GraphicsContext gc = cv.getGraphicsContext2D();
+        var stops = new Stop[] {new Stop(0, Color.web("#81c483")), new Stop(1, Color.web("#fcc200"))};
+        gc.setFill(new LinearGradient(0, 0, cv.getWidth(), cv.getHeight(), false, CycleMethod.NO_CYCLE, stops));
+        gc.fillRect(0, 0, cv.getWidth(), cv.getHeight());
+
+        InputStream stream = new FileInputStream("resources/ui/control.png");
+        Image controlInstruc = new Image(stream);
+        gc.drawImage(controlInstruc, (cv.getWidth() - controlInstruc.getWidth())/2, 0);
+
+        Button back = new Button("Back");
+        back.setFont(menuFont);
+        back.setPrefSize(150, 50);
+        back.setLayoutX((cv.getWidth() - 150)/2);
+        back.setLayoutY(500);
+        back.setOnAction(actionEvent -> Management.menu());
+
+        control.getChildren().addAll(cv, back);
     }
 }

@@ -4,10 +4,10 @@ import uet.oop.bomberman.AI.AI;
 import uet.oop.bomberman.AI.AILow;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Balloom extends Enemy {
+public class Mushroom extends Enemy {
 
 
-    //    public Balloom(int xUnit, int yUnit) {
+    //    public Mushroom(int xUnit, int yUnit) {
 //        super(xUnit, yUnit);
 //    }
 
@@ -18,9 +18,9 @@ public class Balloom extends Enemy {
      * @param yUnit  tọa độ cột y
      * @param sprite sprite để hiển thị hiện tại
      */
-    public Balloom(int xUnit, int yUnit, Sprite sprite, AI ai) {
+    public Mushroom(int xUnit, int yUnit, Sprite sprite, AI ai) {
         super(xUnit, yUnit, sprite, ai);
-        deadSprite = Sprite.balloom_dead;
+        deadSprite = Sprite.mushroom_dead;
     }
 
     /**
@@ -33,26 +33,26 @@ public class Balloom extends Enemy {
      * @param speed      tốc độ di chuyển
      * @param point      điểm
      */
-    public Balloom(int xUnit, int yUnit, Sprite sprite, AILow ai, Sprite deadSprite, int speed, int point) {
+    public Mushroom(int xUnit, int yUnit, Sprite sprite, AILow ai, Sprite deadSprite, int speed, int point) {
         super(xUnit, yUnit, sprite, ai, deadSprite, speed, point);
     }
+
 
     @Override
     public void setImg() {
         int direct = ai.getCurrentDirect();
         if (life == 0) {
-            sprite = Sprite.balloom_dead;
-        } else if (direct == 0){
-            sprite = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, 20);
-        }
-        else if (direct == 1){
-            sprite = Sprite.movingSprite(Sprite.balloom_up1, Sprite.balloom_up2, Sprite.balloom_up3, animate, 20);
-        }
-        else if (direct == 2) {
-            sprite = Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, 20);
+            sprite = Sprite.mushroom_dead;
+        } else if (direct == 0) {
+            sprite = Sprite.movingSprite(Sprite.mushroom_left1, Sprite.mushroom_left2, Sprite.mushroom_left3, animate, 20);
+        } else if (direct == 1) {
+            sprite = Sprite.movingSprite(Sprite.mushroom_up1, Sprite.mushroom_up2, Sprite.mushroom_up3, animate, 20);
+        } else if (direct == 2) {
+            sprite = Sprite.movingSprite(Sprite.mushroom_right1, Sprite.mushroom_right2, Sprite.mushroom_right3, animate, 20);
         } else {
-            sprite = Sprite.movingSprite(Sprite.balloom_down1, Sprite.balloom_down2, Sprite.balloom_down3, animate, 20);
+            sprite = Sprite.movingSprite(Sprite.mushroom_down1, Sprite.mushroom_down2, Sprite.mushroom_down3, animate, 20);
         }
     }
-
 }
+
+

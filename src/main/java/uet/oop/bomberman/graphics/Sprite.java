@@ -91,41 +91,59 @@ public class Sprite {
 	|--------------------------------------------------------------------------
 	 */
 	//BALLOM
-	public static Sprite balloom_left1 = new Sprite(DEFAULT_SIZE, 3, 3, SpriteSheet.tiles, 24, 24);
-	public static Sprite balloom_left2 = new Sprite(DEFAULT_SIZE, 3, 4, SpriteSheet.tiles, 24, 24);
-	public static Sprite balloom_left3 = new Sprite(DEFAULT_SIZE, 3, 5, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_left1 = new Sprite(DEFAULT_SIZE, 3, 3, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_left2 = new Sprite(DEFAULT_SIZE, 3, 4, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_left3 = new Sprite(DEFAULT_SIZE, 3, 5, SpriteSheet.tiles, 24, 24);
 
-	public static Sprite balloom_right1 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.tiles, 24, 24);
-	public static Sprite balloom_right2 = new Sprite(DEFAULT_SIZE, 1, 4, SpriteSheet.tiles, 24, 24);
-	public static Sprite balloom_right3 = new Sprite(DEFAULT_SIZE, 1, 5, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_right1 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_right2 = new Sprite(DEFAULT_SIZE, 1, 4, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_right3 = new Sprite(DEFAULT_SIZE, 1, 5, SpriteSheet.tiles, 24, 24);
 
-	public static Sprite balloom_up1 = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.tiles, 24, 24);
-	public static Sprite balloom_up2 = new Sprite(DEFAULT_SIZE, 0, 4, SpriteSheet.tiles, 24, 24);
-	public static Sprite balloom_up3 = new Sprite(DEFAULT_SIZE, 0, 5, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_up1 = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_up2 = new Sprite(DEFAULT_SIZE, 0, 4, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_up3 = new Sprite(DEFAULT_SIZE, 0, 5, SpriteSheet.tiles, 24, 24);
 
-	public static Sprite balloom_down1 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.tiles, 24, 24);
-	public static Sprite balloom_down2 = new Sprite(DEFAULT_SIZE, 2, 4, SpriteSheet.tiles, 24, 24);
-	public static Sprite balloom_down3 = new Sprite(DEFAULT_SIZE, 2, 5, SpriteSheet.tiles, 24, 24);
-	public static Sprite balloom_dead = new Sprite(DEFAULT_SIZE, 4, 3, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_down1 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_down2 = new Sprite(DEFAULT_SIZE, 2, 4, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_down3 = new Sprite(DEFAULT_SIZE, 2, 5, SpriteSheet.tiles, 24, 24);
+	public static Sprite spartan_dead = new Sprite(DEFAULT_SIZE, 4, 3, SpriteSheet.tiles, 24, 24);
 
 	//ONEAL
-	public static Sprite oneal_left1 = new Sprite(DEFAULT_SIZE, 3, 6, SpriteSheet.tiles, 24, 24);
-	public static Sprite oneal_left2 = new Sprite(DEFAULT_SIZE, 3, 7, SpriteSheet.tiles, 24, 24);
-	public static Sprite oneal_left3 = new Sprite(DEFAULT_SIZE, 3, 8, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_left1 = new Sprite(DEFAULT_SIZE, 3, 6, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_left2 = new Sprite(DEFAULT_SIZE, 3, 7, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_left3 = new Sprite(DEFAULT_SIZE, 3, 8, SpriteSheet.tiles, 24, 24);
 
-	public static Sprite oneal_right1 = new Sprite(DEFAULT_SIZE, 1, 6, SpriteSheet.tiles, 24, 24);
-	public static Sprite oneal_right2 = new Sprite(DEFAULT_SIZE, 1, 7, SpriteSheet.tiles, 24, 24);
-	public static Sprite oneal_right3 = new Sprite(DEFAULT_SIZE, 1, 8, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_right1 = new Sprite(DEFAULT_SIZE, 1, 6, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_right2 = new Sprite(DEFAULT_SIZE, 1, 7, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_right3 = new Sprite(DEFAULT_SIZE, 1, 8, SpriteSheet.tiles, 24, 24);
 
-	public static Sprite oneal_up1 = new Sprite(DEFAULT_SIZE, 0, 6, SpriteSheet.tiles, 24, 24);
-	public static Sprite oneal_up2 = new Sprite(DEFAULT_SIZE, 0, 7, SpriteSheet.tiles, 24, 24);
-	public static Sprite oneal_up3 = new Sprite(DEFAULT_SIZE, 0, 8, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_up1 = new Sprite(DEFAULT_SIZE, 0, 6, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_up2 = new Sprite(DEFAULT_SIZE, 0, 7, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_up3 = new Sprite(DEFAULT_SIZE, 0, 8, SpriteSheet.tiles, 24, 24);
 
-	public static Sprite oneal_down1 = new Sprite(DEFAULT_SIZE, 2, 6, SpriteSheet.tiles, 24, 24);
-	public static Sprite oneal_down2 = new Sprite(DEFAULT_SIZE, 2, 7, SpriteSheet.tiles, 24, 24);
-	public static Sprite oneal_down3 = new Sprite(DEFAULT_SIZE, 2, 8, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_down1 = new Sprite(DEFAULT_SIZE, 2, 6, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_down2 = new Sprite(DEFAULT_SIZE, 2, 7, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_down3 = new Sprite(DEFAULT_SIZE, 2, 8, SpriteSheet.tiles, 24, 24);
 
-	public static Sprite oneal_dead = new Sprite(DEFAULT_SIZE, 4, 6, SpriteSheet.tiles, 24, 24);
+	public static Sprite mushroom_dead = new Sprite(DEFAULT_SIZE, 4, 6, SpriteSheet.tiles, 24, 24);
+
+	public static Sprite ufo_left1 = new Sprite(DEFAULT_SIZE, 3, 9, SpriteSheet.tiles, 24, 24);
+	public static Sprite ufo_left2 = new Sprite(DEFAULT_SIZE, 3, 10, SpriteSheet.tiles, 24,24);
+	public static Sprite ufo_left3 = new Sprite(DEFAULT_SIZE, 3, 9, SpriteSheet.tiles, 24, 24);
+	
+	public static Sprite ufo_right1 = new Sprite(DEFAULT_SIZE, 1, 9, SpriteSheet.tiles, 24, 24);
+	public static Sprite ufo_right2 = new Sprite(DEFAULT_SIZE, 1, 10, SpriteSheet.tiles, 24, 24);
+	public static Sprite ufo_right3 = new Sprite(DEFAULT_SIZE, 1, 9, SpriteSheet.tiles, 24, 24);
+	
+	public static Sprite ufo_up1 = new Sprite(DEFAULT_SIZE, 0, 9, SpriteSheet.tiles, 24, 24);
+	public static Sprite ufo_up2 = new Sprite(DEFAULT_SIZE, 0, 10, SpriteSheet.tiles, 24, 24);
+	public static Sprite ufo_up3 = new Sprite(DEFAULT_SIZE, 0, 9, SpriteSheet.tiles, 24, 24);
+	
+	public static Sprite ufo_down1 = new Sprite(DEFAULT_SIZE, 2, 9, SpriteSheet.tiles, 24, 24);
+	public static Sprite ufo_down2 = new Sprite(DEFAULT_SIZE, 2, 10, SpriteSheet.tiles, 24, 24);
+	public static Sprite ufo_down3 = new Sprite(DEFAULT_SIZE, 2, 9, SpriteSheet.tiles, 24, 24);
+	
+	public static Sprite ufo_dead = new Sprite(DEFAULT_SIZE, 4, 9, SpriteSheet.tiles, 24, 24);
 
 	/*
 	|--------------------------------------------------------------------------
