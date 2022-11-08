@@ -36,14 +36,21 @@ public class UI {
     private static Font buttonFont;
     private static Font menuFont;
 
+    private static Font hudFont;
+
     public static void init() throws FileNotFoundException, URISyntaxException {
         InputStream stream = new FileInputStream("resources/font/Minecraft.ttf");
         buttonFont = Font.loadFont(stream, 18);
         menuFont = Font.loadFont(new FileInputStream("resources/font/Minecraft.ttf"), 30);
+        hudFont = Font.loadFont(new FileInputStream("resources/font/Minecraft.ttf"), 50);
         initPauseMenu();
         initMainMenu();
         initChooseCharacter();
         initControl();
+    }
+
+    public static Font getHudFont() {
+        return hudFont;
     }
 
     public static void initPauseMenu() throws URISyntaxException, FileNotFoundException {
