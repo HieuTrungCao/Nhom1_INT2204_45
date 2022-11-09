@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import uet.oop.bomberman.Management;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -99,7 +100,23 @@ public class UI {
             }
         });
 
-        pause.getChildren().addAll(cv, resume, restart, menu);
+        Button audio = new Button("Audio");
+        audio.setFont(buttonFont);
+        audio.setPrefSize(100, 30);
+        audio.setLayoutX(resume.getLayoutX());
+        audio.setLayoutY(menu.getLayoutY() + 50);
+        audio.setOnAction(actionEvent -> {
+            if (Sound.isIsOn()) {
+                Sound.toggleStatus();
+                Sound.closeAll();
+            } else {
+                Sound.toggleStatus();
+                Sound.menuTheme.start();
+                Sound.menuTheme.loop();
+            }
+        });
+
+        pause.getChildren().addAll(cv, resume, restart, menu, audio);
     }
 
     public static void initMainMenu() throws FileNotFoundException {
@@ -115,31 +132,31 @@ public class UI {
 
         Button PVE = new Button("PVE");
         PVE.setFont(menuFont);
-        PVE.setPrefSize(160, 50);
+        PVE.setPrefSize(160, 45);
         PVE.setLayoutX((cv.getWidth() - 150)/2);
         PVE.setLayoutY(mainMenu.getHeight() - 30);
         PVE.setOnAction(actionEvent -> Management.chooseCharacter());
 
         Button PVP = new Button("PVP");
         PVP.setFont(menuFont);
-        PVP.setPrefSize(160, 50);
+        PVP.setPrefSize(160, 45);
         PVP.setLayoutX(PVE.getLayoutX());
         PVP.setLayoutY(PVE.getLayoutY() + 70);
         PVP.setOnAction(actionEvent -> Management.player1chooseCharacter());
 
         Button Control = new Button("Control");
         Control.setFont(menuFont);
-        Control.setPrefSize(160, 50);
+        Control.setPrefSize(160, 45);
         Control.setLayoutX(PVE.getLayoutX());
         Control.setLayoutY(PVP.getLayoutY() + 70);
         Control.setOnAction(actionEvent -> Management.control());
 
-        Button History = new Button("Statistic");
-        History.setFont(menuFont);
-        History.setPrefSize(160, 50);
-        History.setLayoutX(PVE.getLayoutX());
-        History.setLayoutY(Control.getLayoutY() + 70);
-        History.setOnAction(actionEvent -> {
+        Button Statistic = new Button("Statistic");
+        Statistic.setFont(menuFont);
+        Statistic.setPrefSize(160, 45);
+        Statistic.setLayoutX(PVE.getLayoutX());
+        Statistic.setLayoutY(Control.getLayoutY() + 70);
+        Statistic.setOnAction(actionEvent -> {
             try {
                 Management.statistic();
             } catch (FileNotFoundException e) {
@@ -147,7 +164,22 @@ public class UI {
             }
         });
 
-        main.getChildren().addAll(cv, PVE, PVP, Control, History);
+        Button audio = new Button("Audio");
+        audio.setFont(menuFont);
+        audio.setPrefSize(160, 45);
+        audio.setLayoutX(PVE.getLayoutX());
+        audio.setLayoutY(Statistic.getLayoutY() + 70);
+        audio.setOnAction(actionEvent -> {
+            if (Sound.isIsOn()) {
+                Sound.toggleStatus();
+                Sound.soundTheme.close();
+            } else {
+                Sound.toggleStatus();
+                Sound.soundTheme.start();
+            }
+        });
+
+        main.getChildren().addAll(cv, PVE, PVP, Control, Statistic, audio);
     }
 
     public static void initChooseCharacter() throws FileNotFoundException {

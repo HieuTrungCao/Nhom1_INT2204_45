@@ -15,6 +15,7 @@ import uet.oop.bomberman.entities.destroyable.items.SpeedItem;
 import uet.oop.bomberman.entities.undestroyable.Grass;
 import uet.oop.bomberman.entities.undestroyable.Portal;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 
 import java.util.Set;
 
@@ -192,6 +193,8 @@ public class Player {
                     mark += 50;
                     bomb++;
                 }
+                Sound.powerUp.start();
+                Sound.powerUp.restart();
             }
         }
     }

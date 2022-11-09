@@ -36,6 +36,7 @@ import uet.oop.bomberman.entities.undestroyable.Grass;
 import uet.oop.bomberman.entities.undestroyable.Portal;
 import uet.oop.bomberman.entities.undestroyable.Wall;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.sound.Sound;
 
 import java.io.*;
 import java.util.*;
@@ -186,12 +187,16 @@ public class Management {
     public static void gameOver() {
         pause = true;
         root.getChildren().add(UI.gameOver);
+        Sound.gameOver.start();
+        Sound.gameOver.restart();
     }
 
     public static void gameClear() throws IOException {
         pause = true;
         UI.initGameClear();
         root.getChildren().add(UI.gameClear);
+        Sound.gameClear.start();
+        Sound.gameClear.restart();
         updateStatistic();
     }
 
@@ -199,12 +204,16 @@ public class Management {
         pause = true;
         UI.initPVPWin(isP1);
         root.getChildren().add(UI.pvpWin);
+        Sound.gameClear.start();
+        Sound.gameClear.restart();
         updateStatistic();
     }
 
     public static void startGame() throws FileNotFoundException {
         init();
         root.getChildren().add(UI.main);
+        Sound.soundTheme.start();
+        Sound.soundTheme.loop();
     }
     public static void continueGame() throws IOException {
         pause = false;
@@ -260,8 +269,11 @@ public class Management {
         bombs.clear();
         players.clear();
         Player.setCount((short) 0);
-        root.getChildren().removeAll();
+        root.getChildren().removeAll(p1Avatar, p1Life, p1numLife, p1Bomb, p1numBomb, p1score, p2Avatar, p2Life, p2numLife, p2Bomb, p2numBomb, p2score);
         root.getChildren().add(UI.main);
+        Sound.menuTheme.close();
+        Sound.soundTheme.start();
+        Sound.soundTheme.loop();
     }
 
     public static void menu() {
@@ -302,7 +314,9 @@ public class Management {
         createMap();
         players.get(0).setMap(map);
         players.add(new Player(map, (short) id, heart, bomb));
-
+        Sound.soundTheme.close();
+        Sound.menuTheme.start();
+        Sound.menuTheme.loop();
         createPlayerHud(0, 0, HEIGHT * Sprite.SCALED_SIZE);
         createPlayerHud(1, 1440, HEIGHT * Sprite.SCALED_SIZE);
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
@@ -359,6 +373,9 @@ public class Management {
         o.close();
 
         players.add(new Player(map, (short) id, heart, bomb));
+        Sound.soundTheme.close();
+        Sound.menuTheme.start();
+        Sound.menuTheme.loop();
         createPlayerHud(0, 0, HEIGHT * Sprite.SCALED_SIZE);
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -610,13 +627,13 @@ public class Management {
 
     public static void updateStatistic() throws IOException {
         File out = new File("resources/statistic/statistic.txt");
-        Writer o = new FileWriter(out, false);
-        o.write(Integer.toString(lv1HighScore));
-        o.write(Integer.toString(lv2HighScore));
-        o.write(Integer.toString(lv3HighScore));
-        o.write(Integer.toString(pvpHighScore));
-        o.write(Integer.toString(numberBomberMan));
-        o.write(Integer.toString(numberBomberTheKid));
+        PrintWriter o = new PrintWriter(new FileWriter("resources/statistic/statistic.txt"));
+        o.println(lv1HighScore);
+        o.println(lv2HighScore);
+        o.println(lv3HighScore);
+        o.println(pvpHighScore);
+        o.println(numberBomberMan);
+        o.println(numberBomberTheKid);
         o.close();
     }
 }
