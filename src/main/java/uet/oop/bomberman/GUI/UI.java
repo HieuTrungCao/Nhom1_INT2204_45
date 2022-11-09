@@ -1,11 +1,8 @@
 package uet.oop.bomberman.GUI;
 
-import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -15,10 +12,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Management;
-import uet.oop.bomberman.entities.LayeredEntity;
-import uet.oop.bomberman.entities.destroyable.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.FileInputStream;
@@ -38,6 +32,7 @@ public class UI {
     public static Pane player1Character;
     public static Pane player2Character;
     public static Pane pvpWin;
+    public static Pane statistic;
     private static Font buttonFont;
     private static Font menuFont;
 
@@ -96,7 +91,13 @@ public class UI {
         menu.setPrefSize(100, 30);
         menu.setLayoutX(resume.getLayoutX());
         menu.setLayoutY(restart.getLayoutY() + 50);
-        menu.setOnAction(actionEvent -> Management.backToMenu());
+        menu.setOnAction(actionEvent -> {
+            try {
+                Management.backToMenu();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         pause.getChildren().addAll(cv, resume, restart, menu);
     }
@@ -114,30 +115,37 @@ public class UI {
 
         Button PVE = new Button("PVE");
         PVE.setFont(menuFont);
-        PVE.setPrefSize(150, 50);
+        PVE.setPrefSize(160, 50);
         PVE.setLayoutX((cv.getWidth() - 150)/2);
         PVE.setLayoutY(mainMenu.getHeight() - 30);
         PVE.setOnAction(actionEvent -> Management.chooseCharacter());
 
         Button PVP = new Button("PVP");
         PVP.setFont(menuFont);
-        PVP.setPrefSize(150, 50);
+        PVP.setPrefSize(160, 50);
         PVP.setLayoutX(PVE.getLayoutX());
         PVP.setLayoutY(PVE.getLayoutY() + 70);
         PVP.setOnAction(actionEvent -> Management.player1chooseCharacter());
 
         Button Control = new Button("Control");
         Control.setFont(menuFont);
-        Control.setPrefSize(150, 50);
+        Control.setPrefSize(160, 50);
         Control.setLayoutX(PVE.getLayoutX());
         Control.setLayoutY(PVP.getLayoutY() + 70);
         Control.setOnAction(actionEvent -> Management.control());
 
-        Button History = new Button("History");
+        Button History = new Button("Statistic");
         History.setFont(menuFont);
-        History.setPrefSize(150, 50);
+        History.setPrefSize(160, 50);
         History.setLayoutX(PVE.getLayoutX());
         History.setLayoutY(Control.getLayoutY() + 70);
+        History.setOnAction(actionEvent -> {
+            try {
+                Management.statistic();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         main.getChildren().addAll(cv, PVE, PVP, Control, History);
     }
@@ -158,6 +166,7 @@ public class UI {
         Bomberman.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/Bomber.png"))));
         Bomberman.setOnAction(actionEvent -> {
             try {
+                Management.numberBomberMan++;
                 Management.startPVE(0, 5, 20);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -172,6 +181,7 @@ public class UI {
         BomberTheKid.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/BomberTheKid.png"))));
         BomberTheKid.setOnAction(actionEvent -> {
             try {
+                Management.numberBomberTheKid++;
                 Management.startPVE(1, 3, 25);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -231,7 +241,13 @@ public class UI {
         menu.setPrefSize(100, 30);
         menu.setLayoutX(restart.getLayoutX());
         menu.setLayoutY(restart.getLayoutY() + 50);
-        menu.setOnAction(actionEvent -> Management.backToMenu());
+        menu.setOnAction(actionEvent -> {
+            try {
+                Management.backToMenu();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         gameOver.getChildren().addAll(cv, restart, menu);
     }
@@ -257,6 +273,24 @@ public class UI {
         bonusScore.relocate((cv.getWidth() - GameClear.getWidth())/2 + 20, (cv.getHeight() - GameClear.getHeight())/2 + 90);
 
         Text totalScore = new Text("Total score: " + Integer.toString(Management.players.get(0).getMark() + Management.players.get(0).getBonusScore()));
+        int total = Management.players.get(0).getMark() + Management.players.get(0).getBonusScore();
+        switch (Management.getCurrentLevel()) {
+            case 1 -> {
+                if (total > Management.lv1HighScore) {
+                    Management.lv1HighScore = total;
+                }
+            }
+            case 2 -> {
+                if (total > Management.lv2HighScore) {
+                    Management.lv2HighScore = total;
+                }
+            }
+            case 3 -> {
+                if (total > Management.lv3HighScore) {
+                    Management.lv3HighScore = total;
+                }
+            }
+        }
         totalScore.setFont(buttonFont);
         totalScore.setFill(Color.WHITE);
         totalScore.relocate((cv.getWidth() - GameClear.getWidth())/2 + 20, (cv.getHeight() - GameClear.getHeight())/2 + 110);
@@ -297,7 +331,13 @@ public class UI {
         menu.setPrefSize(110, 30);
         menu.setLayoutX(restart.getLayoutX());
         menu.setLayoutY(restart.getLayoutY() + 50);
-        menu.setOnAction(actionEvent -> Management.backToMenu());
+        menu.setOnAction(actionEvent -> {
+            try {
+                Management.backToMenu();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         gameClear.getChildren().addAll(cv, baseScore, bonusScore, totalScore, Continue, restart, menu);
     }
 
@@ -316,6 +356,7 @@ public class UI {
         Bomberman.setBackground(null);
         Bomberman.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/Bomber.png"))));
         Bomberman.setOnAction(actionEvent -> {
+            Management.numberBomberMan++;
             Management.player2chooseCharacter(0, 5, 20);
         });
 
@@ -326,6 +367,7 @@ public class UI {
         BomberTheKid.setBackground(null);
         BomberTheKid.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/BomberTheKid.png"))));
         BomberTheKid.setOnAction(actionEvent -> {
+            Management.numberBomberTheKid++;
             Management.player2chooseCharacter(1, 3, 25);
         });
 
@@ -353,6 +395,7 @@ public class UI {
         Bomberman.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/Bomber.png"))));
         Bomberman.setOnAction(actionEvent -> {
             try {
+                Management.numberBomberMan++;
                 Management.startPVP(0, 5, 20);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
@@ -367,6 +410,7 @@ public class UI {
         BomberTheKid.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/BomberTheKid.png"))));
         BomberTheKid.setOnAction(actionEvent -> {
             try {
+                Management.numberBomberTheKid++;
                 Management.startPVP(1, 3, 25);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
@@ -410,6 +454,7 @@ public class UI {
         totalScore1.setFont(buttonFont);
         totalScore1.setFill(Color.WHITE);
         totalScore1.relocate((cv.getWidth() - win.getWidth())/2 + 20, (cv.getHeight() - win.getHeight())/2 + 110);
+        int total1 = Management.players.get(0).getMark() + Management.players.get(0).getBonusScore();
 
         Text baseScore2 = new Text("P2's base score: " + Integer.toString(Management.players.get(1).getMark()));
         baseScore2.setFont(buttonFont);
@@ -425,6 +470,10 @@ public class UI {
         totalScore2.setFont(buttonFont);
         totalScore2.setFill(Color.WHITE);
         totalScore2.relocate((cv.getWidth() - win.getWidth())/2 + 20, (cv.getHeight() - win.getHeight())/2 + 170);
+        int total2 = Management.players.get(1).getMark() + Management.players.get(1).getBonusScore();
+        if (Math.max(total1, total2) > Management.pvpHighScore) {
+            Management.pvpHighScore = Math.max(total1, total2);
+        }
 
         Button restart = new Button("Restart");
         restart.setFont(buttonFont);
@@ -444,8 +493,64 @@ public class UI {
         menu.setPrefSize(110, 30);
         menu.setLayoutX(restart.getLayoutX());
         menu.setLayoutY(restart.getLayoutY() + 50);
-        menu.setOnAction(actionEvent -> Management.backToMenu());
+        menu.setOnAction(actionEvent -> {
+            try {
+                Management.backToMenu();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         pvpWin.getChildren().addAll(cv, baseScore1, bonusScore1, totalScore1, baseScore2, bonusScore2, totalScore2, restart, menu);
+    }
+
+    public static void initSatistic() throws FileNotFoundException {
+        statistic = new Pane();
+        Canvas cv = new Canvas(Management.WIDTH * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
+        GraphicsContext gc = cv.getGraphicsContext2D();
+        var stops = new Stop[] {new Stop(0, Color.web("#81c483")), new Stop(1, Color.web("#fcc200"))};
+        gc.setFill(new LinearGradient(0, 0, cv.getWidth(), cv.getHeight(), false, CycleMethod.NO_CYCLE, stops));
+        gc.fillRect(0, 0, cv.getWidth(), cv.getHeight());
+
+        InputStream stream = new FileInputStream("resources/ui/statistic.png");
+        Image panel = new Image(stream);
+        gc.drawImage(panel, (cv.getWidth() - panel.getWidth())/2, (cv.getHeight() - panel.getHeight())/2);
+
+        Text lv1 = new Text("Level 1: " + Integer.toString(Management.lv1HighScore));
+        lv1.setFont(buttonFont);
+        lv1.setFill(Color.WHITE);
+        lv1.relocate((cv.getWidth() - panel.getWidth())/2 + 20, (cv.getHeight() - panel.getHeight())/2 + 70);
+
+        Text lv2 = new Text("Level 2: " + Integer.toString(Management.lv2HighScore));
+        lv2.setFont(buttonFont);
+        lv2.setFill(Color.WHITE);
+        lv2.relocate((cv.getWidth() - panel.getWidth())/2 + 20, (cv.getHeight() - panel.getHeight())/2 + 90);
+
+        Text lv3 = new Text("Level 3: " + Integer.toString(Management.lv3HighScore));
+        lv3.setFont(buttonFont);
+        lv3.setFill(Color.WHITE);
+        lv3.relocate((cv.getWidth() - panel.getWidth())/2 + 20, (cv.getHeight() - panel.getHeight())/2 + 110);
+
+        Text pvp = new Text("PVP: " + Integer.toString(Management.pvpHighScore));
+        pvp.setFont(buttonFont);
+        pvp.setFill(Color.WHITE);
+        pvp.relocate((cv.getWidth() - panel.getWidth())/2 + 20, (cv.getHeight() - panel.getHeight())/2 + 130);
+
+        if (Management.numberBomberMan > Management.numberBomberTheKid) {
+            stream = new FileInputStream("resources/textures/BomberCopy.png");
+        } else {
+            stream = new FileInputStream("resources/textures/BomberTheKidCopy.png");
+        }
+        Image mostPlayed = new Image(stream);
+        gc.drawImage(mostPlayed, (cv.getWidth() - mostPlayed.getWidth())/2,(cv.getHeight() - panel.getHeight())/2 + 175);
+
+        Button back = new Button("Back");
+        back.setFont(menuFont);
+        back.setPrefSize(150, 50);
+        back.setLayoutX((cv.getWidth() - 150)/2);
+        back.setLayoutY(510);
+        back.setOnAction(actionEvent -> Management.menu());
+
+        statistic.getChildren().addAll(cv, lv1, lv2, lv3, pvp, back);
     }
 }

@@ -60,7 +60,6 @@ public class Management {
     private static ImageView p2Avatar;
     private static ImageView p2Life;
     private static ImageView p2Bomb;
-
     private static Text p2numLife;
     private static Text p2numBomb;
     private static Text p2score;
@@ -72,6 +71,12 @@ public class Management {
     public static Scene scene;
     public static AnimationTimer timer;
     private static int currentLevel;
+    public static int lv1HighScore;
+    public static int lv2HighScore;
+    public static int lv3HighScore;
+    public static int pvpHighScore;
+    public static int numberBomberMan;
+    public static int numberBomberTheKid;
     public static void setNumOfPlayer(int n) {
         numOfPlayer = n;
     }
@@ -84,6 +89,13 @@ public class Management {
         scene = new Scene(root);
         Scanner sc = new Scanner(new File("resources/levels/currentLevel.txt"));
         currentLevel = sc.nextInt();
+        sc = new Scanner(new File("resources/statistic/statistic.txt"));
+        lv1HighScore = sc.nextInt();
+        lv2HighScore = sc.nextInt();
+        lv3HighScore = sc.nextInt();
+        pvpHighScore = sc.nextInt();
+        numberBomberMan = sc.nextInt();
+        numberBomberTheKid = sc.nextInt();
     }
     public static void createPlayerHud(int pos, int x, int y) throws FileNotFoundException {
         InputStream stream1 = null;
@@ -176,16 +188,18 @@ public class Management {
         root.getChildren().add(UI.gameOver);
     }
 
-    public static void gameClear() throws FileNotFoundException {
+    public static void gameClear() throws IOException {
         pause = true;
         UI.initGameClear();
         root.getChildren().add(UI.gameClear);
+        updateStatistic();
     }
 
-    public static void pvpClear(boolean isP1) throws FileNotFoundException {
+    public static void pvpClear(boolean isP1) throws IOException {
         pause = true;
         UI.initPVPWin(isP1);
         root.getChildren().add(UI.pvpWin);
+        updateStatistic();
     }
 
     public static void startGame() throws FileNotFoundException {
@@ -232,7 +246,7 @@ public class Management {
         }
     }
 
-    public static void backToMenu() {
+    public static void backToMenu() throws IOException {
         root.getChildren().remove(UI.gameOver);
         root.getChildren().remove(UI.pause);
         root.getChildren().remove(UI.gameClear);
@@ -252,6 +266,7 @@ public class Management {
 
     public static void menu() {
         root.getChildren().remove(UI.control);
+        root.getChildren().remove(UI.statistic);
         root.getChildren().add(UI.main);
     }
 
@@ -259,7 +274,11 @@ public class Management {
         root.getChildren().remove(UI.main);
         root.getChildren().add(UI.control);
     }
-
+    public static void statistic() throws FileNotFoundException {
+        root.getChildren().remove(UI.main);
+        UI.initSatistic();
+        root.getChildren().add(UI.statistic);
+    }
     public static void chooseCharacter() {
         root.getChildren().remove(UI.main);
         root.getChildren().add(UI.characters);
@@ -311,14 +330,14 @@ public class Management {
                     if (players.get(0).checkVictory() || players.get(1).checkLose()) {
                         try {
                             pvpClear(true);
-                        } catch (FileNotFoundException e) {
+                        } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
                     if (players.get(0).checkLose() || players.get(1).checkVictory()) {
                         try {
                             pvpClear(false);
-                        } catch (FileNotFoundException e) {
+                        } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
@@ -366,7 +385,7 @@ public class Management {
                     if (players.get(0).checkVictory()) {
                         try {
                             gameClear();
-                        } catch (FileNotFoundException e) {
+                        } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
@@ -587,5 +606,17 @@ public class Management {
 
     public static int getCurrentLevel() {
         return currentLevel;
+    }
+
+    public static void updateStatistic() throws IOException {
+        File out = new File("resources/statistic/statistic.txt");
+        Writer o = new FileWriter(out, false);
+        o.write(Integer.toString(lv1HighScore));
+        o.write(Integer.toString(lv2HighScore));
+        o.write(Integer.toString(lv3HighScore));
+        o.write(Integer.toString(pvpHighScore));
+        o.write(Integer.toString(numberBomberMan));
+        o.write(Integer.toString(numberBomberTheKid));
+        o.close();
     }
 }
