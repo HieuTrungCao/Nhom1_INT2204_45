@@ -168,7 +168,7 @@ public abstract class BombExplosion extends AnimatedEntities {
      */
     public boolean checkLayer(Character character) {
         return character.compareTo('*') == 0 || character.compareTo('B') == 0 ||
-                character.compareTo('F') == 0|| character.compareTo('S') == 0 ||
-                character.compareTo('H') == 0;
+                character.compareTo('F') == 0 || character.compareTo('S') == 0 ||
+                character.compareTo('H') == 0 || character.compareTo('x') == 0;
     }
 }
