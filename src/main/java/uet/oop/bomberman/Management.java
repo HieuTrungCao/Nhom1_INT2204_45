@@ -191,6 +191,12 @@ public class Management {
         int heart = players.get(0).getDefaultHeart();
         int bomb = players.get(0).getDefaultBomb();
         players.clear();
+        if (root.getChildren().contains(UI.gameOver)) {
+            root.getChildren().remove(UI.gameOver);
+        }
+        if (root.getChildren().contains(UI.pause)) {
+            root.getChildren().remove(UI.pause);
+        }
         startPVE(id, heart, bomb);
     }
 
@@ -387,6 +393,7 @@ public class Management {
                     }
                     case 'x' -> {
                         obj = new LayeredEntity(j, i);
+                        ((LayeredEntity)obj).addEntity(new Brick(j, i, Sprite.brick));
                         ((LayeredEntity) obj).addEntity(new Portal(j, i, Sprite.portal));
                         ((LayeredEntity) obj).addEntity(new Grass(j, i, Sprite.grass));
                         entities.add(obj);
