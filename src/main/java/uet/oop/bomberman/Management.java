@@ -30,6 +30,7 @@ import uet.oop.bomberman.entities.destroyable.Brick;
 import uet.oop.bomberman.entities.destroyable.bomb.BombExplosion;
 import uet.oop.bomberman.entities.destroyable.items.BombItem;
 import uet.oop.bomberman.entities.destroyable.items.FlameItem;
+import uet.oop.bomberman.entities.destroyable.items.HeartItem;
 import uet.oop.bomberman.entities.destroyable.items.SpeedItem;
 import uet.oop.bomberman.entities.undestroyable.Grass;
 import uet.oop.bomberman.entities.undestroyable.Portal;
@@ -59,6 +60,10 @@ public class Management {
     private static ImageView p2Avatar;
     private static ImageView p2Life;
     private static ImageView p2Bomb;
+
+    private static Text p2numLife;
+    private static Text p2numBomb;
+    private static Text p2score;
     private static int numOfPlayer;
     private static boolean pause = false;
     private static boolean ingame = false;
@@ -129,6 +134,18 @@ public class Management {
             p2Bomb = new ImageView(new Image(stream3));
             p2Bomb.setX(p2Life.getX() - 3 * 48);
             p2Bomb.setY(p1Life.getY());
+
+            p2numLife = new Text(Integer.toString(players.get(1).getHeart()));
+            p2numLife.setFont(UI.getHudFont());
+            p2numLife.relocate(p2Life.getX() - 48 * 1.5, 630);
+
+            p2numBomb = new Text(String.format("%02d", players.get(1).getBomb()));
+            p2numBomb.setFont(UI.getHudFont());
+            p2numBomb.relocate(p2Bomb.getX() - 48 * 1.5, 630);
+
+            p2score = new Text(String.format("%06d", players.get(1).getMark()));
+            p2score.setFont(UI.getHudFont());
+            p2score.relocate(p2Bomb.getX() - 48 * 7, 630);
         }
     }
 
@@ -136,6 +153,11 @@ public class Management {
         p1numLife.setText(Integer.toString(players.get(0).getHeart()));
         p1numBomb.setText(String.format("%02d", players.get(0).getBomb()));
         p1score.setText(String.format("%06d", players.get(0).getMark()));
+        if (numOfPlayer == 2) {
+            p2numLife = new Text(Integer.toString(players.get(1).getHeart()));
+            p2numBomb = new Text(String.format("%02d", players.get(1).getBomb()));
+            p2score = new Text(String.format("%06d", players.get(1).getMark()));
+        }
     }
 
     public static void pauseGame() {
@@ -148,18 +170,28 @@ public class Management {
         pause = false;
     }
 
+    public static void gameOver() {
+        pause = true;
+        root.getChildren().add(UI.gameOver);
+    }
+
     public static void startGame() throws FileNotFoundException {
         init();
         root.getChildren().add(UI.main);
     }
 
-    public static void restart() {
+    public static void restart() throws FileNotFoundException {
         pause = false;
         timer.stop();
         entities.clear();
         characters.clear();
         bombs.clear();
+        Player.setCount((short) 0);
+        int id = players.get(0).getNumBomberman();
+        int heart = players.get(0).getDefaultHeart();
+        int bomb = players.get(0).getDefaultBomb();
         players.clear();
+        startPVE(id, heart, bomb);
     }
 
     public static void backToMenu() {
@@ -216,6 +248,9 @@ public class Management {
             @Override
             public void handle(long l) {
                 if (!pause && ingame) {
+                    if (players.get(0).checkLose()) {
+                        gameOver();
+                    }
                     update();
                     render();
                 }
@@ -247,7 +282,6 @@ public class Management {
         };
         scene.setOnKeyPressed(eventHandler);
         scene.setOnKeyReleased(e -> codes.clear());
-
     }
 
     public static void createMap() {
@@ -314,6 +348,40 @@ public class Management {
                     case 's' -> {
                         obj = new LayeredEntity(j, i);
                         ((LayeredEntity)obj).addEntity(new SpeedItem(j, i, Sprite.powerup_speed));
+                        ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
+                        entities.add(obj);
+                    }
+                    case 'h' -> {
+                        obj = new LayeredEntity(j, i);
+                        ((LayeredEntity)obj).addEntity(new HeartItem(j, i, Sprite.powerup_life));
+                        ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
+                        entities.add(obj);
+                    }
+                    case 'B' -> {
+                        obj = new LayeredEntity(j, i);
+                        ((LayeredEntity)obj).addEntity(new Brick(j, i, Sprite.brick));
+                        ((LayeredEntity)obj).addEntity(new BombItem(j, i, Sprite.powerup_bombs));
+                        ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
+                        entities.add(obj);
+                    }
+                    case 'F' -> {
+                        obj = new LayeredEntity(j, i);
+                        ((LayeredEntity)obj).addEntity(new Brick(j, i, Sprite.brick));
+                        ((LayeredEntity)obj).addEntity(new FlameItem(j, i, Sprite.powerup_flames));
+                        ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
+                        entities.add(obj);
+                    }
+                    case 'S' -> {
+                        obj = new LayeredEntity(j, i);
+                        ((LayeredEntity)obj).addEntity(new Brick(j, i, Sprite.brick));
+                        ((LayeredEntity)obj).addEntity(new SpeedItem(j, i, Sprite.powerup_speed));
+                        ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
+                        entities.add(obj);
+                    }
+                    case 'H' -> {
+                        obj = new LayeredEntity(j, i);
+                        ((LayeredEntity)obj).addEntity(new Brick(j, i, Sprite.brick));
+                        ((LayeredEntity)obj).addEntity(new HeartItem(j, i, Sprite.powerup_life));
                         ((LayeredEntity)obj).addEntity(new Grass(j, i, Sprite.grass));
                         entities.add(obj);
                     }

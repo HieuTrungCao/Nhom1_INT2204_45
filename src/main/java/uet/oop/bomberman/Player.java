@@ -30,7 +30,9 @@ public class Player {
     // Lưu số mạng của nhân vật
     private int heart;
     // Số lượng bomb nhân vật có
+    private int defaultHeart;
     private int bomb;
+    private int defaultBomb;
     // Xem có đang ở bomb nạp VIP ko
     private boolean isBombPro;
     // Lưu trữ map để sử lý check map khi di chuyển nhanh hơn
@@ -56,10 +58,32 @@ public class Player {
         this.numBomberman = numBomberman;
         this.mark = 0;
         this.heart = heart;
+        this.defaultHeart = heart;
         this.bomb = bomb;
+        this.defaultBomb = bomb;
         this.isBombPro = false;
         this.isSetSpeed = false;
         this.num = (++this.count);
+    }
+
+    public static void setCount(short count) {
+        Player.count = count;
+    }
+
+    public int getDefaultHeart() {
+        return defaultHeart;
+    }
+
+    public int getDefaultBomb() {
+        return defaultBomb;
+    }
+
+    public void reset() {
+        this.bomb = defaultBomb;
+        this.heart = defaultHeart;
+        this.mark = 0;
+        this.isBombPro = false;
+        this.isSetSpeed = false;
     }
 
     public short getNumBomberman() {
@@ -75,13 +99,11 @@ public class Player {
         if (!bomberman.isAlive()) {
             return;
         }
-
-        if (checkVictory()) {
-            // todo something
-            System.out.println("Won");
-            return;
-        }
-
+//        if (checkVictory()) {
+//            // todo something
+//            System.out.println("Won");
+//            return;
+//        }
         if (num == 1) {
             if (codes.contains(W) && checkMap(1)) {
                 bomberman.moveUp();
@@ -100,7 +122,6 @@ public class Player {
                 direction = true;
             }
         }
-
         if (num == 2) {
             if (codes.contains(UP) && checkMap(1)) {
                 bomberman.moveUp();
@@ -165,7 +186,7 @@ public class Player {
      *
      * @return
      */
-    private boolean checkVictory() {
+    public boolean checkVictory() {
         int x = bomberman.getX() / Sprite.SCALED_SIZE;
         int y = bomberman.getY() / Sprite.SCALED_SIZE;
 
@@ -180,14 +201,20 @@ public class Player {
                 }
             }
         }
+        return false;
+    }
 
+    public boolean checkLose() {
+        if (this.heart == 0 || this.bomb == 0) {
+            return true;
+        }
         return false;
     }
 
     public void update() {
         if (!bomberman.isAlive()
                 && bomberman.getAnimate_die() == bomberman.getTime_die()) {
-            if (heart > 1) {
+            if (heart > 0) {
                 bomberman.setIsAlive(true);
                 heart--;
                 bomberman.setX(48);

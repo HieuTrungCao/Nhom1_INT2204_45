@@ -47,6 +47,7 @@ public class UI {
         initMainMenu();
         initChooseCharacter();
         initControl();
+        initGameOver();
     }
 
     public static Font getHudFont() {
@@ -75,6 +76,13 @@ public class UI {
         restart.setPrefSize(100, 30);
         restart.setLayoutX(resume.getLayoutX());
         restart.setLayoutY(resume.getLayoutY() + 50);
+        restart.setOnAction(actionEvent -> {
+            try {
+                Management.restart();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         Button menu = new Button("Menu");
         menu.setFont(buttonFont);
@@ -185,5 +193,38 @@ public class UI {
         back.setOnAction(actionEvent -> Management.menu());
 
         control.getChildren().addAll(cv, back);
+    }
+
+    public static void initGameOver() throws FileNotFoundException {
+        gameOver = new Pane();
+        Canvas cv = new Canvas(Management.WIDTH  * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
+        GraphicsContext gc = cv.getGraphicsContext2D();
+
+        InputStream stream = new FileInputStream("resources/ui/GameOver.png");
+        Image GameOver = new Image(stream);
+
+        gc.drawImage(GameOver, (cv.getWidth() - GameOver.getWidth())/2, (cv.getHeight() - GameOver.getHeight())/2);
+
+        Button restart = new Button("Restart");
+        restart.setFont(buttonFont);
+        restart.setPrefSize(100, 30);
+        restart.setLayoutX((cv.getWidth() - GameOver.getWidth())/2 + (GameOver.getWidth() - 100)/2);
+        restart.setLayoutY((cv.getHeight() - GameOver.getHeight())/2 + 100);
+        restart.setOnAction(actionEvent -> {
+            try {
+                Management.restart();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Button menu = new Button("Menu");
+        menu.setFont(buttonFont);
+        menu.setPrefSize(100, 30);
+        menu.setLayoutX(restart.getLayoutX());
+        menu.setLayoutY(restart.getLayoutY() + 50);
+        menu.setOnAction(actionEvent -> Management.backToMenu());
+
+        gameOver.getChildren().addAll(cv, restart, menu);
     }
 }
