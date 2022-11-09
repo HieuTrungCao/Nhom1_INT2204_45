@@ -187,7 +187,11 @@ public class Management {
     }
     public static void continueGame() throws IOException {
         pause = false;
-        if (currentLevel < 3) currentLevel++;
+        if (currentLevel < 3) {
+            currentLevel++;
+        } else {
+            currentLevel = 1;
+        }
         restart();
     }
     public static void restart() throws IOException {
@@ -255,9 +259,9 @@ public class Management {
         ingame = true;
 
         createMap();
-        File out = new File("resources/levels/currentLevels.txt");
-        FileWriter o = new FileWriter(out, false);
-        o.write(currentLevel);
+        File out = new File("resources/levels/currentLevel.txt");
+        Writer o = new FileWriter(out, false);
+        o.write(new Integer(currentLevel).toString());
         o.close();
 
         players.add(new Player(map, (short) id, heart, bomb));

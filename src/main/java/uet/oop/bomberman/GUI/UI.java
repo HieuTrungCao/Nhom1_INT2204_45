@@ -259,18 +259,20 @@ public class UI {
         Button Continue = null;
         if (Management.getCurrentLevel() < 3) {
             Continue = new Button("Continue");
-            Continue.setFont(buttonFont);
-            Continue.setPrefSize(110, 30);
-            Continue.setLayoutX((cv.getWidth() - GameClear.getWidth()) / 2 + (GameClear.getWidth() - 110) / 2);
-            Continue.setLayoutY((cv.getHeight() - GameClear.getHeight()) / 2 + 150);
-            Continue.setOnAction(actionEvent -> {
-                try {
-                    Management.continueGame();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        } else {
+            Continue = new Button("Reset");
         }
+        Continue.setFont(buttonFont);
+        Continue.setPrefSize(110, 30);
+        Continue.setLayoutX((cv.getWidth() - GameClear.getWidth()) / 2 + (GameClear.getWidth() - 110) / 2);
+        Continue.setLayoutY((cv.getHeight() - GameClear.getHeight()) / 2 + 150);
+        Continue.setOnAction(actionEvent -> {
+            try {
+                Management.continueGame();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         Button restart = new Button("Restart");
         restart.setFont(buttonFont);
@@ -291,10 +293,6 @@ public class UI {
         menu.setLayoutX(restart.getLayoutX());
         menu.setLayoutY(restart.getLayoutY() + 50);
         menu.setOnAction(actionEvent -> Management.backToMenu());
-        if (Management.getCurrentLevel() < 3) {
-            gameClear.getChildren().addAll(cv, baseScore, bonusScore, totalScore, Continue, restart, menu);
-        } else {
-            gameClear.getChildren().addAll(cv, baseScore, bonusScore, totalScore, restart, menu);
-        }
+        gameClear.getChildren().addAll(cv, baseScore, bonusScore, totalScore, Continue, restart, menu);
     }
 }
