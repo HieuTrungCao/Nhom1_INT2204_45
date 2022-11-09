@@ -170,9 +170,11 @@ public class Player {
                     mark += 50;
                     isBombPro = true;
                 } else if (((LayeredEntity) entity).getTopEntity() instanceof HeartItem) {
+                    ((LayeredEntity) entity).removeTop();
                     mark += 50;
                     heart++;
                 } else if (((LayeredEntity) entity).getTopEntity() instanceof BombItem) {
+                    ((LayeredEntity) entity).removeTop();
                     mark += 50;
                     bomb++;
                 }
@@ -261,53 +263,8 @@ public class Player {
     // bottom : 3
     // left : 4
     private boolean checkMap(int s) {
-
-//        int x = bomberman.getX() / Sprite.SCALED_SIZE;
-//        int y = bomberman.getY() / Sprite.SCALED_SIZE;
         int x = bomberman.getX();
         int y = bomberman.getY();
-
-//        if (s == 1) {
-//            if (x * Sprite.SCALED_SIZE != bomberman.getX()) {
-//                return false;
-//            }
-//            if (y * Sprite.SCALED_SIZE == bomberman.getY()) {
-//                return Character.valueOf(map[y - 1][x]).compareTo('#') != 0 &&
-//                        Character.valueOf(map[y - 1][x]).compareTo('*') != 0;
-//            }
-//        }
-//
-//        if (s == 2) {
-//            if (y * Sprite.SCALED_SIZE != bomberman.getY()) {
-//                return false;
-//            }
-//
-//            if (x * Sprite.SCALED_SIZE == bomberman.getX()) {
-//                return Character.valueOf(map[y][x + 1]).compareTo('#') != 0 &&
-//                        Character.valueOf(map[y][x + 1]).compareTo('*') != 0;
-//            }
-//        }
-//
-//        if (s == 3) {
-//            if (x * Sprite.SCALED_SIZE != bomberman.getX()) {
-//                return false;
-//            }
-//            if (y * Sprite.SCALED_SIZE == bomberman.getY()) {
-//                return Character.valueOf(map[y + 1][x]).compareTo('#') != 0 &&
-//                        Character.valueOf(map[y + 1][x]).compareTo('*') != 0;
-//            }
-//        }
-//
-//        if (s == 4) {
-//            if (y * Sprite.SCALED_SIZE != bomberman.getY()) {
-//                return false;
-//            }
-//
-//            if (x * Sprite.SCALED_SIZE == bomberman.getX()) {
-//                return Character.valueOf(map[y][x - 1]).compareTo('#') != 0 &&
-//                        Character.valueOf(map[y][x - 1]).compareTo('*') != 0;
-//            }
-//        }
 
         int speed = bomberman.getSpeed();
 
@@ -350,7 +307,9 @@ public class Player {
     }
 
     private boolean isBlock(Character character) {
-        return character.compareTo('#') == 0 || character.compareTo('*') == 0;
+        return character.compareTo('#') == 0 || character.compareTo('*') == 0 ||
+                character.compareTo('B') == 0 || character.compareTo('F') == 0||
+                character.compareTo('S') == 0 || character.compareTo('H') == 0;
     }
 
     // Trả về bombers
@@ -363,7 +322,7 @@ public class Player {
     }
 
     public void setMark(int mark) {
-        this.mark = mark;
+        this.mark += mark;
     }
 
     public int getHeart() {

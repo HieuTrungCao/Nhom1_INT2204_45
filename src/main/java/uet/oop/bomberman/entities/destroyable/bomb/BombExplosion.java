@@ -28,11 +28,13 @@ public abstract class BombExplosion extends AnimatedEntities {
     // Lưu xem bomb được đặc từ player 1 hoặc 2
     protected short putBy;
 
+    protected boolean isPlaySound;
     public BombExplosion(int xUnit, int yUnit, Sprite sprite, short putBy, Character[][] map) {
         super(xUnit, yUnit, sprite);
         explosions = new LinkedList<>();
         this.map = map;
         this.putBy = putBy;
+        this.isPlaySound = false;
     }
 
     /**
@@ -47,9 +49,12 @@ public abstract class BombExplosion extends AnimatedEntities {
     public void update() {
         ((Bomb) explosions.get(0)).setAnimate(this.getAnimate());
         explosions.get(0).update();
-        if (animate == time) {
-            Sound.bombExplode.restart();
-            Sound.bombExplode.start();
+        if (animate >= time) {
+            if (!isPlaySound) {
+                Sound.bombExplode.restart();
+                Sound.bombExplode.start();
+                isPlaySound = true;
+            }
         }
         if (animate >= time) {
             updateExplosion();
@@ -57,7 +62,7 @@ public abstract class BombExplosion extends AnimatedEntities {
         }
         animate();
 
-        if (animate == time * 2) {
+        if (animate >= time * 2) {
             removeBrick();
             map[super.getY()/Sprite.SCALED_SIZE][super.getX()/Sprite.SCALED_SIZE] = ' ';
             Management.bombs.remove(0);
@@ -86,7 +91,6 @@ public abstract class BombExplosion extends AnimatedEntities {
         for (int i = 0; i < Management.characters.size(); i++) {
             if (checkDeadEntity(Management.characters.get(i)) &&
                     ((Enemy) Management.characters.get(i)).isAlive()) {
-                System.out.println("OK");
                 ((Enemy) Management.characters.get(i)).minusLife();
                 /**
                  * gọi đến hàm cộng điểm ở đây
@@ -121,7 +125,10 @@ public abstract class BombExplosion extends AnimatedEntities {
                 ((LayeredEntity) explosions.get(i)).removeTop();
                 int y = explosions.get(i).getY() / Sprite.SCALED_SIZE;
                 int x = explosions.get(i).getX() / Sprite.SCALED_SIZE;
-                map[y][x] = ' ';
+
+                if (checkLayer(map[y][x])) {
+                    map[y][x] = ' ';
+                }
             }
         }
     }
@@ -152,5 +159,16 @@ public abstract class BombExplosion extends AnimatedEntities {
         for (int i = 1; i < explosions.size(); i++)
             if (explosions.get(i) instanceof Flame)
                 explosions.get(i).render(gc);
+    }
+
+    /**
+     * Kiểm tra xem kí tự cần kiểm tra xem có thuộc phần kí tự phá hủy đc không
+     * *, B, F, S, H
+     * @return true nếu thuộc những kí tự trên
+     */
+    public boolean checkLayer(Character character) {
+        return character.compareTo('*') == 0 || character.compareTo('B') == 0 ||
+                character.compareTo('F') == 0|| character.compareTo('S') == 0 ||
+                character.compareTo('H') == 0;
     }
 }
