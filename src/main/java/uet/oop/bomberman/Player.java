@@ -27,6 +27,8 @@ public class Player {
     private Bomber bomberman;
     // Lưu điểm
     private int mark;
+    // Bonus score tính theo số mạng và bomb còn lại
+    private int bonusScore;
     // Lưu số mạng của nhân vật
     private int heart;
     // Số lượng bomb nhân vật có
@@ -99,11 +101,6 @@ public class Player {
         if (!bomberman.isAlive()) {
             return;
         }
-//        if (checkVictory()) {
-//            // todo something
-//            System.out.println("Won");
-//            return;
-//        }
         if (num == 1) {
             if (codes.contains(W) && checkMap(1)) {
                 bomberman.moveUp();
@@ -198,7 +195,8 @@ public class Player {
             if (((LayeredEntity) entity).getTopEntity() instanceof Portal) {
                 if (entity.getX() == bomberman.getX() &&
                         entity.getY() == bomberman.getY() &&
-                        Management.characters.size() == 0) {
+                        Management.characters.size() != 0) {
+                    bonusScore = bomb * 30 + heart * 100;
                     return true;
                 }
             }
@@ -207,7 +205,7 @@ public class Player {
     }
 
     public boolean checkLose() {
-        if (this.heart == 0 || this.bomb == 0) {
+        if (this.heart == 0) {
             return true;
         }
         return false;
@@ -341,5 +339,13 @@ public class Player {
 
     public int getBomb() {
         return bomb;
+    }
+
+    public int getBonusScore() {
+        return bonusScore;
+    }
+
+    public void setBonusScore(int bonusScore) {
+        this.bonusScore = bonusScore;
     }
 }

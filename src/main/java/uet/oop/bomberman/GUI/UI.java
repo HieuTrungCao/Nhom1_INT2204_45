@@ -14,6 +14,7 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Management;
 import uet.oop.bomberman.entities.LayeredEntity;
@@ -22,6 +23,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 
@@ -48,6 +50,7 @@ public class UI {
         initChooseCharacter();
         initControl();
         initGameOver();
+        //initGameClear();
     }
 
     public static Font getHudFont() {
@@ -79,7 +82,7 @@ public class UI {
         restart.setOnAction(actionEvent -> {
             try {
                 Management.restart();
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -150,8 +153,8 @@ public class UI {
         Bomberman.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/Bomber.png"))));
         Bomberman.setOnAction(actionEvent -> {
             try {
-                Management.startPVE(0, 5, 10);
-            } catch (FileNotFoundException e) {
+                Management.startPVE(0, 5, 20);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -164,8 +167,8 @@ public class UI {
         BomberTheKid.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/BomberTheKid.png"))));
         BomberTheKid.setOnAction(actionEvent -> {
             try {
-                Management.startPVE(1, 3, 15);
-            } catch (FileNotFoundException e) {
+                Management.startPVE(1, 3, 25);
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -213,7 +216,7 @@ public class UI {
         restart.setOnAction(actionEvent -> {
             try {
                 Management.restart();
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -226,5 +229,72 @@ public class UI {
         menu.setOnAction(actionEvent -> Management.backToMenu());
 
         gameOver.getChildren().addAll(cv, restart, menu);
+    }
+
+    public static void initGameClear() throws FileNotFoundException {
+        gameClear = new Pane();
+        Canvas cv = new Canvas(Management.WIDTH * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
+        GraphicsContext gc = cv.getGraphicsContext2D();
+
+        InputStream stream = new FileInputStream("resources/ui/GameClear.png");
+        Image GameClear = new Image(stream);
+
+        gc.drawImage(GameClear, (cv.getWidth() - GameClear.getWidth())/2, (cv.getHeight() - GameClear.getHeight())/2);
+
+        Text baseScore = new Text("Base score: " + Integer.toString(Management.players.get(0).getMark()));
+        baseScore.setFont(buttonFont);
+        baseScore.setFill(Color.WHITE);
+        baseScore.relocate((cv.getWidth() - GameClear.getWidth())/2 + 20, (cv.getHeight() - GameClear.getHeight())/2 + 70);
+
+        Text bonusScore = new Text("Bonus score: " + Integer.toString(Management.players.get(0).getBonusScore()));
+        bonusScore.setFont(buttonFont);
+        bonusScore.setFill(Color.WHITE);
+        bonusScore.relocate((cv.getWidth() - GameClear.getWidth())/2 + 20, (cv.getHeight() - GameClear.getHeight())/2 + 90);
+
+        Text totalScore = new Text("Total score: " + Integer.toString(Management.players.get(0).getMark() + Management.players.get(0).getBonusScore()));
+        totalScore.setFont(buttonFont);
+        totalScore.setFill(Color.WHITE);
+        totalScore.relocate((cv.getWidth() - GameClear.getWidth())/2 + 20, (cv.getHeight() - GameClear.getHeight())/2 + 110);
+
+        Button Continue = null;
+        if (Management.getCurrentLevel() < 3) {
+            Continue = new Button("Continue");
+            Continue.setFont(buttonFont);
+            Continue.setPrefSize(110, 30);
+            Continue.setLayoutX((cv.getWidth() - GameClear.getWidth()) / 2 + (GameClear.getWidth() - 110) / 2);
+            Continue.setLayoutY((cv.getHeight() - GameClear.getHeight()) / 2 + 150);
+            Continue.setOnAction(actionEvent -> {
+                try {
+                    Management.continueGame();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
+        Button restart = new Button("Restart");
+        restart.setFont(buttonFont);
+        restart.setPrefSize(110, 30);
+        restart.setLayoutX((cv.getWidth() - GameClear.getWidth())/2 + (GameClear.getWidth() - 110)/2);
+        restart.setLayoutY((cv.getHeight() - GameClear.getHeight())/2 + 200);
+        restart.setOnAction(actionEvent -> {
+            try {
+                Management.restart();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Button menu = new Button("Menu");
+        menu.setFont(buttonFont);
+        menu.setPrefSize(110, 30);
+        menu.setLayoutX(restart.getLayoutX());
+        menu.setLayoutY(restart.getLayoutY() + 50);
+        menu.setOnAction(actionEvent -> Management.backToMenu());
+        if (Management.getCurrentLevel() < 3) {
+            gameClear.getChildren().addAll(cv, baseScore, bonusScore, totalScore, Continue, restart, menu);
+        } else {
+            gameClear.getChildren().addAll(cv, baseScore, bonusScore, totalScore, restart, menu);
+        }
     }
 }

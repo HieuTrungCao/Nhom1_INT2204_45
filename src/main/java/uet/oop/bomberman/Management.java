@@ -175,12 +175,22 @@ public class Management {
         root.getChildren().add(UI.gameOver);
     }
 
+    public static  void gameClear() throws FileNotFoundException {
+        pause = true;
+        UI.initGameClear();
+        root.getChildren().add(UI.gameClear);
+    }
+
     public static void startGame() throws FileNotFoundException {
         init();
         root.getChildren().add(UI.main);
     }
-
-    public static void restart() throws FileNotFoundException {
+    public static void continueGame() throws IOException {
+        pause = false;
+        if (currentLevel < 3) currentLevel++;
+        restart();
+    }
+    public static void restart() throws IOException {
         pause = false;
         timer.stop();
         entities.clear();
@@ -197,11 +207,22 @@ public class Management {
         if (root.getChildren().contains(UI.pause)) {
             root.getChildren().remove(UI.pause);
         }
+        if (root.getChildren().contains(UI.gameClear)) {
+            root.getChildren().remove(UI.gameClear);
+        }
         startPVE(id, heart, bomb);
     }
 
     public static void backToMenu() {
-        root.getChildren().remove(UI.pause);
+        if (root.getChildren().contains(UI.gameOver)) {
+            root.getChildren().remove(UI.gameOver);
+        }
+        if (root.getChildren().contains(UI.pause)) {
+            root.getChildren().remove(UI.pause);
+        }
+        if (root.getChildren().contains(UI.gameClear)) {
+            root.getChildren().remove(UI.gameClear);
+        }
         pause = false;
         ingame = false;
         timer.stop();
@@ -209,6 +230,7 @@ public class Management {
         characters.clear();
         bombs.clear();
         players.clear();
+        Player.setCount((short) 0);
         root.getChildren().removeAll();
         root.getChildren().add(UI.main);
     }
@@ -228,10 +250,16 @@ public class Management {
         root.getChildren().add(UI.characters);
     }
 
-    public static void startPVE(int id, int heart, int bomb) throws FileNotFoundException {
+    public static void startPVE(int id, int heart, int bomb) throws IOException {
         setNumOfPlayer(1);
         ingame = true;
+
         createMap();
+        File out = new File("resources/levels/currentLevels.txt");
+        FileWriter o = new FileWriter(out, false);
+        o.write(currentLevel);
+        o.close();
+
         players.add(new Player(map, (short) id, heart, bomb));
         createPlayerHud(0, 0, HEIGHT * Sprite.SCALED_SIZE);
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
@@ -254,11 +282,18 @@ public class Management {
             @Override
             public void handle(long l) {
                 if (!pause && ingame) {
+                    update();
+                    render();
+                    if (players.get(0).checkVictory()) {
+                        try {
+                            gameClear();
+                        } catch (FileNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                     if (players.get(0).checkLose()) {
                         gameOver();
                     }
-                    update();
-                    render();
                 }
             }
         };
@@ -291,7 +326,18 @@ public class Management {
     }
 
     public static void createMap() {
-        File file = new File("resources/levels/Level1.txt");
+        File file = null;
+        switch (currentLevel) {
+            case 1 -> {
+                file = new File("resources/levels/Level1.txt");
+            }
+            case 2 -> {
+                file = new File("resources/levels/Level2.txt");
+            }
+            case 3 -> {
+                file = new File("resources/levels/Level3.txt");
+            }
+        }
         Scanner scn = null;
         try {
             scn = new Scanner(file);
@@ -450,5 +496,9 @@ public class Management {
             }
         }
         return null;
+    }
+
+    public static int getCurrentLevel() {
+        return currentLevel;
     }
 }
