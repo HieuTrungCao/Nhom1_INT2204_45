@@ -28,7 +28,7 @@ public class BombExplosionNormal extends BombExplosion {
 
         // Top
         if (map[yUnit - 1][xUnit].compareTo('#') != 0) {
-            if (map[yUnit - 1][xUnit].compareTo('*') == 0)
+            if (checkLayer(map[yUnit - 1][xUnit]))
                 explosions.add(Management.getEntity(xUnit, yUnit - 1));
             else
                 explosions.add(new FlameTop(xUnit, yUnit - 1, Sprite.explosion_vertical_top_last));
@@ -36,7 +36,7 @@ public class BombExplosionNormal extends BombExplosion {
 
         // Right
         if (map[yUnit][xUnit + 1].compareTo('#') != 0) {
-            if (map[yUnit][xUnit + 1].compareTo('*') == 0)
+            if (checkLayer(map[yUnit][xUnit + 1]))
                 explosions.add(Management.getEntity(xUnit + 1, yUnit));
             else
                 explosions.add(new FlameRight(xUnit + 1, yUnit, Sprite.explosion_horizontal_right_last));
@@ -44,7 +44,7 @@ public class BombExplosionNormal extends BombExplosion {
 
         // Down
         if (map[yUnit + 1][xUnit].compareTo('#') != 0) {
-            if (map[yUnit + 1][xUnit].compareTo('*') == 0)
+            if (checkLayer(map[yUnit + 1][xUnit]))
                 explosions.add(Management.getEntity(xUnit, yUnit + 1));
             else
                 explosions.add(new FlameDown(xUnit, yUnit + 1, Sprite.explosion_vertical_down_last));
@@ -52,7 +52,7 @@ public class BombExplosionNormal extends BombExplosion {
 
         // Left
         if (map[yUnit][xUnit - 1].compareTo('#') != 0) {
-            if (map[yUnit][xUnit - 1].compareTo('*') == 0)
+            if (checkLayer(map[yUnit][xUnit - 1]))
                 explosions.add(Management.getEntity(xUnit - 1, yUnit));
             else
                 explosions.add(new FlameLeft(xUnit - 1, yUnit, Sprite.explosion_horizontal_left_last));

@@ -86,7 +86,6 @@ public abstract class BombExplosion extends AnimatedEntities {
         for (int i = 0; i < Management.characters.size(); i++) {
             if (checkDeadEntity(Management.characters.get(i)) &&
                     ((Enemy) Management.characters.get(i)).isAlive()) {
-                System.out.println("OK");
                 ((Enemy) Management.characters.get(i)).minusLife();
                 /**
                  * gọi đến hàm cộng điểm ở đây
@@ -121,7 +120,10 @@ public abstract class BombExplosion extends AnimatedEntities {
                 ((LayeredEntity) explosions.get(i)).removeTop();
                 int y = explosions.get(i).getY() / Sprite.SCALED_SIZE;
                 int x = explosions.get(i).getX() / Sprite.SCALED_SIZE;
-                map[y][x] = ' ';
+
+                if (checkLayer(map[y][x])) {
+                    map[y][x] = ' ';
+                }
             }
         }
     }
@@ -152,5 +154,16 @@ public abstract class BombExplosion extends AnimatedEntities {
         for (int i = 1; i < explosions.size(); i++)
             if (explosions.get(i) instanceof Flame)
                 explosions.get(i).render(gc);
+    }
+
+    /**
+     * Kiểm tra xem kí tự cần kiểm tra xem có thuộc phần kí tự phá hủy đc không
+     * *, B, F, S, H
+     * @return true nếu thuộc những kí tự trên
+     */
+    public boolean checkLayer(Character character) {
+        return character.compareTo('*') == 0 || character.compareTo('B') == 0 ||
+                character.compareTo('F') == 0|| character.compareTo('S') == 0 ||
+                character.compareTo('H') == 0;
     }
 }
