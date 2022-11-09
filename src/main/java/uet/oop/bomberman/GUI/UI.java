@@ -35,6 +35,9 @@ public class UI {
     public static Pane gameClear;
     public static Pane control;
     public static Pane characters;
+    public static Pane player1Character;
+    public static Pane player2Character;
+    public static Pane pvpWin;
     private static Font buttonFont;
     private static Font menuFont;
 
@@ -50,7 +53,8 @@ public class UI {
         initChooseCharacter();
         initControl();
         initGameOver();
-        //initGameClear();
+        initPlayer1Character();
+        initPlayer2Character();
     }
 
     public static Font getHudFont() {
@@ -120,6 +124,7 @@ public class UI {
         PVP.setPrefSize(150, 50);
         PVP.setLayoutX(PVE.getLayoutX());
         PVP.setLayoutY(PVE.getLayoutY() + 70);
+        PVP.setOnAction(actionEvent -> Management.player1chooseCharacter());
 
         Button Control = new Button("Control");
         Control.setFont(menuFont);
@@ -294,5 +299,153 @@ public class UI {
         menu.setLayoutY(restart.getLayoutY() + 50);
         menu.setOnAction(actionEvent -> Management.backToMenu());
         gameClear.getChildren().addAll(cv, baseScore, bonusScore, totalScore, Continue, restart, menu);
+    }
+
+    public static void initPlayer1Character() throws FileNotFoundException {
+        player1Character = new Pane();
+        Canvas cv = new Canvas(Management.WIDTH * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
+        GraphicsContext gc = cv.getGraphicsContext2D();
+        var stops = new Stop[] {new Stop(0, Color.web("#81c483")), new Stop(1, Color.web("#fcc200"))};
+        gc.setFill(new LinearGradient(0, 0, cv.getWidth(), cv.getHeight(), false, CycleMethod.NO_CYCLE, stops));
+        gc.fillRect(0, 0, cv.getWidth(), cv.getHeight());
+
+        Button Bomberman = new Button();
+        Bomberman.setPrefSize(400, 400);
+        Bomberman.setLayoutX(294);
+        Bomberman.setLayoutY(100);
+        Bomberman.setBackground(null);
+        Bomberman.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/Bomber.png"))));
+        Bomberman.setOnAction(actionEvent -> {
+            Management.player2chooseCharacter(0, 5, 20);
+        });
+
+        Button BomberTheKid = new Button();
+        BomberTheKid.setPrefSize(400, 400);
+        BomberTheKid.setLayoutX(794);
+        BomberTheKid.setLayoutY(100);
+        BomberTheKid.setBackground(null);
+        BomberTheKid.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/BomberTheKid.png"))));
+        BomberTheKid.setOnAction(actionEvent -> {
+            Management.player2chooseCharacter(1, 3, 25);
+        });
+
+        Text turn = new Text("P1's turn to choose!");
+        turn.setFont(hudFont);
+        turn.setFill(Color.BLACK);
+        turn.relocate((cv.getWidth() - turn.getBoundsInLocal().getWidth())/2, 50);
+
+        player1Character.getChildren().addAll(cv, turn, Bomberman, BomberTheKid);
+    }
+
+    public static void initPlayer2Character() throws FileNotFoundException {
+        player2Character = new Pane();
+        Canvas cv = new Canvas(Management.WIDTH * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
+        GraphicsContext gc = cv.getGraphicsContext2D();
+        var stops = new Stop[] {new Stop(0, Color.web("#81c483")), new Stop(1, Color.web("#fcc200"))};
+        gc.setFill(new LinearGradient(0, 0, cv.getWidth(), cv.getHeight(), false, CycleMethod.NO_CYCLE, stops));
+        gc.fillRect(0, 0, cv.getWidth(), cv.getHeight());
+
+        Button Bomberman = new Button();
+        Bomberman.setPrefSize(400, 400);
+        Bomberman.setLayoutX(294);
+        Bomberman.setLayoutY(100);
+        Bomberman.setBackground(null);
+        Bomberman.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/Bomber.png"))));
+        Bomberman.setOnAction(actionEvent -> {
+            try {
+                Management.startPVP(0, 5, 20);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Button BomberTheKid = new Button();
+        BomberTheKid.setPrefSize(400, 400);
+        BomberTheKid.setLayoutX(794);
+        BomberTheKid.setLayoutY(100);
+        BomberTheKid.setBackground(null);
+        BomberTheKid.setGraphic(new ImageView(new Image(new FileInputStream("resources/textures/BomberTheKid.png"))));
+        BomberTheKid.setOnAction(actionEvent -> {
+            try {
+                Management.startPVP(1, 3, 25);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Text turn = new Text("P2's turn to choose!");
+        turn.setFont(hudFont);
+        turn.setFill(Color.BLACK);
+        turn.relocate((cv.getWidth() - turn.getBoundsInLocal().getWidth())/2, 50);
+
+        player2Character.getChildren().addAll(cv, turn, Bomberman, BomberTheKid);
+    }
+
+    public static void initPVPWin(boolean isPlayer1) throws FileNotFoundException {
+        pvpWin = new Pane();
+        Canvas cv = new Canvas(Management.WIDTH * Sprite.SCALED_SIZE, Management.HEIGHT * Sprite.SCALED_SIZE);
+        GraphicsContext gc = cv.getGraphicsContext2D();
+
+        InputStream stream = null;
+        if (isPlayer1) {
+            stream = new FileInputStream("resources/ui/Player1Win.png");
+        } else {
+            stream = new FileInputStream("resources/ui/Player2Win.png");
+        }
+        Image win = new Image(stream);
+
+        gc.drawImage(win, (cv.getWidth() - win.getWidth())/2, (cv.getHeight() - win.getHeight())/2);
+
+        Text baseScore1 = new Text("P1's base score: " + Integer.toString(Management.players.get(0).getMark()));
+        baseScore1.setFont(buttonFont);
+        baseScore1.setFill(Color.WHITE);
+        baseScore1.relocate((cv.getWidth() - win.getWidth())/2 + 20, (cv.getHeight() - win.getHeight())/2 + 70);
+
+        Text bonusScore1 = new Text("P1's bonus score: " + Integer.toString(Management.players.get(0).getBonusScore()));
+        bonusScore1.setFont(buttonFont);
+        bonusScore1.setFill(Color.WHITE);
+        bonusScore1.relocate((cv.getWidth() - win.getWidth())/2 + 20, (cv.getHeight() - win.getHeight())/2 + 90);
+
+        Text totalScore1 = new Text("P1's total score: " + Integer.toString(Management.players.get(0).getMark() + Management.players.get(0).getBonusScore()));
+        totalScore1.setFont(buttonFont);
+        totalScore1.setFill(Color.WHITE);
+        totalScore1.relocate((cv.getWidth() - win.getWidth())/2 + 20, (cv.getHeight() - win.getHeight())/2 + 110);
+
+        Text baseScore2 = new Text("P2's base score: " + Integer.toString(Management.players.get(1).getMark()));
+        baseScore2.setFont(buttonFont);
+        baseScore2.setFill(Color.WHITE);
+        baseScore2.relocate((cv.getWidth() - win.getWidth())/2 + 20, (cv.getHeight() - win.getHeight())/2 + 130);
+
+        Text bonusScore2 = new Text("P2's bonus score: " + Integer.toString(Management.players.get(1).getBonusScore()));
+        bonusScore2.setFont(buttonFont);
+        bonusScore2.setFill(Color.WHITE);
+        bonusScore2.relocate((cv.getWidth() - win.getWidth())/2 + 20, (cv.getHeight() - win.getHeight())/2 + 150);
+
+        Text totalScore2 = new Text("P2's total score: " + Integer.toString(Management.players.get(1).getMark() + Management.players.get(1).getBonusScore()));
+        totalScore2.setFont(buttonFont);
+        totalScore2.setFill(Color.WHITE);
+        totalScore2.relocate((cv.getWidth() - win.getWidth())/2 + 20, (cv.getHeight() - win.getHeight())/2 + 170);
+
+        Button restart = new Button("Restart");
+        restart.setFont(buttonFont);
+        restart.setPrefSize(110, 30);
+        restart.setLayoutX((cv.getWidth() - win.getWidth())/2 + (win.getWidth() - 110)/2);
+        restart.setLayoutY((cv.getHeight() - win.getHeight())/2 + 200);
+        restart.setOnAction(actionEvent -> {
+            try {
+                Management.restart();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Button menu = new Button("Menu");
+        menu.setFont(buttonFont);
+        menu.setPrefSize(110, 30);
+        menu.setLayoutX(restart.getLayoutX());
+        menu.setLayoutY(restart.getLayoutY() + 50);
+        menu.setOnAction(actionEvent -> Management.backToMenu());
+
+        pvpWin.getChildren().addAll(cv, baseScore1, bonusScore1, totalScore1, baseScore2, bonusScore2, totalScore2, restart, menu);
     }
 }

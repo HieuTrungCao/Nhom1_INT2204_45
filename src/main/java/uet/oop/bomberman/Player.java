@@ -68,6 +68,23 @@ public class Player {
         this.num = (++this.count);
     }
 
+    public Player(short numBomberman, int heart, int bomb) {
+        bomberman = new Bomber(1, 1, Bomber.player_right[numBomberman], numBomberman);
+        this.numBomberman = numBomberman;
+        this.mark = 0;
+        this.heart = heart;
+        this.defaultHeart = heart;
+        this.bomb = bomb;
+        this.defaultBomb = bomb;
+        this.isBombPro = false;
+        this.isSetSpeed = false;
+        this.num = (++this.count);
+    }
+
+    public void setMap(Character[][] map) {
+        this.map = map;
+    }
+
     public static void setCount(short count) {
         Player.count = count;
     }

@@ -67,6 +67,7 @@ public class Management {
     private static int numOfPlayer;
     private static boolean pause = false;
     private static boolean ingame = false;
+    private static boolean isPVP = false;
     public static Group root;
     public static Scene scene;
     public static AnimationTimer timer;
@@ -145,7 +146,7 @@ public class Management {
 
             p2score = new Text(String.format("%06d", players.get(1).getMark()));
             p2score.setFont(UI.getHudFont());
-            p2score.relocate(p2Bomb.getX() - 48 * 7, 630);
+            p2score.relocate(p2Bomb.getX() - 48 * 5.5, 630);
         }
     }
 
@@ -153,10 +154,10 @@ public class Management {
         p1numLife.setText(Integer.toString(players.get(0).getHeart()));
         p1numBomb.setText(String.format("%02d", players.get(0).getBomb()));
         p1score.setText(String.format("%06d", players.get(0).getMark()));
-        if (numOfPlayer == 2) {
-            p2numLife = new Text(Integer.toString(players.get(1).getHeart()));
-            p2numBomb = new Text(String.format("%02d", players.get(1).getBomb()));
-            p2score = new Text(String.format("%06d", players.get(1).getMark()));
+        if (isPVP) {
+            p2numLife.setText(Integer.toString(players.get(1).getHeart()));
+            p2numBomb.setText(String.format("%02d", players.get(1).getBomb()));
+            p2score.setText(String.format("%06d", players.get(1).getMark()));
         }
     }
 
@@ -175,10 +176,16 @@ public class Management {
         root.getChildren().add(UI.gameOver);
     }
 
-    public static  void gameClear() throws FileNotFoundException {
+    public static void gameClear() throws FileNotFoundException {
         pause = true;
         UI.initGameClear();
         root.getChildren().add(UI.gameClear);
+    }
+
+    public static void pvpClear(boolean isP1) throws FileNotFoundException {
+        pause = true;
+        UI.initPVPWin(isP1);
+        root.getChildren().add(UI.pvpWin);
     }
 
     public static void startGame() throws FileNotFoundException {
@@ -201,34 +208,38 @@ public class Management {
         characters.clear();
         bombs.clear();
         Player.setCount((short) 0);
-        int id = players.get(0).getNumBomberman();
-        int heart = players.get(0).getDefaultHeart();
-        int bomb = players.get(0).getDefaultBomb();
+        int id1 = players.get(0).getNumBomberman();
+        int heart1 = players.get(0).getDefaultHeart();
+        int bomb1 = players.get(0).getDefaultBomb();
+        int id2 = 0;
+        int heart2 = 0;
+        int bomb2 = 0;
+        if (isPVP) {
+            id2 = players.get(1).getNumBomberman();
+            heart2 = players.get(1).getDefaultHeart();
+            bomb2 = players.get(1).getDefaultBomb();
+        }
         players.clear();
-        if (root.getChildren().contains(UI.gameOver)) {
-            root.getChildren().remove(UI.gameOver);
+        root.getChildren().remove(UI.gameOver);
+        root.getChildren().remove(UI.pause);
+        root.getChildren().remove(UI.gameClear);
+        root.getChildren().remove(UI.pvpWin);
+        if (isPVP) {
+            players.add(new Player((short) id1, heart1, bomb1));
+            startPVP(id2, heart2, bomb2);
+        } else {
+            startPVE(id1, heart1, bomb1);
         }
-        if (root.getChildren().contains(UI.pause)) {
-            root.getChildren().remove(UI.pause);
-        }
-        if (root.getChildren().contains(UI.gameClear)) {
-            root.getChildren().remove(UI.gameClear);
-        }
-        startPVE(id, heart, bomb);
     }
 
     public static void backToMenu() {
-        if (root.getChildren().contains(UI.gameOver)) {
-            root.getChildren().remove(UI.gameOver);
-        }
-        if (root.getChildren().contains(UI.pause)) {
-            root.getChildren().remove(UI.pause);
-        }
-        if (root.getChildren().contains(UI.gameClear)) {
-            root.getChildren().remove(UI.gameClear);
-        }
+        root.getChildren().remove(UI.gameOver);
+        root.getChildren().remove(UI.pause);
+        root.getChildren().remove(UI.gameClear);
+        root.getChildren().remove(UI.pvpWin);
         pause = false;
         ingame = false;
+        isPVP = false;
         timer.stop();
         entities.clear();
         characters.clear();
@@ -254,14 +265,78 @@ public class Management {
         root.getChildren().add(UI.characters);
     }
 
+    public static void player1chooseCharacter() {
+        root.getChildren().remove(UI.main);
+        root.getChildren().add(UI.player1Character);
+    }
+
+    public static void player2chooseCharacter(int id, int heart, int bomb) {
+        root.getChildren().remove(UI.player1Character);
+        players.add(new Player((short) id, heart, bomb));
+        root.getChildren().add(UI.player2Character);
+    }
+
+    public static void startPVP(int id, int heart, int bomb) throws FileNotFoundException {
+        setNumOfPlayer(2);
+        ingame = true;
+        isPVP = true;
+        createMap();
+        players.get(0).setMap(map);
+        players.add(new Player(map, (short) id, heart, bomb));
+
+        createPlayerHud(0, 0, HEIGHT * Sprite.SCALED_SIZE);
+        createPlayerHud(1, 1440, HEIGHT * Sprite.SCALED_SIZE);
+        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        gc = canvas.getGraphicsContext2D();
+
+        // Create game hud
+        Rectangle hud = new Rectangle();
+        hud.setY(Sprite.SCALED_SIZE * HEIGHT);
+        hud.setWidth(Sprite.SCALED_SIZE * WIDTH);
+        hud.setHeight(Sprite.SCALED_SIZE);
+        var stops = new Stop[] {new Stop(0, Color.web("#81c483")), new Stop(1, Color.web("#fcc200"))};
+        hud.setFill(new LinearGradient(0, Sprite.SCALED_SIZE * HEIGHT, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE, false, CycleMethod.NO_CYCLE, stops));
+
+        root.getChildren().remove(UI.player2Character);
+        root.getChildren().addAll(canvas, hud, p1Avatar, p1Life, p1Bomb, p1numLife, p1numBomb, p1score, p2Avatar, p2Life, p2Bomb, p2numLife, p2numBomb, p2score);
+        scene.setRoot(root);
+        mainStage.setScene(scene);
+
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                if (!pause && ingame) {
+                    update();
+                    render();
+                    if (players.get(0).checkVictory() || players.get(1).checkLose()) {
+                        try {
+                            pvpClear(true);
+                        } catch (FileNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    if (players.get(0).checkLose() || players.get(1).checkVictory()) {
+                        try {
+                            pvpClear(false);
+                        } catch (FileNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        };
+        timer.start();
+        handleEvent(scene);
+    }
+
     public static void startPVE(int id, int heart, int bomb) throws IOException {
         setNumOfPlayer(1);
         ingame = true;
-
+        isPVP = false;
         createMap();
         File out = new File("resources/levels/currentLevel.txt");
         Writer o = new FileWriter(out, false);
-        o.write(new Integer(currentLevel).toString());
+        o.write(Integer.toString(currentLevel));
         o.close();
 
         players.add(new Player(map, (short) id, heart, bomb));
@@ -330,8 +405,16 @@ public class Management {
     }
 
     public static void createMap() {
+
         File file = null;
-        switch (currentLevel) {
+        int lvl;
+        if (!isPVP) {
+            lvl = currentLevel;
+        } else {
+            Random generator = new Random();
+            lvl = generator.nextInt(3) + 1;
+        }
+        switch (lvl) {
             case 1 -> {
                 file = new File("resources/levels/Level1.txt");
             }
@@ -348,7 +431,7 @@ public class Management {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        int lvl = scn.nextInt();
+        lvl = scn.nextInt();
         HEIGHT = scn.nextInt();
         WIDTH = scn.nextInt();
         String tmp = scn.nextLine();
