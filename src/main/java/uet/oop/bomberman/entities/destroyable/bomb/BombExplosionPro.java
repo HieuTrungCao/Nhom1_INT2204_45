@@ -34,7 +34,7 @@ public class BombExplosionPro extends BombExplosion {
                 explosions.add(new FlameVertical(xUnit, yUnit - 1, Sprite.explosion_vertical));
                 if (checkLayer(map[yUnit - 2][xUnit])) {
                     explosions.add(Management.getEntity(xUnit, yUnit - 2));
-                } else {
+                } else if (map[yUnit - 2][xUnit].compareTo('#') != 0){
                     explosions.add(new FlameTop(xUnit, yUnit - 2, Sprite.explosion_vertical_top_last));
                 }
             }
@@ -52,7 +52,7 @@ public class BombExplosionPro extends BombExplosion {
                 explosions.add(new FlameHorizontal(xUnit + 1, yUnit, Sprite.explosion_horizontal));
                 if (checkLayer(map[yUnit][xUnit + 2])) {
                     explosions.add(Management.getEntity(xUnit + 2, yUnit));
-                } else {
+                } else if (map[yUnit][xUnit + 2].compareTo('#') != 0){
                     explosions.add(new FlameRight(xUnit + 2, yUnit, Sprite.explosion_horizontal_right_last));
                 }
             }
@@ -70,7 +70,7 @@ public class BombExplosionPro extends BombExplosion {
                 explosions.add(new FlameVertical(xUnit, yUnit + 1, Sprite.explosion_vertical));
                 if (checkLayer(map[yUnit + 2][xUnit])) {
                     explosions.add(Management.getEntity(xUnit, yUnit + 2));
-                } else {
+                } else if (map[yUnit + 2][xUnit].compareTo('#') != 0){
                     explosions.add(new FlameDown(xUnit, yUnit + 2, Sprite.explosion_vertical_down_last));
                 }
             }
@@ -88,7 +88,7 @@ public class BombExplosionPro extends BombExplosion {
                 explosions.add(new FlameHorizontal(xUnit - 1, yUnit, Sprite.explosion_horizontal));
                 if (checkLayer(map[yUnit][xUnit - 2])) {
                     explosions.add(Management.getEntity(xUnit - 2, yUnit));
-                } else {
+                } else if (map[yUnit][xUnit - 2].compareTo('#') != 0){
                     explosions.add(new FlameLeft(xUnit - 2, yUnit, Sprite.explosion_horizontal_left_last));
                 }
             }
