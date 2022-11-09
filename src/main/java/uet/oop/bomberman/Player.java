@@ -308,8 +308,9 @@ public class Player {
 
     private boolean isBlock(Character character) {
         return character.compareTo('#') == 0 || character.compareTo('*') == 0 ||
-                character.compareTo('B') == 0 || character.compareTo('F') == 0||
-                character.compareTo('S') == 0 || character.compareTo('H') == 0;
+                character.compareTo('B') == 0 || character.compareTo('F') == 0 ||
+                character.compareTo('S') == 0 || character.compareTo('H') == 0 ||
+                character.compareTo('x') == 0;
     }
 
     // Trả về bombers
