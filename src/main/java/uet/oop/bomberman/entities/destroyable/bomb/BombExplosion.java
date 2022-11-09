@@ -28,11 +28,13 @@ public abstract class BombExplosion extends AnimatedEntities {
     // Lưu xem bomb được đặc từ player 1 hoặc 2
     protected short putBy;
 
+    protected boolean isPlaySound;
     public BombExplosion(int xUnit, int yUnit, Sprite sprite, short putBy, Character[][] map) {
         super(xUnit, yUnit, sprite);
         explosions = new LinkedList<>();
         this.map = map;
         this.putBy = putBy;
+        this.isPlaySound = false;
     }
 
     /**
@@ -47,9 +49,12 @@ public abstract class BombExplosion extends AnimatedEntities {
     public void update() {
         ((Bomb) explosions.get(0)).setAnimate(this.getAnimate());
         explosions.get(0).update();
-        if (animate == time) {
-            Sound.bombExplode.restart();
-            Sound.bombExplode.start();
+        if (animate >= time) {
+            if (!isPlaySound) {
+                Sound.bombExplode.restart();
+                Sound.bombExplode.start();
+                isPlaySound = true;
+            }
         }
         if (animate >= time) {
             updateExplosion();
@@ -57,7 +62,7 @@ public abstract class BombExplosion extends AnimatedEntities {
         }
         animate();
 
-        if (animate == time * 2) {
+        if (animate >= time * 2) {
             removeBrick();
             map[super.getY()/Sprite.SCALED_SIZE][super.getX()/Sprite.SCALED_SIZE] = ' ';
             Management.bombs.remove(0);

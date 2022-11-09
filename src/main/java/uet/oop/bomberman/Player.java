@@ -170,9 +170,11 @@ public class Player {
                     mark += 50;
                     isBombPro = true;
                 } else if (((LayeredEntity) entity).getTopEntity() instanceof HeartItem) {
+                    ((LayeredEntity) entity).removeTop();
                     mark += 50;
                     heart++;
                 } else if (((LayeredEntity) entity).getTopEntity() instanceof BombItem) {
+                    ((LayeredEntity) entity).removeTop();
                     mark += 50;
                     bomb++;
                 }
