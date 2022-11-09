@@ -1,7 +1,6 @@
 package uet.oop.bomberman.AI;
 
 import javafx.util.Pair;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Management;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -16,30 +15,35 @@ public abstract class AI {
     protected int currentDirect = -1;
     //    protected AI ai;
     protected int speed = 1;
-
-    boolean canChangeSpeed = false;
-    boolean canSlowPlayer = false;
     public int timePassAUnit = Sprite.SCALED_SIZE / speed;
-
     protected int timeToUpdateDirect = timePassAUnit * 4;
     protected Character[][] map;
     protected Character[] block;
     //symbol of entity
     protected Character symbol;
+    protected boolean cantFly = true;
+    boolean canChangeSpeed = false;
+    boolean canSlowPlayer = false;
     //tọa độ của entity hiện tại
     int x, y;
     //tọa độ của player hiện tại
     int px, py;
-    protected boolean cantFly = true;
 
     public AI(Character[][] map) {
         this.map = map;
-        block = new Character[]{'#', '*', 'x', 'b'};
+        block = new Character[]{'#', '*', 'x', 'b', 'B', 'F', 'S', 'H'};
         px = 1;
         py = 1;
         symbol = '1';
     }
 
+    public boolean isCanChangeSpeed() {
+        return canChangeSpeed;
+    }
+
+    public void setCanChangeSpeed(boolean canChangeSpeed) {
+        this.canChangeSpeed = canChangeSpeed;
+    }
 
     public void setSymbol(char symbol) {
         this.symbol = symbol;
@@ -48,6 +52,10 @@ public abstract class AI {
     public void move() {
         if (cantFly) changeDirectIfCollision();
         if (canSlowPlayer) slowPlayer();
+        if (canChangeSpeed) {
+            speed = Math.abs(px - x) + Math.abs(py - y) < 6 * Sprite.SCALED_SIZE ? 2 : 1;
+            timePassAUnit = Sprite.SCALED_SIZE / speed;
+        }
 
 //        updatePositionInMap();
         switch (currentDirect) {
@@ -56,11 +64,11 @@ public abstract class AI {
                     y -= speed;
             }
             case 2 -> {
-                if (x + speed <= Management.WIDTH * Sprite.SCALED_SIZE -2 * Sprite.SCALED_SIZE)
+                if (x + speed <= Management.WIDTH * Sprite.SCALED_SIZE - 2 * Sprite.SCALED_SIZE)
                     x += speed;
             }
             case 3 -> {
-                if (y + speed <= Management.HEIGHT * Sprite.SCALED_SIZE -2 * Sprite.SCALED_SIZE)
+                if (y + speed <= Management.HEIGHT * Sprite.SCALED_SIZE - 2 * Sprite.SCALED_SIZE)
                     y += speed;
             }
             case 0 -> {
@@ -73,7 +81,7 @@ public abstract class AI {
     private void slowPlayer() {
     }
 
-    protected void changeDirectIfCollision(){
+    protected void changeDirectIfCollision() {
         int count = 0;
         while (!checkDirect(currentDirect)) {
             if (count > 2) currentDirect = (currentDirect + 1) % 4;
@@ -198,7 +206,7 @@ public abstract class AI {
         return Arrays.asList(block).contains(y);
     }
 
-    protected void updateNearestPlayer(){
+    protected void updateNearestPlayer() {
         List<Pair<Integer, Integer>> playerCoordinate = new ArrayList<>();
         for (int i = 0; i < Management.players.size(); ++i) {
             playerCoordinate.add(new Pair<>(

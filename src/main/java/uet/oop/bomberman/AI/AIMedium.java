@@ -2,7 +2,6 @@ package uet.oop.bomberman.AI;
 
 
 import javafx.util.Pair;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Management;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -43,7 +42,7 @@ public class AIMedium extends AI {
 //        System.out.println("Source : " + x + " " + y + "  Unit : " + xSource + " " + ySource);
 
         Pair<Integer, Integer> startNode = new Pair<>(xSource, ySource);
-        Pair<Integer, Integer> destNode = new Pair<>(px, py);
+        Pair<Integer, Integer> destNode = new Pair<>(px / Sprite.SCALED_SIZE, py / Sprite.SCALED_SIZE);
 
         int[][] distance = new int[Management.HEIGHT][Management.WIDTH];
         Arrays.stream(distance).forEach(row -> Arrays.fill(row, 1000000));
@@ -70,6 +69,7 @@ public class AIMedium extends AI {
 //                System.out.println();
                 return itNode;
             } else {
+//                System.out.println("currNode:" + currNode);
                 closedList.add(currNode);
                 Pair<Integer, Integer>[] neighbors = new Pair[4];
                 neighbors[0] = new Pair<>(currNode.getKey() - 1, currNode.getValue());
