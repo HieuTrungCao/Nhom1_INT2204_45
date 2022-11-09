@@ -37,6 +37,9 @@ Items:
 b - Bomb Item
 f - Flame Item
 s - Speed Item
+h - Heart Item
+
+B, F, S, H cũng là item nhưng ẩn dưới wall
 
 
 Kí tự khác các kí tự trên - Grass
