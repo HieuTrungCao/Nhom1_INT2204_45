@@ -215,7 +215,7 @@ public class Player {
             if (((LayeredEntity) entity).getTopEntity() instanceof Portal) {
                 if (entity.getX() == bomberman.getX() &&
                         entity.getY() == bomberman.getY() &&
-                        Management.characters.size() != 0) {
+                        Management.characters.size() == 0) {
                     bonusScore = bomb * 30 + heart * 100;
                     return true;
                 }
