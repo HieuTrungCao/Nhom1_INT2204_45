@@ -63,7 +63,7 @@ public class Bomber extends AnimatedEntities {
         isAlive = true;
         animate_die = 0;
         time_die = Bomb.time / 2;
-        time_move = 12;
+        time_move = 20;
         setDirection(false, false, false, false);
         this.num = (num);
     }
