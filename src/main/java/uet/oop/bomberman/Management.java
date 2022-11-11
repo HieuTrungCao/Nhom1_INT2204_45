@@ -417,7 +417,7 @@ public class Management {
     }
 
     static void handleEvent(Scene scene) {
-        Set<KeyCode> codes = new HashSet<>();
+        Set<KeyCode> codes = new LinkedHashSet<>();
         EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -436,8 +436,17 @@ public class Management {
                 }
             }
         };
+
+        EventHandler<KeyEvent> releaseHandler = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                System.out.println("code : " + keyEvent.getCode());
+                codes.remove(keyEvent.getCode());
+            }
+        };
+
         scene.setOnKeyPressed(eventHandler);
-        scene.setOnKeyReleased(e -> codes.clear());
+        scene.setOnKeyReleased(releaseHandler);
     }
 
     public static void createMap() {

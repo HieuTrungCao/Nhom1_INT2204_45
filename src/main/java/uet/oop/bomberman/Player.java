@@ -17,6 +17,7 @@ import uet.oop.bomberman.entities.undestroyable.Portal;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.sound.Sound;
 
+import java.util.Queue;
 import java.util.Set;
 
 import static javafx.scene.input.KeyCode.*;
@@ -129,30 +130,38 @@ public class Player {
             } else if (codes.contains(A) && checkMap(4)) {
                 bomberman.moveLeft();
                 direction = true;
+                
             } else if (codes.contains(D) && checkMap(2)) {
                 bomberman.moveRight();
+                
             } else if (codes.contains(SPACE) && bomb > 0) {
                 addBomb(isBombPro);
                 bomb--;
                 direction = true;
+                
             }
         }
         if (num == 2) {
             if (codes.contains(UP) && checkMap(1)) {
                 bomberman.moveUp();
                 direction = false;
+                
             } else if (codes.contains(DOWN) && checkMap(3)) {
                 bomberman.moveDown();
                 direction = false;
+                
             } else if (codes.contains(LEFT) && checkMap(4)) {
                 bomberman.moveLeft();
                 direction = true;
+                
             } else if (codes.contains(RIGHT) && checkMap(2)) {
                 bomberman.moveRight();
+                
             } else if (codes.contains(ENTER) && bomb > 0) {
                 addBomb(isBombPro);
                 bomb--;
                 direction = true;
+                
             }
         }
         eatItem();
