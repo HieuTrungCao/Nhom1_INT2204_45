@@ -52,10 +52,7 @@ public abstract class AI {
     public void move() {
         if (cantFly) changeDirectIfCollision();
         if (canSlowPlayer) slowPlayer();
-        if (canChangeSpeed) {
-            speed = Math.abs(px - x) + Math.abs(py - y) < 6 * Sprite.SCALED_SIZE ? 2 : 1;
-            timePassAUnit = Sprite.SCALED_SIZE / speed;
-        }
+
 
 //        updatePositionInMap();
         switch (currentDirect) {
@@ -137,7 +134,13 @@ public abstract class AI {
     public void update() {
         currentFrame++;
         if (currentFrame % timeToUpdateDirect == 0) {
+            if (canChangeSpeed) {
+                speed = Math.abs(px - x) + Math.abs(py - y) < 6 * Sprite.SCALED_SIZE ? 2 : 1;
+                timePassAUnit = Sprite.SCALED_SIZE / speed;
+                timeToUpdateDirect = timePassAUnit;
+            }
             currentDirect = calculateDirect();
+            currentFrame = 0;
         }
     }
 
