@@ -81,7 +81,8 @@ public abstract class AI {
     protected void changeDirectIfCollision() {
         int count = 0;
         while (!checkDirect(currentDirect)) {
-            if (count > 2) currentDirect = (currentDirect + 1) % 4;
+            if (count > 3) currentDirect = -1;
+            else if (count > 1) currentDirect = (currentDirect + 1) % 4;
             else {
                 currentDirect = calculateDirect();
                 count++;
